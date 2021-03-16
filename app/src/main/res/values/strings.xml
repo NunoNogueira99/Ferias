@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Ferias</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="phone">Phone</string>
+    <string name="Name">Name</string>
+    <string name="Email">Email</string>
+    <string name="old_pass">Old pass</string>
+    <string name="new_pass">New pass</string>
+    <string name="reset_password">Reset password</string>
+    <string name="save">Save</string>
+    <string name="fade_pic">Fade pic</string>
+    <string name="edit_btn">edit btn</string>
+    <string name="profile_pic">profile pic</string>
+    <string name="backgroungAdmin">Backgroung pic admin page</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="register_with_email">Register with email</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="select_units_for_distance">Select Units for Distance</string>
+    <string name="select_the_currency">Select The Currency</string>
+    <string name="metric">Metric</string>
+    <string name="imperial">Imperial</string>
+    <string name="euro">Euro</string>
+    <string name="dolar">Dolar</string>
+    <string name="ienes">Ienes</string>
+    <string name="select_the_language">Select The Language</string>
+    <string name="english">English</string>
+    <string name="portuguese">Portuguese</string>
+    <string name="italian">Italian</string>
+    <string name="apply_changes">Apply Changes</string>
+    <string name="personal_data">Personal Data</string>
+    <string name="settings">Settings</string>
+</resources>

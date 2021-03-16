@@ -1,0 +1,121 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+
+    <style name="Theme.Ferias" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Colors -->
+        <item name="colorPrimary">@color/main_color</item>
+        <item name="colorOnPrimary">@color/primary_white</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/accent_color</item>
+        <item name="android:colorBackground">@color/background_color</item>
+        <item name="colorAccent">@color/accent_color</item>
+        <!-- Fonts -->
+        <item name="textAppearanceHeadline1">@style/custom_headline1</item>
+        <item name="textAppearanceHeadline2">@style/custom_headline2</item>
+        <item name="textAppearanceHeadline3">@style/custom_headline3</item>
+        <item name="textAppearanceHeadline4">@style/custom_headline4</item>
+        <item name="textAppearanceHeadline5">@style/custom_headline5</item>
+        <item name="textAppearanceHeadline6">@style/custom_headline6</item>
+        <item name="textAppearanceSubtitle1">@style/custom_subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/custom_subtitle2</item>
+        <item name="textAppearanceBody1">@style/custom_body1</item>
+        <item name="textAppearanceBody2">@style/custom_body2</item>
+        <item name="textAppearanceCaption">@style/custom_caption</item>
+        <item name="textAppearanceOverline">@style/custom_overline</item>
+        <!-- Components -->
+        <item name="materialCardViewStyle">@style/custom_cardview</item>
+    </style>
+
+    <!-- Fonts -->
+
+    <style name="custom_headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">@font/archivo_bold</item>
+        <item name="android:textColor">@color/primary_white</item>
+    </style>
+
+    <style name="custom_headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="fontFamily">@font/archivo_bold</item>
+        <item name="android:textColor">@color/primary_white</item>
+    </style>
+
+    <style name="custom_headline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="fontFamily">@font/archivo_bold</item>
+        <item name="android:textColor">@color/primary_white</item>
+    </style>
+
+    <style name="custom_headline4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="fontFamily">@font/archivo_bold</item>
+        <item name="android:textColor">@color/primary_white</item>
+    </style>
+
+    <style name="custom_headline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">@font/archivo_bold</item>
+        <item name="android:textColor">@color/primary_white</item>
+    </style>
+
+    <style name="custom_headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/archivo_bold</item>
+        <item name="android:textColor">@color/primary_white</item>
+    </style>
+
+    <style name="custom_subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="fontFamily">@font/archivo_semibold</item>
+        <item name="android:textColor">@color/secondary_white</item>
+    </style>
+
+    <style name="custom_subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="fontFamily">@font/archivo_semibold</item>
+        <item name="android:textColor">@color/secondary_white</item>
+    </style>
+
+    <style name="custom_body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/archivo_medium</item>
+        <item name="android:textColor">@color/primary_white</item>
+    </style>
+
+    <style name="custom_body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">@font/archivo_medium</item>
+        <item name="android:textColor">@color/secondary_white</item>
+    </style>
+
+    <style name="custom_button_font" parent="TextAppearance.MaterialComponents.Button">
+        <item name="fontFamily">@font/archivo_semibold</item>
+    </style>
+
+    <style name="custom_caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">@font/archivo_medium</item>
+        <item name="android:textColor">@color/secondary_white</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+
+    <style name="custom_overline" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="fontFamily">@font/archivo_medium</item>
+    </style>
+
+    <!-- shapes -->
+
+    <style name="custom_small_shape" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">15dp</item>
+    </style>
+
+    <style name="custom_large_shape" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomRight">15dp</item>
+        <item name="cornerSizeTopRight">15dp</item>
+    </style>
+
+    <!-- Components -->
+
+    <style name="roundedImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="custom_cardview" parent="Widget.MaterialComponents.CardView">
+        <item name="elevation">0dp</item>
+        <item name="cardCornerRadius">15dp</item>
+    </style>
+
+
+</resources>

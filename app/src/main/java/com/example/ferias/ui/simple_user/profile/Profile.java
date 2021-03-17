@@ -3,6 +3,7 @@ package com.example.ferias.ui.simple_user.profile;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -47,14 +48,15 @@ public class Profile extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.simple_user_fragment_profile, container, false);
 
+        readUserData();
+
         initializeElements(root);
 
         clickListeners(root);
 
-        readUserData();
-
         return root;
     }
+
 
     private void initializeElements(View root) {
         viewPager = root.findViewById(R.id.pager);

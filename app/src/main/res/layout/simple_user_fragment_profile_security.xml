@@ -12,11 +12,11 @@
 
         <LinearLayout
             android:id="@+id/linearLayout4"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_marginEnd="25dp"
+            android:layout_marginEnd="20dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,25 +34,36 @@
 
             <EditText
                 android:id="@+id/et_Old_Password"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/rounded_corner_view"
                 android:ems="10"
                 android:importantForAutofill="no"
                 android:inputType="text|textPassword"
-                android:shadowColor="#00FFFFFF"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:shadowColor="#FFFFFF"
                 android:soundEffectsEnabled="false"
-                android:textColorHighlight="#31FFFFFF" />
+                android:textColor="#FFFFFF" />
+
+            <ImageView
+                android:id="@+id/bt_oldpassword_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="TODO"
+                android:src="@drawable/ic_baseline_visibility_off_24" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout5"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="25dp"
+            android:layout_marginEnd="20dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,16 +81,26 @@
 
             <EditText
                 android:id="@+id/et_New_Password"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/rounded_corner_view"
                 android:ems="10"
                 android:importantForAutofill="no"
-                android:inputType="textPersonName"
+                android:inputType="textPassword"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:shadowColor="#00FFFFFF"
                 android:soundEffectsEnabled="false"
-                android:textColorHighlight="#31FFFFFF" />
+                android:textColor="#FFFFFF" />
+
+            <ImageView
+                android:id="@+id/bt_newpassword_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/ic_baseline_visibility_off_24" />
         </LinearLayout>
 
         <LinearLayout
@@ -133,7 +154,7 @@
             android:id="@+id/bt_reset_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/rounded_rectangle_for_buttons"
             android:text="@string/reset_password"
             android:textAlignment="center"
@@ -159,6 +180,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bt_reset_password" />
 
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:text="Delete account"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bt_send_password" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:text="Permanently delete your account"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
         <Button
             android:id="@+id/bt_delete_account"
             android:layout_width="wrap_content"
@@ -173,33 +221,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_weight="1"
-            android:text="Delete account"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bt_send_password" />
-
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_weight="1"
-            android:text="Permanently delete your account"
-            android:textAlignment="center"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

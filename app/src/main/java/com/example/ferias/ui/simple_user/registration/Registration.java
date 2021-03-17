@@ -61,7 +61,6 @@ public class Registration extends Fragment {
 
         et_Age =  root.findViewById(R.id.et_Age_Registration);
 
-
         et_Phone =  root.findViewById(R.id.et_Phone_Registration);
 
         et_EmailAddress =  root.findViewById(R.id.et_Email_Registration);

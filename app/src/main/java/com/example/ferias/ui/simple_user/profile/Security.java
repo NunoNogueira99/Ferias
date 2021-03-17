@@ -2,6 +2,8 @@ package com.example.ferias.ui.simple_user.profile;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,12 +13,14 @@ import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,11 +48,11 @@ public class Security extends Fragment {
     private DatabaseReference databaseReference;
     private User user;
 
-    private TextView tv_Old_Password;
     private EditText et_Old_Password;
+    private ImageView bt_oldpassword_view;
 
-    private TextView tv_New_Password;
     private EditText et_New_Password;
+    private ImageView bt_newpassword_view;
 
     private TextView tv_passwordstrength_change;
     private ProgressBar progressBar_passwordstrength_change;
@@ -90,10 +94,10 @@ public class Security extends Fragment {
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference= FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid());
 
-        tv_Old_Password = root.findViewById(R.id.tv_Old_Password);
+        bt_oldpassword_view = root.findViewById(R.id.bt_oldpassword_view);
         et_Old_Password = root.findViewById(R.id.et_Old_Password);
 
-        tv_New_Password = root.findViewById(R.id.tv_New_Password);
+        bt_newpassword_view = root.findViewById(R.id.bt_newpassword_view);
         et_New_Password = root.findViewById(R.id.et_New_Password);
 
         progressBar_passwordstrength_change = root.findViewById(R.id.progressBar_passwordstrength_change);
@@ -123,6 +127,34 @@ public class Security extends Fragment {
             }
         });
 
+        bt_oldpassword_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(et_Old_Password.getTransformationMethod() == null){
+                    et_Old_Password.setTransformationMethod(new PasswordTransformationMethod());
+                    bt_oldpassword_view.setImageResource(R.drawable.ic_baseline_visibility_off_24);
+                }
+                else {
+                    et_Old_Password.setTransformationMethod(null);
+                    bt_oldpassword_view.setImageResource(R.drawable.ic_baseline_visibility_24);
+                }
+            }
+        });
+
+        bt_newpassword_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(et_New_Password.getTransformationMethod() == null){
+                    et_New_Password.setTransformationMethod(new PasswordTransformationMethod());
+                    bt_newpassword_view.setImageResource(R.drawable.ic_baseline_visibility_off_24);
+                }
+                else {
+                    et_New_Password.setTransformationMethod(null);
+                    bt_newpassword_view.setImageResource(R.drawable.ic_baseline_visibility_24);
+                }
+            }
+        });
+
         bt_reset_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,10 +163,10 @@ public class Security extends Fragment {
                 if(password.isEmpty() || passwordStrength.strength <= 1){
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                     dialog.setTitle("Password Strength Error");
-                    String mensage = "Your password needs to" + "\n" +
-                                        "include both lower and upper case characters" + "\n" +
-                                        "include at least one number and symbol" + "\n" +
-                                        "be at least 8 characters long";
+                    String mensage = "Your password needs to:" +
+                                        "\n\tInclude both lower and upper case characters" +
+                                        "\n\tInclude at least one number and symbol" +
+                                        "\n\tBe at least 8 characters long";
 
                     dialog.setMessage(mensage);
                     dialog.setNegativeButton("Confirm", new DialogInterface.OnClickListener() {
@@ -147,7 +179,6 @@ public class Security extends Fragment {
                     alertDialog.show();
                 }
                 else{
-                    String test = et_Old_Password.getText().toString().trim() + " != " + user.get_Password().trim();
                     if(! user.get_Password().equals(et_Old_Password.getText().toString())){
                         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                         dialog.setTitle("Password Error");
@@ -167,6 +198,10 @@ public class Security extends Fragment {
                     else {
                         user.set_Password(password);
                         databaseReference.setValue(user);
+
+                        et_Old_Password.setText("");
+                        et_New_Password.setText("");
+                        calculatePasswordStrength("");
                     }
                 }
 
@@ -230,7 +265,7 @@ public class Security extends Fragment {
         // with a calculate static method returning the password strength
         PasswordStrength passwordStrength = PasswordStrength.calculate(str);
 
-        progressBar_passwordstrength_change.setBackgroundColor(passwordStrength.color);
+        progressBar_passwordstrength_change.setProgressTintList(ColorStateList.valueOf(passwordStrength.color));
         progressBar_passwordstrength_change.setProgress(passwordStrength.strength);
         tv_passwordstrength_change.setText(passwordStrength.msg);
 

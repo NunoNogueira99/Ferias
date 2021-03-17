@@ -9,6 +9,7 @@ public class User implements Serializable {
     private String name;
     private String birthday;
     private String phone;
+    private Address address;
     ////////////////     SECURITY     ////////////////
     private String email;
     private String password;
@@ -50,7 +51,6 @@ public class User implements Serializable {
     }
 
     //////////////// GETS BEGIN ////////////////
-
     public String get_Name() {
         return name;
     }
@@ -62,6 +62,8 @@ public class User implements Serializable {
     public String get_Phone() {
         return phone;
     }
+
+    public Address get_Address(){ return address;}
 
     public String get_Email() {
         return email;
@@ -93,12 +95,14 @@ public class User implements Serializable {
         this.birthday = birthday;
     }
 
-    public void set_Email(String email) {
-        this.email = email;
-    }
-
     public void set_Phone(String phone) {
         this.phone = phone;
+    }
+
+    public void set_Address(Address address){ this.address = address;}
+
+    public void set_Email(String email) {
+        this.email = email;
     }
 
     public void set_Password(String password) {

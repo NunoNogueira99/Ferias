@@ -234,9 +234,6 @@ public class Login extends Fragment {
                 if(task.isSuccessful()){
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                    Toast.makeText(getContext(),"Login Successful",Toast.LENGTH_LONG).show();
-                    progressBar_Login.setVisibility(View.GONE);
-
                     if(cb_Remeber.isChecked()){
                         try {
                             InternalStorage.writeObject(getContext(), "Email", email);
@@ -254,19 +251,18 @@ public class Login extends Fragment {
                         }
                     }
 
-                    /*if(user.isEmailVerified()){
-                        //redirect to user profile
-                        Toast.makeText(Login.this,"Login Successful",Toast.LENGTH_LONG).show();
+                    if(user.isEmailVerified()){
+                        Toast.makeText(getContext(),"Login Successful",Toast.LENGTH_LONG).show();
                         progressBar_Login.setVisibility(View.GONE);
-                        startActivity(new Intent(Login.this, Profile.class));
+
+                        NavController navController = Navigation.findNavController(root);
+                        navController.navigate(R.id.action_navigation_home_to_simple_user_home);
                     }
                     else{
                         user.sendEmailVerification();
-                        Toast.makeText(Login.this,"Check your email to verify your account!", Toast.LENGTH_LONG).show();
-                    }*/
+                        Toast.makeText(getContext(),"Check your email to verify your account!", Toast.LENGTH_LONG).show();
+                    }
 
-                    NavController navController = Navigation.findNavController(root);
-                    navController.navigate(R.id.action_navigation_home_to_simple_user_home);
                 }
                 else {
                     Toast.makeText(getContext(),"Failed to login! Please check your credentials",Toast.LENGTH_LONG).show();

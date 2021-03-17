@@ -166,11 +166,26 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <ProgressBar
+            android:id="@+id/progressBar_passwordstrength_register"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="25dp"
+            android:max="4"
+            android:progressTint="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tilPassword_Registration"
+            tools:progress="1" />
+
         <Button
             android:id="@+id/bt_RegistrationUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/rounded_rectangle_for_buttons"
             android:drawableEnd="@drawable/ic_arrow_forward"
             android:paddingHorizontal="24dp"
@@ -179,7 +194,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tilPassword_Registration" />
+            app:layout_constraintTop_toBottomOf="@+id/progressBar_passwordstrength_register" />
 
         <ProgressBar
             android:id="@+id/progressBar_RegistrationUser"

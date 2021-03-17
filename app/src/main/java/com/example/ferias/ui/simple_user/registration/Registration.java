@@ -1,7 +1,6 @@
 package com.example.ferias.ui.simple_user.registration;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,15 +17,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ferias.MainActivity;
 import com.example.ferias.R;
 import com.example.ferias.data.simple_user.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -35,7 +29,7 @@ import java.util.Calendar;
 
 public class Registration extends Fragment {
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth firebaseAuth;
 
     private ImageButton bt_Backhome_Registration;
 
@@ -49,8 +43,16 @@ public class Registration extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.simple_user_fragment_registration, container, false);
 
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
+        initializeElements(root);
+
+        clickListeners(root);
+
+        return root;
+    }
+
+    private void initializeElements(View root) {
         bt_Backhome_Registration =  root.findViewById(R.id.bt_Backhome_Registration);
 
         bt_RegisterUser =  root.findViewById(R.id.bt_RegistrationUser);
@@ -68,13 +70,9 @@ public class Registration extends Fragment {
 
         progressBar_Register =  root.findViewById(R.id.progressBar_RegistrationUser);
         progressBar_Register.setVisibility(View.GONE);
-
-        clickListener(root);
-
-        return root;
     }
 
-    private void clickListener(final View root) {
+    private void clickListeners(final View root) {
         bt_Backhome_Registration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,10 +180,10 @@ public class Registration extends Fragment {
         }
 
         progressBar_Register.setVisibility(View.VISIBLE);
-        mAuth.createUserWithEmailAndPassword(email,password)
+        firebaseAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
-                        User newuser = new User(name,email,phone,password);
+                        User newuser = new User(name, email, birthday.toString(), phone, password);
 
                         FirebaseDatabase.getInstance().getReference("Users")
                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

@@ -1,6 +1,5 @@
 package com.example.ferias.ui.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,15 +17,12 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.ferias.MainActivity;
 import com.example.ferias.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPassword extends Fragment{
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth firebaseAuth;
 
     private EditText et_EmailAddress;
 
@@ -48,7 +44,7 @@ public class ForgotPassword extends Fragment{
 
         bt_Reset =  root.findViewById(R.id.bt_ResetPassword);
 
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         clickListener(root);
 
@@ -94,7 +90,7 @@ public class ForgotPassword extends Fragment{
 
         progressBar_Reset.setVisibility(View.VISIBLE);
 
-        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+        firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 Toast.makeText(getContext(),"Check your email to reset your password!", Toast.LENGTH_LONG).show();
 

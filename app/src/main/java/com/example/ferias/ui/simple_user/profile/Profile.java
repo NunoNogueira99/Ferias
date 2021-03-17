@@ -8,25 +8,34 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.ferias.R;
+import com.example.ferias.data.InternalStorage;
+import com.example.ferias.data.simple_user.User;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.io.IOException;
 
 public class Profile extends Fragment {
 
-    private FirebaseAuth mAuth;
-
-    private FirebaseUser user;
-    private DatabaseReference reference;
-    private String userID;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private DatabaseReference databaseReference;
+    private User user;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -34,11 +43,20 @@ public class Profile extends Fragment {
 
     private ImageButton bt_Backhome_Profile;
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.simple_user_fragment_profile, container, false);
 
+        initializeElements(root);
+
+        clickListeners(root);
+
+        readUserData();
+
+        return root;
+    }
+
+    private void initializeElements(View root) {
         viewPager = root.findViewById(R.id.pager);
         tabLayout = root.findViewById(R.id.tab_layout);
 
@@ -51,6 +69,20 @@ public class Profile extends Fragment {
 
         viewPager.setAdapter(pageAdapter);
         tabLayout.setupWithViewPager(viewPager);
+
+        bt_Backhome_Profile = root.findViewById(R.id.bt_Backhome_Profile);
+    }
+
+    private void clickListeners(View root) {
+
+        bt_Backhome_Profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.removeView((View) v.getParent());
+                NavController navController = Navigation.findNavController(root);
+                navController.navigate(R.id.action_simple_user_profile_to_simple_user_home);
+            }
+        });
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -68,42 +100,53 @@ public class Profile extends Fragment {
 
             }
         });
+    }
 
-        bt_Backhome_Profile = root.findViewById(R.id.bt_Backhome_Profile);
-        bt_Backhome_Profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.removeView((View) v.getParent());
-                NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.action_simple_user_profile_to_simple_user_home);
-            }
-        });
-       /* mAuth = FirebaseAuth.getInstance();
+    private void readUserData() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid());
 
-        user = mAuth.getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users");
-        userID = user.getUid();
-
-        reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User userprofile = snapshot.getValue(User.class);
-
-                if (userprofile != null) {
-                    et_FullName.setText(userprofile.get_Name());
-                    //et_Age.setText(userprofile.get_Birthday().toString());
-                    et_Phone.setText(userprofile.get_Phone());
-                    et_EmailAddress.setText(userprofile.get_Email());
-                    et_Password.setText(userprofile.get_Password());
+                user = snapshot.getValue(User.class);
+                Log.e("User",user.toString());
+                if(user == null){
+                    Log.e("ERROR", "User"+firebaseUser.getUid()+"is unexpectedly null");
+                    Toast.makeText(getContext(),"Error: could not fetch user", Toast.LENGTH_LONG).show();
+                }
+                try {
+                    InternalStorage.writeObject(getContext(), "User", user);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Profile.this, "Something wrong happened!", Toast.LENGTH_LONG).show();
+                Log.e("ERROR", "getUser:onCancelled",error.toException());
             }
-        });*/
+        });
 
-        return root;
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                user = snapshot.getValue(User.class);
+
+                try {
+                    InternalStorage.writeObject(getContext(), "User", user);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("ERROR", "getUser:onCancelled",error.toException());
+            }
+        });
     }
+
+
 }

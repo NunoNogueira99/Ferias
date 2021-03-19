@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/home_main">
+    app:startDestination="@id/first_fragment">
 
     <fragment
         android:id="@+id/home_main"
@@ -68,4 +68,40 @@
         android:name="com.example.ferias.ui.simple_user.search_hotel.SearchHotel"
         android:label="simple_user_fragment_search_hotel"
         tools:layout="@layout/simple_user_fragment_search_hotel" />
+    <fragment
+        android:id="@+id/first_fragment"
+        android:name="com.example.ferias.ui.FirstPage"
+        android:label="fragment_first_fragment"
+        tools:layout="@layout/first_page" >
+        <action
+            android:id="@+id/action_first_fragment_to_home_main"
+            app:destination="@id/home_main" />
+        <action
+            android:id="@+id/action_first_fragment_to_registrationOptions"
+            app:destination="@id/registrationOptions" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationOptions"
+        android:name="com.example.ferias.ui.RegistrationOptions"
+        android:label="fragment_registration_options"
+        tools:layout="@layout/registration_options" >
+        <action
+            android:id="@+id/action_registrationOptions_to_registration"
+            app:destination="@id/registration" />
+        <action
+            android:id="@+id/action_registrationOptions_to_registerAsAdmin"
+            app:destination="@id/registerAsAdmin" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerAsAdmin"
+        android:name="com.example.ferias.ui.hotel_manager.Registration.RegisterAsAdmin"
+        android:label="fragment_register_as_admin"
+        tools:layout="@layout/fragment_register_as_admin" >
+        <action
+            android:id="@+id/action_registerAsAdmin_to_home_main"
+            app:destination="@id/home_main" />
+        <action
+            android:id="@+id/action_registerAsAdmin_to_registrationOptions"
+            app:destination="@id/registrationOptions" />
+    </fragment>
 </navigation>

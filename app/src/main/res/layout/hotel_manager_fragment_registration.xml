@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/banner_Registration_HotelManager"
         android:layout_width="wrap_content"
-        android:layout_height="175dp"
+        android:layout_height="50dp"
         android:adjustViewBounds="true"
         android:background="@color/main_color"
         android:contentDescription="@string/profile_pic"
@@ -19,7 +19,7 @@
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/ferias_logo" />
 
     <ImageButton
         android:id="@+id/bt_Backhome_Registration_HotelManager"

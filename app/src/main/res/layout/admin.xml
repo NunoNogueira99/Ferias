@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_marginTop="-3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/admin_backgrounf_pic"
+        android:contentDescription="@string/backgroungAdmin" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="428dp"
+        android:layout_height="290dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="259dp"
+        android:layout_marginBottom="651dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.378"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.275"
+        app:srcCompat="@drawable/home_cover_mask"
+        android:contentDescription= "@string/fade_pic" />
+
+    <ImageButton
+        android:id="@+id/editProfilePic"
+        android:layout_width="54dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#DD2F3E8F"
+        android:contentDescription="@string/edit_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.955"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.301"
+        app:srcCompat="@drawable/ic_action_name" />
+
+    <ImageButton
+        android:id="@+id/editProfilePic2"
+        android:layout_width="54dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#DD2F3E8F"
+        android:contentDescription="@string/edit_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.803"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.301"
+        app:srcCompat="@drawable/ic_add" />
+
+    <TextView
+        style="?attr/textAppearanceHeadline5"
+        android:layout_width="208dp"
+        android:layout_height="30dp"
+        android:text="Your hotels"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.09"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.442" />
+
+    <TextView
+        android:id="@+id/textView8"
+        style="?attr/textAppearanceHeadline5"
+        android:layout_width="208dp"
+        android:layout_height="30dp"
+        android:text="Total profits"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.078"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.755" />
+
+    <HorizontalScrollView
+        android:layout_width="411dp"
+        android:layout_height="157dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.594">
+
+        <LinearLayout
+            android:id="@+id/adminGallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/totalProfitsAdmin"
+        style="?attr/textAppearanceHeadline6"
+        android:layout_width="123dp"
+        android:layout_height="33dp"
+        android:text="Profits €"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.118"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:layout_constraintVertical_bias="0.065" />
+</androidx.constraintlayout.widget.ConstraintLayout>

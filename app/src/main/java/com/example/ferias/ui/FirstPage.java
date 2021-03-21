@@ -32,27 +32,6 @@ public class FirstPage extends Fragment {
     }
 
     private void clickListener(View root) {
-        bt_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.action_first_fragment_to_home_main);
-            }
-        });
 
-        bt_loginAdmin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.action_first_fragment_to_home_main);
-            }
-        });
-        bt_Register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.action_first_fragment_to_registrationOptions);
-            }
-        });
     }
 }

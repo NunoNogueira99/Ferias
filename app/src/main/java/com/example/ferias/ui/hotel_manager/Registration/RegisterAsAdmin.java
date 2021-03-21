@@ -71,6 +71,7 @@ public class RegisterAsAdmin extends Fragment {
                 navController.navigate(R.id.action_registerAsAdmin_to_registrationOptions);
             }
         });*/
+        /*
         bt_RegisterUserAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +79,7 @@ public class RegisterAsAdmin extends Fragment {
                 navController.navigate(R.id.action_registerAsAdmin_to_home_main);
             }
         });
+         */
     }
 
     private void registerUserAsAdmin(View root) {

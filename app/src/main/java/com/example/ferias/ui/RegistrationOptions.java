@@ -32,27 +32,5 @@ public class RegistrationOptions extends Fragment {
     }
 
     private void clickListener(View root) {
-        bt_registration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.action_registrationOptions_to_registration);
-            }
-        });
-
-        bt_linkAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.action_registrationOptions_to_registerAsAdmin); //TODO finish navigation on link account
-            }
-        });
-        bt_registerAsAdmin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.action_registrationOptions_to_registerAsAdmin);
-            }
-        });
     }
 }

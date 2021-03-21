@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/*
 import com.example.ferias.R;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -13,10 +14,13 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+*/
 
 import java.util.ArrayList;
 
 public class Admin_hotelView extends AppCompatActivity {
+
+    /*
 
     private PieChart pieChart;
 
@@ -80,4 +84,6 @@ public class Admin_hotelView extends AppCompatActivity {
         pieChart.setData(data);
         pieChart.invalidate();
     }
+
+     */
 }

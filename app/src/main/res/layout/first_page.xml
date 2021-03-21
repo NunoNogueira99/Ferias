@@ -14,7 +14,7 @@
         app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/ferias_logo" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"

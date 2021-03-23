@@ -36,6 +36,7 @@
             android:drawableRight="@drawable/ic_arrow_forward"
             android:fontFamily="@font/archivo_bold"
             android:text="Log in"
+            app:iconTint="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.566"

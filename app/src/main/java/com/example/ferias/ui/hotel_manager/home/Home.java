@@ -1,4 +1,4 @@
-package com.example.ferias.ui.hotel_manager.Registration;
+package com.example.ferias.ui.hotel_manager.home;
 
 import android.os.Bundle;
 
@@ -10,12 +10,12 @@ import android.view.ViewGroup;
 
 import com.example.ferias.R;
 
-public class Registration extends Fragment {
+public class Home extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.hotel_manager_fragment_registration, container, false);
+        return inflater.inflate(R.layout.hotel_manager_fragment_home, container, false);
     }
 }

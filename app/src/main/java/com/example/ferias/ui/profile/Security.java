@@ -1,9 +1,8 @@
-package com.example.ferias.ui.simple_user.profile;
+package com.example.ferias.ui.profile;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,7 +13,6 @@ import androidx.navigation.Navigation;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,11 +31,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 
@@ -67,7 +62,7 @@ public class Security extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.simple_user_fragment_profile_security, container, false);
+        View root = inflater.inflate(R.layout.fragment_profile_security, container, false);
 
         readUserData();
 
@@ -179,7 +174,7 @@ public class Security extends Fragment {
                     alertDialog.show();
                 }
                 else{
-                    if(! user.get_Password().equals(et_Old_Password.getText().toString())){
+                    if(! user.getPassword().equals(et_Old_Password.getText().toString())){
                         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                         dialog.setTitle("Password Error");
                         String mensage = "Old password is incorrect, please enter your current password";
@@ -196,7 +191,7 @@ public class Security extends Fragment {
                         et_Old_Password.setError("Password is incorrect");
                     }
                     else {
-                        user.set_Password(password);
+                        user.setPassword(password);
                         databaseReference.setValue(user);
 
                         et_Old_Password.setText("");
@@ -211,7 +206,7 @@ public class Security extends Fragment {
         bt_send_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = user.get_Email();
+                String email = user.getEmail();
 
                 firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
@@ -242,7 +237,7 @@ public class Security extends Fragment {
                                     Toast.makeText(getContext(),"Account Deleted", Toast.LENGTH_LONG).show();
 
                                     NavController navController = Navigation.findNavController(root);
-                                    navController.navigate(R.id.action_simple_user_home_to_home_main);
+                                    navController.navigate(R.id.action_security_to_loginOptions);
                                 }
                             }
                         });

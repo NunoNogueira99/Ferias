@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +52,7 @@ public class Home extends Fragment {
         }
         bt_ProfileMenu = root.findViewById(R.id.bt_ProfileMenu);
 
-        profile_menu = root.findViewById(R.id.profile_menu);
+        profile_menu = root.findViewById(R.id.ll_profile_menu);
         profile_menu.setVisibility(View.GONE);
 
         bt_editProfile = root.findViewById(R.id.bt_editProfile);
@@ -66,7 +65,7 @@ public class Home extends Fragment {
     }
 
     private void clickListener(View root) {
-        ConstraintLayout cl_Home = root.findViewById(R.id.cl_Home);
+        ConstraintLayout cl_Home = root.findViewById(R.id.cl_Home_User);
         cl_Home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +90,7 @@ public class Home extends Fragment {
             @Override
             public void onClick(View v) {
                 NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.action_simple_user_home_to_simple_user_home_profile);
+                navController.navigate(R.id.action_home_simple_user_to_profile_simpleuser);
             }
         });
 
@@ -117,7 +116,7 @@ public class Home extends Fragment {
                 }
                 
                 NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.action_simple_user_home_to_home_main);
+                navController.navigate(R.id.action_home_simple_user_to_loginOptions);
             }
         });
     }

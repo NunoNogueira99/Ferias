@@ -9,35 +9,32 @@
     <ImageView
         android:id="@+id/profilePic"
         android:layout_width="wrap_content"
-        android:layout_height="175dp"
-        android:adjustViewBounds="true"
-        android:background="@color/main_color"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
         android:contentDescription="@string/profile_pic"
-        android:cropToPadding="false"
-        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/ferias_logo" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/login_section"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profilePic">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilEmail"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="25dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -53,13 +50,12 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPassword"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="25dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tilEmail">
 
@@ -73,34 +69,27 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/bt_Login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/rounded_rectangle_for_buttons"
-            android:drawableEnd="@drawable/ic_arrow_forward"
-            android:paddingHorizontal="24dp"
-            android:paddingVertical="16dp"
+            android:layout_marginTop="20dp"
             android:text="Login"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:icon="@drawable/ic_arrow_forward"
+            app:iconGravity="textEnd"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/cb_Remeber" />
 
         <TextView
             android:id="@+id/tv_Forgot_Password"
+            style="?attr/textAppearanceCaption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Forgt Password"
-            android:textAlignment="textStart"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/bt_Login"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="25dp"
+            android:text="I forgot the password"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.90"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
 
         <ProgressBar
@@ -115,61 +104,45 @@
 
         <CheckBox
             android:id="@+id/cb_Remeber"
+            style="?attr/textAppearanceCaption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="#FFFFFF"
-            android:text="Remember Data"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/bt_Login"
-            app:layout_constraintEnd_toStartOf="@+id/tv_Forgot_Password"
-            app:layout_constraintHorizontal_bias="0.29"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="3dp"
+            android:buttonTint="@color/secondary_white"
+            android:text="Remember me"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.58"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/bt_Register_Email"
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/rounded_rectangle_for_buttons"
-            android:drawableEnd="@drawable/ic_arrow_forward"
-            android:paddingHorizontal="24dp"
-            android:paddingVertical="16dp"
-            android:text="@string/register_with_email"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            app:layout_constraintBottom_toTopOf="@+id/bt_Register_Google"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bt_Login_Google"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="25dp"
+            android:text="@string/continue_with_google"
+            app:icon="@drawable/ic_google"
+            app:iconGravity="textEnd"
+            app:iconTint="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/bt_Login" />
 
-        <Button
-            android:id="@+id/bt_Register_Google"
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:background="@drawable/rounded_rectangle_for_buttons"
-            android:drawableEnd="@drawable/google_icon"
-            android:paddingHorizontal="24dp"
-            android:paddingVertical="16dp"
-            android:text="@string/continue_with_google"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bt_Register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="25dp"
+            android:text="Register with Email"
+            app:icon="@drawable/ic_arrow_forward"
+            app:iconGravity="textEnd"
+            app:iconTint="@null"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bt_Login_Google" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,7 +1,8 @@
 package com.example.ferias.data.simple_user;
 
+import com.example.ferias.data.common.Address;
+
 import java.io.Serializable;
-import java.util.Calendar;
 
 public class User implements Serializable {
 
@@ -17,10 +18,14 @@ public class User implements Serializable {
     private String language;
     private String units_distance;
     private String units_currency;
+    private boolean isgoogle;
     //////////////// PAYMENT DETAILS ////////////////
 
 
     public User(){
+        this.language = "EN";
+        this.units_distance = "M";
+        this.units_currency = "EURO";
     }
 
     public User(String name, String email, String birthday, String phone, String password) {
@@ -50,75 +55,84 @@ public class User implements Serializable {
         this.units_currency = units_currency;
     }
 
+
     //////////////// GETS BEGIN ////////////////
-    public String get_Name() {
+    public String getName() {
         return name;
     }
 
-    public String get_Birthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public String get_Phone() {
+    public String getPhone() {
         return phone;
     }
 
-    public Address get_Address(){ return address;}
+    public Address getAddress(){ return address;}
 
-    public String get_Email() {
+    public String getEmail() {
         return email;
     }
 
-    public String get_Password() {
+    public String getPassword() {
         return password;
     }
 
-    public String get_Language() {
+    public String getLanguage() {
         return language;
     }
 
-    public String get_Units_Distance() {
+    public String getUnitsDistance() {
         return units_distance;
     }
 
-    public String get_Units_Currency() {
+    public String getUnitsCurrency() {
         return units_currency;
+    }
+
+    public boolean isIsgoogle() {
+        return isgoogle;
     }
     //////////////// GETS END ////////////////
 
     //////////////// SETS BEGIN ////////////////
-    public void set_Name(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public void set_Birthday(String birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
-    public void set_Phone(String phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public void set_Address(Address address){ this.address = address;}
+    public void setAddress(Address address){ this.address = address;}
 
-    public void set_Email(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public void set_Password(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public void set_Language(String language) {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public void set_Units_Distance(String units_distance) {
+    public void setUnitsDistance(String units_distance) {
         this.units_distance = units_distance;
     }
 
-    public void set_Units_Currency(String units_currency) {
+    public void setUnitsCurrency(String units_currency) {
         this.units_currency = units_currency;
+    }
+
+    public void setIsgoogle(boolean isgoogle) {
+        this.isgoogle = isgoogle;
     }
     //////////////// SETS END ////////////////
 

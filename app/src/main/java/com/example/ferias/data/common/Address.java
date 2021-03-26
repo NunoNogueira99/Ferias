@@ -1,10 +1,9 @@
-package com.example.ferias.data.simple_user;
+package com.example.ferias.data.common;
 
 import java.io.Serializable;
 
 public class Address implements Serializable {
 
-    private String userID;
     private String country;
     private String city;
     private String address;
@@ -14,8 +13,7 @@ public class Address implements Serializable {
 
     }
 
-    public Address(String userID, String country, String city, String address, String zipcode) {
-        this.userID = userID;
+    public Address(String country, String city, String address, String zipcode) {
         this.country = country;
         this.city = city;
         this.address = address;
@@ -23,10 +21,6 @@ public class Address implements Serializable {
     }
 
     //////////////// GETS BEGIN ////////////////
-    public String getUserID() {
-        return userID;
-    }
-
     public String getCountry() {
         return country;
     }
@@ -46,10 +40,6 @@ public class Address implements Serializable {
     //////////////// GETS END ////////////////
 
     //////////////// SETS BEGIN ////////////////
-    public void setUserID(String userID) {
-        this.userID = userID;
-    }
-
     public void setCountry(String country) {
         this.country = country;
     }
@@ -71,7 +61,6 @@ public class Address implements Serializable {
     @Override
     public String toString() {
         return "Address{" +
-                "\n\tUserID='" + userID +
                 "\n\tCountry='" + country +
                 "\n\tCity='" + city +
                 "\n\tAddress='" + address +

@@ -35,6 +35,14 @@ public class ForgotPassword extends Fragment{
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_forgot_password, container, false);
 
+        initializeElements(root);
+
+        clickListener(root);
+
+        return root;
+    }
+
+    private void initializeElements(View root) {
         bt_Backhome_reset =  root.findViewById(R.id.bt_Backhome_reset);
 
         et_EmailAddress =  root.findViewById(R.id.et_Reset_Email);
@@ -45,26 +53,14 @@ public class ForgotPassword extends Fragment{
         bt_Reset =  root.findViewById(R.id.bt_ResetPassword);
 
         firebaseAuth = FirebaseAuth.getInstance();
-
-        clickListener(root);
-
-        return root;
     }
 
     private void clickListener(final View root) {
-        bt_Reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resetPassword(root);
-            }
-        });
+        bt_Reset.setOnClickListener(v -> resetPassword(root));
 
-        bt_Backhome_reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.action_forgotPassword_to_navigation_home);
-            }
+        bt_Backhome_reset.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(root);
+            navController.navigate(R.id.action_forgotPassword_to_login);
         });
     }
 
@@ -95,7 +91,7 @@ public class ForgotPassword extends Fragment{
                 Toast.makeText(getContext(),"Check your email to reset your password!", Toast.LENGTH_LONG).show();
 
                 final NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.action_forgotPassword_to_navigation_home);
+                navController.navigate(R.id.action_forgotPassword_to_login);
             }
             else {
                 Toast.makeText(getContext(),"Try again! Something wrong happened", Toast.LENGTH_LONG).show();

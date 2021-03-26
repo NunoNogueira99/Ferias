@@ -1,4 +1,4 @@
-package com.example.ferias.ui.simple_user.profile;
+package com.example.ferias.ui.profile;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -30,6 +30,7 @@ public class Preferences extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
+
     private User user;
 
     private RadioGroup rg_distance, rg_currency, rg_language;
@@ -43,7 +44,7 @@ public class Preferences extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.simple_user_fragment_profile_preferences, container, false);
+        View root = inflater.inflate(R.layout.fragment_profile_preferences, container, false);
 
         readUserData();
 
@@ -102,9 +103,9 @@ public class Preferences extends Fragment {
 
     private void loadDatatoElements() {
         if (user != null) {
-            String units_distance = user.get_Units_Distance();
-            String units_currency = user.get_Units_Currency();
-            String language = user.get_Language();
+            String units_distance = user.getUnitsDistance();
+            String units_currency = user.getUnitsCurrency();
+            String language = user.getLanguage();
 
             if (!units_distance.isEmpty() && !units_currency.isEmpty() && !language.isEmpty()) {
                 switch (language) {
@@ -201,13 +202,13 @@ public class Preferences extends Fragment {
                 language_chosen = "en";
         }
 
-        if (!user.get_Language().equals(language_chosen)) {
+        if (!user.getLanguage().equals(language_chosen)) {
             setLocale(language_chosen);
-            user.set_Language(language_chosen);
+            user.setLanguage(language_chosen);
         }
 
-        user.set_Units_Distance(units_distance);
-        user.set_Units_Currency(units_currency);
+        user.setUnitsDistance(units_distance);
+        user.setUnitsCurrency(units_currency);
 
         databaseReference.setValue(user);
     }

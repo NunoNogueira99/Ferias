@@ -1,4 +1,4 @@
-package com.example.ferias.ui.profile;
+package com.example.ferias.ui.common.profile;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;

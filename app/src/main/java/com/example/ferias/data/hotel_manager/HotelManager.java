@@ -17,22 +17,29 @@ public class HotelManager implements Serializable {
     private String email;
     private String password;
     ////////////////    PREFERENCES    ////////////////
-    private boolean isgoogle;
+    private boolean isGoogle;
     ////////////////     HOTELS     ////////////////
     private List<Hotel> hotels;
 
     public HotelManager(){
-        this.isgoogle = false;
+        this.isGoogle = false;
         this.hotels = new ArrayList<>();
     }
 
-    public HotelManager(String name, String phone, String email, String password) {
+    public HotelManager(String name, String email, String phone, String password) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.password = password;
-        this.isgoogle = false;
+        this.isGoogle = false;
         this.hotels = new ArrayList<>();
+    }
+
+    public HotelManager(String name, String phone, String email, boolean isGoogle) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.isGoogle = isGoogle;
     }
 
     //////////////// GETS BEGIN ////////////////
@@ -56,8 +63,8 @@ public class HotelManager implements Serializable {
         return password;
     }
 
-    public boolean isIsgoogle() {
-        return isgoogle;
+    public boolean isGoogle() {
+        return isGoogle;
     }
 
     public List<Hotel> getHotels() {
@@ -86,8 +93,8 @@ public class HotelManager implements Serializable {
         this.password = password;
     }
 
-    public void setIsgoogle(boolean isgoogle) {
-        this.isgoogle = isgoogle;
+    public void setGoogle(boolean google) {
+        this.isGoogle = google;
     }
 
     public void setHotels(List<Hotel> hotels) {

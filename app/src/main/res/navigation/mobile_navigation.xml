@@ -3,44 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/loginOptions">
-    <fragment
-        android:id="@+id/loginOptions"
-        android:name="com.example.ferias.ui.LoginOptions"
-        android:label="LoginOptions" >
-        <action
-            android:id="@+id/action_loginOptions_to_registrationOptions"
-            app:destination="@id/registrationOptions" />
-        <action
-            android:id="@+id/action_loginOptions_to_login"
-            app:destination="@id/login" />
-    </fragment>
-    <fragment
-        android:id="@+id/registrationOptions"
-        android:name="com.example.ferias.ui.RegistrationOptions"
-        android:label="RegistrationOptions" >
-        <action
-            android:id="@+id/action_registrationOptions_to_registration_as_hotelmanager"
-            app:destination="@id/registration_as_hotelmanager" />
-        <action
-            android:id="@+id/action_registrationOptions_to_registration_as_simpleuser"
-            app:destination="@id/registration_as_simpleuser" />
-        <action
-            android:id="@+id/action_registrationOptions_to_loginOptions"
-            app:destination="@id/loginOptions" />
-    </fragment>
-    <fragment
-        android:id="@+id/forgotPassword"
-        android:name="com.example.ferias.ui.login.ForgotPassword"
-        android:label="fragment_forgot_password"
-        tools:layout="@layout/fragment_forgot_password" >
-        <action
-            android:id="@+id/action_forgotPassword_to_login"
-            app:destination="@id/login" />
-    </fragment>
+    app:startDestination="@id/login">
+
     <fragment
         android:id="@+id/login"
-        android:name="com.example.ferias.ui.login.Login"
+        android:name="com.example.ferias.ui.common.login.Login"
         android:label="fragment_home"
         tools:layout="@layout/fragment_login" >
         <action
@@ -50,21 +17,33 @@
             android:id="@+id/action_login_to_home_simple_user"
             app:destination="@id/home_simple_user" />
         <action
-            android:id="@+id/action_login_to_home_hotel_manger"
-            app:destination="@id/home_hotel_manger" />
+            android:id="@+id/action_login_to_registration"
+            app:destination="@id/registration" />
+        <action
+            android:id="@+id/action_login_to_hotel_manager_home"
+            app:destination="@id/home_hotel_manager" />
     </fragment>
+
     <fragment
-        android:id="@+id/registration_as_hotelmanager"
-        android:name="com.example.ferias.ui.hotel_manager.registration.Registration"
-        android:label="hotel_manager_fragment_registration"
-        tools:layout="@layout/hotel_manager_fragment_registration" >
+        android:id="@+id/forgotPassword"
+        android:name="com.example.ferias.ui.common.login.ForgotPassword"
+        android:label="fragment_forgot_password"
+        tools:layout="@layout/fragment_forgot_password" >
         <action
-            android:id="@+id/action_registration_as_hotelmanager_to_registrationOptions"
-            app:destination="@id/registrationOptions" />
-        <action
-            android:id="@+id/action_registration_as_hotelmanager_to_loginOptions"
-            app:destination="@id/loginOptions" />
+            android:id="@+id/action_forgotPassword_to_login"
+            app:destination="@id/login" />
     </fragment>
+
+    <fragment
+        android:id="@+id/registration"
+        android:name="com.example.ferias.ui.common.registration.Registration"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/action_registration_to_login"
+            app:destination="@id/login" />
+    </fragment>
+
     <fragment
         android:id="@+id/home_simple_user"
         android:name="com.example.ferias.ui.simple_user.home.Home"
@@ -72,35 +51,31 @@
         tools:layout="@layout/simple_user_fragment_home" >
         <action
             android:id="@+id/action_home_simple_user_to_profile_simpleuser"
-            app:destination="@id/profile_simpleuser" />
+            app:destination="@id/profile" />
         <action
             android:id="@+id/action_home_simple_user_to_searchHotel"
             app:destination="@id/searchHotel" />
         <action
-            android:id="@+id/action_home_simple_user_to_loginOptions"
-            app:destination="@id/loginOptions" />
-    </fragment>
-    <fragment
-        android:id="@+id/profile_simpleuser"
-        android:name="com.example.ferias.ui.profile.Profile"
-        android:label="simple_user_fragment_profile"
-        tools:layout="@layout/fragment_profile" >
+            android:id="@+id/action_home_simple_user_to_login"
+            app:destination="@id/login" />
         <action
-            android:id="@+id/action_profile_simpleuser_to_home_simple_user"
+            android:id="@+id/action_home_simple_user_self"
             app:destination="@id/home_simple_user" />
     </fragment>
+
     <fragment
-        android:id="@+id/registration_as_simpleuser"
-        android:name="com.example.ferias.ui.registration.Registration"
-        android:label="simple_user_fragment_registration"
-        tools:layout="@layout/fragment_registration" >
+        android:id="@+id/profile"
+        android:name="com.example.ferias.ui.common.profile.Profile"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
         <action
-            android:id="@+id/action_registration_as_simpleuser_to_registrationOptions"
-            app:destination="@id/registrationOptions" />
+            android:id="@+id/action_profile_to_home_simple_user"
+            app:destination="@id/home_simple_user" />
         <action
-            android:id="@+id/action_registration_as_simpleuser_to_loginOptions"
-            app:destination="@id/loginOptions" />
+            android:id="@+id/action_profile_to_home_hotel_manager"
+            app:destination="@id/home_hotel_manager" />
     </fragment>
+
     <fragment
         android:id="@+id/searchHotel"
         android:name="com.example.ferias.ui.simple_user.search_hotel.SearchHotel"
@@ -110,19 +85,30 @@
             android:id="@+id/action_searchHotel_to_home_simple_user"
             app:destination="@id/home_simple_user" />
     </fragment>
+
     <fragment
         android:id="@+id/security"
-        android:name="com.example.ferias.ui.profile.Security"
+        android:name="com.example.ferias.ui.common.profile.Security"
         android:label="simple_user_fragment_profile_security"
         tools:layout="@layout/fragment_profile_security" >
         <action
-            android:id="@+id/action_security_to_loginOptions"
-            app:destination="@id/loginOptions" />
+            android:id="@+id/action_security_to_login"
+            app:destination="@id/login" />
     </fragment>
+
     <fragment
-        android:id="@+id/home_hotel_manger"
+        android:id="@+id/home_hotel_manager"
         android:name="com.example.ferias.ui.hotel_manager.home.Home"
-        android:label="hotel_manager_fragment_home"
-        tools:layout="@layout/hotel_manager_fragment_home" />
+        android:label="home_hotel_manager_fragment"
+        tools:layout="@layout/hotel_manager_fragment_home">
+        <action
+            android:id="@+id/action_hotel_manager_home_self"
+            app:destination="@id/home_hotel_manager" />
+        <action
+            android:id="@+id/action_home_hotel_manager_to_profile"
+            app:destination="@id/profile" />
+    </fragment>
+
+
 
 </navigation>

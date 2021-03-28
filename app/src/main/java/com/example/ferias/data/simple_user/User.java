@@ -18,7 +18,7 @@ public class User implements Serializable {
     private String language;
     private String units_distance;
     private String units_currency;
-    private boolean isgoogle;
+    private boolean isGoogle;
     //////////////// PAYMENT DETAILS ////////////////
 
 
@@ -28,10 +28,9 @@ public class User implements Serializable {
         this.units_currency = "EURO";
     }
 
-    public User(String name, String email, String birthday, String phone, String password) {
+    public User(String name, String email, String phone, String password) {
 
         this.name = name;
-        this.birthday = birthday;
         //////////////////////////////
         this.phone = phone;
         this.email = email;
@@ -53,6 +52,13 @@ public class User implements Serializable {
         this.language = language;
         this.units_distance = units_distance;
         this.units_currency = units_currency;
+    }
+
+    public User(String name, String phone, String email, boolean isGoogle) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.isGoogle = isGoogle;
     }
 
 
@@ -91,8 +97,8 @@ public class User implements Serializable {
         return units_currency;
     }
 
-    public boolean isIsgoogle() {
-        return isgoogle;
+    public boolean isGoogle() {
+        return isGoogle;
     }
     //////////////// GETS END ////////////////
 
@@ -131,8 +137,8 @@ public class User implements Serializable {
         this.units_currency = units_currency;
     }
 
-    public void setIsgoogle(boolean isgoogle) {
-        this.isgoogle = isgoogle;
+    public void setGoogle(boolean google) {
+        this.isGoogle = google;
     }
     //////////////// SETS END ////////////////
 

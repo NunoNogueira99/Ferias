@@ -1,4 +1,4 @@
-package com.example.ferias.ui.simple_user.profile;
+package com.example.ferias.ui.common.profile;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -62,7 +62,7 @@ public class Security extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.simple_user_fragment_profile_security, container, false);
+        View root = inflater.inflate(R.layout.fragment_profile_security, container, false);
 
         readUserData();
 
@@ -237,7 +237,7 @@ public class Security extends Fragment {
                                     Toast.makeText(getContext(),"Account Deleted", Toast.LENGTH_LONG).show();
 
                                     NavController navController = Navigation.findNavController(root);
-                                    navController.navigate(R.id.action_security_to_loginOptions);
+                                    navController.navigate(R.id.action_security_to_login);
                                 }
                             }
                         });

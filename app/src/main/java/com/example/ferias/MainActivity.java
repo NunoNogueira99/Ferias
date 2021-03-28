@@ -2,13 +2,9 @@ package com.example.ferias;
 
 import android.os.Bundle;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +14,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        int id = navController.getCurrentDestination().getId();
+        switch (id) {
+            case R.id.home_simple_user:
+                navController.navigate(R.id.action_home_simple_user_self);
+            break;
+
+            case R.id.home_hotel_manager:
+                navController.navigate(R.id.action_hotel_manager_home_self);
+            break;
+        }
+
+
+        return super.onSupportNavigateUp();
+    }
     /*
     SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();

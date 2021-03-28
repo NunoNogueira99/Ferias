@@ -34,6 +34,8 @@ public class Home extends Fragment {
 
     private GoogleSignInClient googleSignInClient;
 
+    private ConstraintLayout cl_Home;
+
     private ShapeableImageView bt_ProfileMenu;
     private LinearLayout profile_menu;
     private Button bt_editProfile, bt_Logout;
@@ -44,6 +46,14 @@ public class Home extends Fragment {
 
         View root = inflater.inflate(R.layout.simple_user_fragment_home, container, false);
 
+        initializeElements(root);
+
+        clickListener(root);
+
+        return root;
+    }
+
+    private void initializeElements(View root) {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
@@ -59,65 +69,49 @@ public class Home extends Fragment {
 
         bt_Logout = root.findViewById(R.id.bt_Logout);
 
-        clickListener(root);
-
-        return root;
+         cl_Home = root.findViewById(R.id.cl_Home_User);
     }
 
     private void clickListener(View root) {
-        ConstraintLayout cl_Home = root.findViewById(R.id.cl_Home_User);
-        cl_Home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        cl_Home.setOnClickListener(v -> profile_menu.setVisibility(View.GONE));
+
+        bt_ProfileMenu.setOnClickListener(v -> {
+            if(profile_menu.getVisibility() == View.GONE){
+                profile_menu.setVisibility(View.VISIBLE);
+                profile_menu.bringToFront();
+            }
+            else{
                 profile_menu.setVisibility(View.GONE);
             }
+
         });
 
-        bt_ProfileMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(profile_menu.getVisibility() == View.GONE){
-                    profile_menu.setVisibility(View.VISIBLE);
-                }
-                else{
-                    profile_menu.setVisibility(View.GONE);
-                }
-
-            }
+        bt_editProfile.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(root);
+            navController.navigate(R.id.action_home_simple_user_to_profile_simpleuser);
         });
 
-        bt_editProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.action_home_simple_user_to_profile_simpleuser);
-            }
-        });
+        bt_Logout.setOnClickListener(v -> {
 
-        bt_Logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+            boolean googleLogin = sharedPref.getBoolean("GoogleLogin", false);
 
-                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-                boolean googleLogin = sharedPref.getBoolean("GoogleLogin", false);
-
-                if(googleLogin == true){
-                    googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                firebaseAuth.signOut();
-                            }
+            if(googleLogin == true){
+                googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            firebaseAuth.signOut();
                         }
-                    });
-                }
-                else{
-                    firebaseAuth.signOut();
-                }
-                
-                NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.action_home_simple_user_to_loginOptions);
+                    }
+                });
             }
+            else{
+                firebaseAuth.signOut();
+            }
+
+            NavController navController = Navigation.findNavController(root);
+            navController.navigate(R.id.action_home_simple_user_to_login);
         });
     }
 }

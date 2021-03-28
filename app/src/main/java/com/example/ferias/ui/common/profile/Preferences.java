@@ -1,4 +1,4 @@
-package com.example.ferias.ui.simple_user.profile;
+package com.example.ferias.ui.common.profile;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -16,7 +16,6 @@ import android.widget.RadioGroup;
 import com.example.ferias.MainActivity;
 import com.example.ferias.R;
 import com.example.ferias.data.InternalStorage;
-import com.example.ferias.data.hotel_manager.HotelManager;
 import com.example.ferias.data.simple_user.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,7 +44,7 @@ public class Preferences extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.simple_user_fragment_profile_preferences, container, false);
+        View root = inflater.inflate(R.layout.fragment_profile_preferences, container, false);
 
         readUserData();
 

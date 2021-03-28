@@ -1,4 +1,4 @@
-package com.example.ferias.ui.login;
+package com.example.ferias.ui.common.login;
 
 import android.os.Bundle;
 

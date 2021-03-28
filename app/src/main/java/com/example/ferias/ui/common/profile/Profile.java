@@ -1,9 +1,8 @@
-package com.example.ferias.ui.simple_user.profile;
+package com.example.ferias.ui.common.profile;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 import com.example.ferias.R;
 import com.example.ferias.data.InternalStorage;
 import com.example.ferias.data.simple_user.User;
-import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,7 +44,7 @@ public class Profile extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.simple_user_fragment_profile, container, false);
+        View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
         readUserData();
 
@@ -81,7 +79,7 @@ public class Profile extends Fragment {
             public void onClick(View v) {
                 viewPager.removeView((View) v.getParent());
                 NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.action_profile_simpleuser_to_home_simple_user);
+                //navController.navigate(R.id.action_profile_simpleuser_to_home_simple_user);
             }
         });
 
@@ -106,6 +104,7 @@ public class Profile extends Fragment {
     private void readUserData() {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid());
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {

@@ -1,30 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.hotel_manager.manage_hotels.Hotel_Registration">
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout5"
+        android:id="@+id/constraintLayout1"
         android:layout_width="0dp"
         android:layout_height="272dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <ImageButton
-            android:id="@+id/adminAddHotelPhotos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="15dp"
-            android:backgroundTint="#DD2F3E8F"
-            android:contentDescription="@string/edit_btn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add" />
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView2"
@@ -45,246 +34,543 @@
             </LinearLayout>
         </HorizontalScrollView>
 
-        <LinearLayout
+        <ImageButton
+            android:id="@+id/adminAddHotelPhotos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             android:layout_marginBottom="15dp"
-            android:orientation="vertical"
+            android:backgroundTint="#DD2F3E8F"
+            android:contentDescription="@string/edit_btn"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <TextView
-                style="?attr/textAppearanceSubtitle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hotelname item"
-                android:textColor="@color/primary_white" />
-
-            <TextView
-                style="?attr/textAppearanceCaption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_star"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:text="Rating" />
-
-        </LinearLayout>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_add" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/round_rectangle_v2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout5">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout1"
+        app:layout_constraintVertical_bias="0.0">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:fontFamily="@font/archivo_bold"
-            android:text="Per Night"
-            android:textColor="@color/primary_white"
-            android:textSize="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.092"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/archivo_bold"
-            android:text="€"
-            android:textColor="@color/primary_white"
-            android:textSize="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.884"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="370dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:background="?android:attr/listDivider"
-            android:backgroundTint="@color/primary_white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.414"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/archivo_bold"
-            android:text="Hotel Features"
-            android:textColor="@color/primary_white"
-            android:textSize="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.109"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider4" />
-
-        <TableLayout
-            android:id="@+id/tableLayout"
-            android:layout_width="399dp"
-            android:layout_height="139dp"
-            android:layout_marginTop="20dp"
-            android:clipToPadding="true"
-            android:dividerPadding="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7">
-
-            <TableRow
-                android:layout_width="400dp"
-                android:layout_height="wrap_content">
-
-                <CheckBox
-                    android:id="@+id/Launch"
-                    android:layout_width="141dp"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/archivo_regular"
-                    android:text="Launch"
-                    android:textAppearance="@style/custom_body2"
-                    android:textColor="@color/primary_white" />
-
-                <CheckBox
-                    android:id="@+id/Dinner"
-                    android:layout_width="139dp"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/archivo_regular"
-                    android:text="Dinner"
-                    android:textAppearance="@style/custom_body2"
-                    android:textColor="@color/primary_white" />
-
-                <CheckBox
-                    android:id="@+id/Breakfast"
-                    android:layout_width="114dp"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/archivo_regular"
-                    android:text="Breakfast"
-                    android:textAppearance="@style/custom_body2"
-                    android:textColor="@color/primary_white" />
-            </TableRow>
-
-            <TableRow
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
-                <CheckBox
-                    android:id="@+id/Wifi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/archivo_regular"
-                    android:text="Wifi"
-                    android:textAppearance="@style/custom_body2"
-                    android:textColor="@color/primary_white" />
-
-                <CheckBox
-                    android:id="@+id/Parking"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/archivo_regular"
-                    android:text="Parking"
-                    android:textAppearance="@style/custom_body2"
-                    android:textColor="@color/primary_white" />
-
-                <CheckBox
-                    android:id="@+id/Pets"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/archivo_regular"
-                    android:text="Pets"
-                    android:textAppearance="@style/custom_body2"
-                    android:textColor="@color/primary_white" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <CheckBox
-                    android:id="@+id/Outside_pool"
-                    android:layout_width="145dp"
+                <LinearLayout
+                    android:id="@+id/ll_PropertyData"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/archivo_regular"
-                    android:text="Outside Pool"
-                    android:textAppearance="@style/custom_body2"
-                    android:textColor="@color/primary_white" />
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical"
+                    tools:visibility="visible">
 
-                <CheckBox
-                    android:id="@+id/Inside_pool"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilPropertyName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="25dp"
+                        android:textColorHint="#FFFFFF"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ccp_Country">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_PropertyName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="Property Name"
+                            android:inputType="textPersonName"
+                            android:textColor="#FFFFFF" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="25dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:textColorHint="#FFFFFF"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+                        <TextView
+                            android:id="@+id/tv_Hotel_Rating"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Hotel Rating"
+                            android:textAlignment="center"
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <RatingBar
+                            android:id="@+id/ratingBar_Hotel_Rating"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="25dp"
+                            android:numStars="5"
+                            android:stepSize="1"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="25dp"
+                        android:gravity="center_vertical"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:textColorHint="#FFFFFF"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+                        <com.hbb20.CountryCodePicker
+                            android:id="@+id/ccp_PhoneCode_Property"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:ccp_arrowColor="#FFFFFF"
+                            app:ccp_autoDetectCountry="true"
+                            app:ccp_contentColor="#FFFFFF"
+                            app:ccp_countryPreference="it,pt"
+                            app:ccp_defaultNameCode="IT" />
+
+                        <EditText
+                            android:id="@+id/et_Phone_Property"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Phone"
+                            android:inputType="phone"
+                            android:singleLine="true"
+                            android:textColor="#FFFFFF"
+                            android:textColorHint="#FFFFFF" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_Rooms"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilTotalRooms"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="25dp"
+                            android:textColorHint="#FFFFFF"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/ccp_Country">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_TotalRooms"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="Total Rooms"
+                                android:inputType="number"
+                                android:textColor="#FFFFFF" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilPriceRooms"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="25dp"
+                            android:textColorHint="#FFFFFF"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/ccp_Country">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_PriceRooms"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="Price per Rooms"
+                                android:inputType="number|numberDecimal"
+                                android:textColor="#FFFFFF" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_Address"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical"
+                    tools:visibility="visible">
+
+                    <com.hbb20.CountryCodePicker
+                        android:id="@+id/ccp_Country"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="25dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        app:ccp_arrowColor="#FFFFFF"
+                        app:ccp_autoDetectCountry="true"
+                        app:ccp_contentColor="#FFFFFF"
+                        app:ccp_defaultNameCode="IT"
+                        app:ccp_showFullName="true"
+                        app:ccp_showNameCode="false"
+                        app:ccp_showPhoneCode="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tilEmail" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="25dp"
+                        android:textColorHint="#FFFFFF"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ccp_Country">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_City"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="City"
+                            android:inputType="textPersonName"
+                            android:textColor="#FFFFFF" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="25dp"
+                        android:textColorHint="#FFFFFF"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tilCity">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_Address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="Address"
+                            android:inputType="textPersonName"
+                            android:textColor="#FFFFFF" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilZipCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="25dp"
+                        android:textColorHint="#FFFFFF"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tilAddress">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_ZipCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="Zip Code"
+                            android:inputType="textPersonName"
+                            android:textColor="#FFFFFF" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_Features"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_Features"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:text="Features"
+                        android:textAlignment="center"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TableLayout
+                        android:id="@+id/tableLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:clipToPadding="true"
+                        android:dividerPadding="50dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView7">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <CheckBox
+                                android:id="@+id/Restaurant"
+                                android:layout_width="145dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/archivo_regular"
+                                android:text="Restaurant"
+                                android:textAppearance="@style/custom_body2"
+                                android:textColor="@color/primary_white" />
+
+                            <CheckBox
+                                android:id="@+id/ServiceRooms"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/archivo_regular"
+                                android:text="Service Rooms"
+                                android:textAppearance="@style/custom_body2"
+                                android:textColor="@color/primary_white" />
+
+                            <CheckBox
+                                android:id="@+id/Pub"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/archivo_regular"
+                                android:text="Pub"
+                                android:textAppearance="@style/custom_body2"
+                                android:textColor="@color/primary_white" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <CheckBox
+                                android:id="@+id/Lunch"
+                                android:layout_width="141dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/archivo_regular"
+                                android:text="Lunch"
+                                android:textAppearance="@style/custom_body2"
+                                android:textColor="@color/primary_white" />
+
+                            <CheckBox
+                                android:id="@+id/Dinner"
+                                android:layout_width="139dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/archivo_regular"
+                                android:text="Dinner"
+                                android:textAppearance="@style/custom_body2"
+                                android:textColor="@color/primary_white" />
+
+                            <CheckBox
+                                android:id="@+id/Breakfast"
+                                android:layout_width="114dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/archivo_regular"
+                                android:text="Breakfast"
+                                android:textAppearance="@style/custom_body2"
+                                android:textColor="@color/primary_white" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <CheckBox
+                                android:id="@+id/Reception"
+                                android:layout_width="145dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/archivo_regular"
+                                android:text="24h Reception"
+                                android:textAppearance="@style/custom_body2"
+                                android:textColor="@color/primary_white" />
+
+                            <CheckBox
+                                android:id="@+id/AirConditioner"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/archivo_regular"
+                                android:text="Air Conditioner"
+                                android:textAppearance="@style/custom_body2"
+                                android:textColor="@color/primary_white" />
+
+                            <CheckBox
+                                android:id="@+id/WiFiAccess"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/archivo_regular"
+                                android:text="Wifi"
+                                android:textAppearance="@style/custom_body2"
+                                android:textColor="@color/primary_white" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <CheckBox
+                                android:id="@+id/Outside_pool"
+                                android:layout_width="145dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/archivo_regular"
+                                android:text="Outside Pool"
+                                android:textAppearance="@style/custom_body2"
+                                android:textColor="@color/primary_white" />
+
+                            <CheckBox
+                                android:id="@+id/Inside_pool"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/archivo_regular"
+                                android:text="Inside Pool"
+                                android:textAppearance="@style/custom_body2"
+                                android:textColor="@color/primary_white" />
+
+                            <CheckBox
+                                android:id="@+id/Spa"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/archivo_regular"
+                                android:text="Spa"
+                                android:textAppearance="@style/custom_body2"
+                                android:textColor="@color/primary_white" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <CheckBox
+                                android:id="@+id/Sauna"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/archivo_regular"
+                                android:text="Sauna"
+                                android:textAppearance="@style/custom_body2"
+                                android:textColor="@color/primary_white" />
+
+                            <CheckBox
+                                android:id="@+id/Gymnasium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/archivo_regular"
+                                android:text="Gymnasium"
+                                android:textAppearance="@style/custom_body2"
+                                android:textColor="@color/primary_white" />
+
+                            <CheckBox
+                                android:id="@+id/Garden"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/archivo_regular"
+                                android:text="Garden"
+                                android:textAppearance="@style/custom_body2"
+                                android:textColor="@color/primary_white" />
+                        </TableRow>
+
+
+                    </TableLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_Description"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_Description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="25dp"
+                        android:text="Description"
+                        android:textAlignment="center"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <EditText
+                        android:id="@+id/et_Description"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginBottom="15dp"
+                        android:ems="10"
+                        android:gravity="start|top"
+                        android:inputType="textMultiLine"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#FFFFFF"
+                        android:textColorLink="#FFFFFF"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/bt_RegisterHotel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/archivo_regular"
-                    android:text="Inside Pool"
-                    android:textAppearance="@style/custom_body2"
-                    android:textColor="@color/primary_white" />
+                    android:layout_marginBottom="16dp"
+                    android:text="Register Hotel" />
 
-                <CheckBox
-                    android:id="@+id/Bikes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/archivo_regular"
-                    android:text="Bikes"
-                    android:textAppearance="@style/custom_body2"
-                    android:textColor="@color/primary_white" />
-            </TableRow>
-        </TableLayout>
-
-        <View
-            android:id="@+id/divider5"
-            android:layout_width="370dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="25dp"
-            android:background="?android:attr/listDivider"
-            android:backgroundTint="@color/primary_white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.317"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/archivo_bold"
-            android:text="Bio"
-            android:textColor="@color/primary_white"
-            android:textSize="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.079"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider5" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editText"
-            android:layout_width="360dp"
-            android:layout_height="82dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/archivo_bold"
-            android:text="Input a brief description of your hotel"
-            android:textColor="@color/tertiary_white"
-            android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/textView9"
-            app:layout_constraintTop_toBottomOf="@+id/divider5" />
-
+            </LinearLayout>
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

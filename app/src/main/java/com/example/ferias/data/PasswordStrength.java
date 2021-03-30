@@ -12,9 +12,9 @@ public enum  PasswordStrength {
     STRONG(R.string.strong, Color.parseColor("#99ff66"),3),
     VERY_STRONG(R.string.very_strong, Color.parseColor("#33cc33"),4);
 
-    public int msg;
-    public int color;
-    public int strength;
+    private int msg;
+    private int color;
+    private int strength;
     private static int MIN_LENGTH = 8;
     private static int MAX_LENGTH = 15;
 
@@ -22,6 +22,18 @@ public enum  PasswordStrength {
         this.msg = msg;
         this.color = color;
         this.strength = strength;
+    }
+
+    public int getMsg() {
+        return msg;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public int getStrength() {
+        return strength;
     }
 
     public static PasswordStrength calculate(String password) {

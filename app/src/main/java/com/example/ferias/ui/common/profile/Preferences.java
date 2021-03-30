@@ -16,7 +16,9 @@ import android.widget.RadioGroup;
 import com.example.ferias.MainActivity;
 import com.example.ferias.R;
 import com.example.ferias.data.InternalStorage;
-import com.example.ferias.data.simple_user.User;
+import com.example.ferias.data.common.User;
+import com.example.ferias.data.hotel_manager.HotelManager;
+import com.example.ferias.data.simple_user.SimpleUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +34,7 @@ public class Preferences extends Fragment {
     private DatabaseReference databaseReference;
 
     private User user;
+    private String path;
 
     private RadioGroup rg_distance, rg_currency, rg_language;
     private RadioButton rb_Km, rb_Mi;
@@ -52,13 +55,15 @@ public class Preferences extends Fragment {
 
         clickListeners(root);
 
+        loadDatatoElements();
+
         return root;
     }
 
     private void initializeElements(View root) {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        databaseReference= FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid());
+        databaseReference= FirebaseDatabase.getInstance().getReference().child(path).child(firebaseUser.getUid());
 
         rg_distance = root.findViewById(R.id.rg_distance);
         rg_currency = root.findViewById(R.id.rg_currency);
@@ -91,14 +96,19 @@ public class Preferences extends Fragment {
     private void readUserData() {
         try {
             user = (User) InternalStorage.readObject(getContext(), "User");
+            if(user instanceof SimpleUser){
+                path = "Users";
+            }
 
+            if(user instanceof HotelManager){
+                path = "Hotel Manager";
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 
-        loadDatatoElements();
     }
 
     private void loadDatatoElements() {

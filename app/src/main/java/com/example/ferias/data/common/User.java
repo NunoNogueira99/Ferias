@@ -1,10 +1,10 @@
-package com.example.ferias.data.simple_user;
+package com.example.ferias.data.common;
 
 import com.example.ferias.data.common.Address;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+public abstract class User implements Serializable {
 
     ////////////////   PERSONAL DATA    ////////////////
     private String name;
@@ -36,9 +36,9 @@ public class User implements Serializable {
         this.email = email;
         this.password = password;
         //////////////////////////////
-        this.language = "EN";
-        this.units_distance = "M";
-        this.units_currency = "EURO";
+        this.language = "en";
+        this.units_distance = "km";
+        this.units_currency = "euro";
     }
 
     public User(String name, String email, String birthday, String phone, String password, String language, String units_currency, String units_distance) {
@@ -141,21 +141,6 @@ public class User implements Serializable {
         this.isGoogle = google;
     }
     //////////////// SETS END ////////////////
-
-    @Override
-    public String toString() {
-        return "\n" +"User{"+ "\n" +
-                "name='" + name + "\n" +
-                ", birthday=" + birthday + "\n"+
-                ", phone='" + phone + "\n" +
-                ", email='" + email + "\n" +
-                ", password='" + password + "\n" +
-                ", language='" + language + "\n" +
-                ", units_distance='" + units_distance + "\n" +
-                ", units_currency='" + units_currency + "\n" +
-                '}';
-    }
-
 
 }
 

@@ -2,7 +2,7 @@ package com.example.ferias.data;
 
 import java.util.HashMap;
 
-class ZipCodeValidation {
+public class ZipCodeValidation {
 
     private HashMap<String,String> postalformat;
 
@@ -193,7 +193,7 @@ class ZipCodeValidation {
         postalformat.put("PN","");
         postalformat.put("PR","^00[679]\\d{2}(?:-\\d{4})?$");
         postalformat.put("PS","");
-        postalformat.put("PT","^\\d{4}-\\d{3}\\s?[a-zA-Z]{0,25}$");
+        postalformat.put("PT","^\\d{4}([\\-]\\d{3})?$");
         postalformat.put("PW","^(96940)$");
         postalformat.put("PY","^(\\d{4})$");
         postalformat.put("QA","");

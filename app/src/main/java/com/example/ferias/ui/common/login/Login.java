@@ -25,7 +25,8 @@ import android.widget.Toast;
 import com.example.ferias.R;
 import com.example.ferias.data.InternalStorage;
 import com.example.ferias.data.hotel_manager.HotelManager;
-import com.example.ferias.data.simple_user.User;
+import com.example.ferias.data.common.User;
+import com.example.ferias.data.simple_user.SimpleUser;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -33,12 +34,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,7 +53,7 @@ public class Login extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
-    private User user;
+    private SimpleUser simpleUser;
     private HotelManager manager;
 
     private EditText et_EmailAddress,et_Password;
@@ -67,9 +69,13 @@ public class Login extends Fragment {
 
     private boolean autoLogin = true;
 
+    private View mainRoot;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_login, container, false);
+
+        mainRoot = root;
 
         initializeElements(root);
 
@@ -177,12 +183,10 @@ public class Login extends Fragment {
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        firebaseAuth.signInWithCredential(credential)
-        .addOnCompleteListener(getActivity(), task -> {
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(getActivity(), task -> {
             if (task.isSuccessful()) {
-                // Sign in success, update UI with the signed-in user's information
-
-                if(!verifyTypeUser(getView(),firebaseAuth.getCurrentUser().getUid())){
+                boolean isNewUser = task.getResult().getAdditionalUserInfo().isNewUser();
+                if (isNewUser) {
                     SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putBoolean("IsGoogle", true);
@@ -190,6 +194,8 @@ public class Login extends Fragment {
 
                     NavController navController = Navigation.findNavController(getView());
                     navController.navigate(R.id.action_login_to_registration);
+                } else {
+                    verifyTypeUser(mainRoot,firebaseAuth.getCurrentUser().getUid());
                 }
             } else {
                 // If sign in fails, display a message to the user.
@@ -261,21 +267,20 @@ public class Login extends Fragment {
         });
     }
 
-    private boolean verifyTypeUser(View root, String userId){
+    private void verifyTypeUser(View root, String userId){
 
-        NavController navController = Navigation.findNavController(root);
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+        NavController navController = Navigation.findNavController(mainRoot);
 
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
-        DatabaseReference databaseReferenceUser = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid());
-        DatabaseReference databaseReferenceManager = FirebaseDatabase.getInstance().getReference().child("Hotel Manager").child(firebaseUser.getUid());
-
-        databaseReferenceUser.addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child("Users").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                user = snapshot.getValue(User.class);
+                simpleUser = snapshot.getValue(SimpleUser.class);
+                if(simpleUser != null){
+                    //editor.putBoolean("RegisterType", true); //RegisterType -> True = Normal User || False = Hotel Manager
+                    navController.navigate(R.id.action_login_to_simple_user_home);
+                }
             }
 
             @Override
@@ -284,10 +289,14 @@ public class Login extends Fragment {
             }
         });
 
-        databaseReferenceManager.addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child("Hotel Manager").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 manager = snapshot.getValue(HotelManager.class);
+                if(manager != null){
+                    //editor.putBoolean("RegisterType", true); //RegisterType -> True = Normal User || False = Hotel Manager
+                    navController.navigate(R.id.action_login_to_hotel_manager_home);
+                }
             }
 
             @Override
@@ -296,22 +305,6 @@ public class Login extends Fragment {
             }
         });
 
-
-        if(user != null){
-            //editor.putBoolean("RegisterType", true); //RegisterType -> True = Normal User || False = Hotel Manager
-            navController.navigate(R.id.action_login_to_home_simple_user);
-            return true;
-        }
-
-        if(manager != null){
-            //editor.putBoolean("RegisterType", true); //RegisterType -> True = Normal User || False = Hotel Manager
-            navController.navigate(R.id.action_login_to_hotel_manager_home);
-            return true;
-        }
-
-        editor.commit();
-
-        return false;
     }
 
     private void saveData(String email, String password){

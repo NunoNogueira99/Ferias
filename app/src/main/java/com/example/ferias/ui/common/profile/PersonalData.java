@@ -18,8 +18,11 @@ import android.widget.Toast;
 
 import com.example.ferias.R;
 import com.example.ferias.data.InternalStorage;
+import com.example.ferias.data.ZipCodeValidation;
 import com.example.ferias.data.common.Address;
-import com.example.ferias.data.simple_user.User;
+import com.example.ferias.data.common.User;
+import com.example.ferias.data.hotel_manager.HotelManager;
+import com.example.ferias.data.simple_user.SimpleUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +37,9 @@ public class PersonalData extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
+
     private User user;
+    private String path;
 
     private EditText et_FullName,et_Age,et_EmailAddress;
     private EditText et_City,et_Address,et_ZipCode;
@@ -52,18 +57,21 @@ public class PersonalData extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_profile_personal_data, container, false);
 
-        initializeElements(root);
-
         readUserData();
 
+        initializeElements(root);
+
+        loadDatatoElements();
+
         clickListeners();
+
         return root;
     }
 
     private void initializeElements(View root){
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        databaseReference= FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid());
+        databaseReference= FirebaseDatabase.getInstance().getReference().child(path).child(firebaseUser.getUid());
 
         et_FullName =  root.findViewById(R.id.et_FullName);
         et_Age =  root.findViewById(R.id.et_Age);
@@ -83,49 +91,35 @@ public class PersonalData extends Fragment {
     }
 
     private void clickListeners() {
-        et_Age.addTextChangedListener(new TextWatcher(){
+        et_Age.setOnClickListener(v -> {
+            final DatePickerDialog[] picker = new DatePickerDialog[1];
+            final Calendar cldr = Calendar.getInstance();
+            int day = cldr.get(Calendar.DAY_OF_MONTH);
+            int month = cldr.get(Calendar.MONTH);
+            int year = cldr.get(Calendar.YEAR);
+            // date picker dialog
+            picker[0] = new DatePickerDialog(getContext(),
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            Calendar currentdate = Calendar.getInstance();
+                            Calendar birthdaydate = Calendar.getInstance();
+                            birthdaydate.set(year, monthOfYear, dayOfMonth);
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                final DatePickerDialog[] picker = new DatePickerDialog[1];
-                final Calendar cldr = Calendar.getInstance();
-                int day = cldr.get(Calendar.DAY_OF_MONTH);
-                int month = cldr.get(Calendar.MONTH);
-                int year = cldr.get(Calendar.YEAR);
-                // date picker dialog
-                picker[0] = new DatePickerDialog(getContext(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                Calendar currentdate = Calendar.getInstance();
-                                Calendar birthdaydate = Calendar.getInstance();
-                                birthdaydate.set(year, monthOfYear, dayOfMonth);
-
-                                int age = currentdate.get(Calendar.YEAR) - birthdaydate.get(Calendar.YEAR);
-                                if (currentdate.get(Calendar.DAY_OF_YEAR) < birthdaydate.get(Calendar.DAY_OF_YEAR)) {
-                                    age--;
-                                }
-
-                                if (age < 18) {
-                                    Toast.makeText(getContext(), "Invalid birth date, must be over 18 years old. Please enter a valid date", Toast.LENGTH_LONG).show();
-                                    et_Age.setText("");
-                                } else {
-                                    et_Age.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                                }
+                            int age = currentdate.get(Calendar.YEAR) - birthdaydate.get(Calendar.YEAR);
+                            if (currentdate.get(Calendar.DAY_OF_YEAR) < birthdaydate.get(Calendar.DAY_OF_YEAR)) {
+                                age--;
                             }
-                        }, year, month, day);
-                picker[0].show();
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+                            if (age < 18) {
+                                Toast.makeText(getContext(), "Invalid birth date, must be over 18 years old. Please enter a valid date", Toast.LENGTH_LONG).show();
+                                et_Age.setText("");
+                            } else {
+                                et_Age.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                            }
+                        }
+                    }, year, month, day);
+            picker[0].show();
         });
 
         bt_save_preferences.setOnClickListener(new View.OnClickListener() {
@@ -140,14 +134,19 @@ public class PersonalData extends Fragment {
     private void readUserData() {
         try {
             user = (User) InternalStorage.readObject(getContext(), "User");
+            if(user instanceof SimpleUser){
+                path = "Users";
+            }
 
+            if(user instanceof HotelManager){
+                path = "Hotel Manager";
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 
-        loadDatatoElements();
     }
 
     private void loadDatatoElements(){
@@ -157,8 +156,9 @@ public class PersonalData extends Fragment {
         et_EmailAddress.setText(user.getEmail());
 
         if(user.getAddress() != null){
-            //ccp_Country.setDefaultCountryUsingNameCode(user.get_Address().getCountry());
-            et_City.setText(user.getAddress().getAddress());
+            ccp_Country.setDefaultCountryUsingNameCode(user.getAddress().getCountry());
+            ccp_Country.resetToDefaultCountry();
+            et_City.setText(user.getAddress().getCity());
             et_Address.setText(user.getAddress().getAddress());
             et_ZipCode.setText(user.getAddress().getZipcode());
         }
@@ -171,7 +171,7 @@ public class PersonalData extends Fragment {
         String phone = ccp_PhoneCode.getFormattedFullNumber();
         String email = et_EmailAddress.getText().toString().trim();
 
-        String country = ccp_Country.getSelectedCountryName();
+        String country = ccp_Country.getSelectedCountryNameCode();
         String city = et_City.getText().toString().trim();
         String address = et_Address.getText().toString().trim();
         String zipcode = et_ZipCode.getText().toString().trim();
@@ -224,8 +224,10 @@ public class PersonalData extends Fragment {
             error = true;
         }
 
+        //ZipCodeValidation zipCodeValidation = new ZipCodeValidation();
+        //if(zipcode.isEmpty() || zipCodeValidation.validation_code(ccp_Country.getSelectedCountryNameCode(),zipcode)){
         if(zipcode.isEmpty()){
-            et_ZipCode.setError("Zip-Code is required");
+            et_ZipCode.setError("Zip-Code is required and valid");
             et_ZipCode.requestFocus();
             error = true;
         }

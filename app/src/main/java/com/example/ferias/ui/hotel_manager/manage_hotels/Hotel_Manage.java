@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.ferias.R;
 
-public class ManageHotels extends Fragment {
+public class Hotel_Manage extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

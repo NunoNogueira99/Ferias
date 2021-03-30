@@ -32,7 +32,8 @@ import android.widget.Toast;
 import com.example.ferias.R;
 import com.example.ferias.data.PasswordStrength;
 import com.example.ferias.data.hotel_manager.HotelManager;
-import com.example.ferias.data.simple_user.User;
+import com.example.ferias.data.common.User;
+import com.example.ferias.data.simple_user.SimpleUser;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -224,7 +225,7 @@ public class Registration extends Fragment {
             }
 
             PasswordStrength passwordStrength = PasswordStrength.calculate(password);
-            if(password.isEmpty() || passwordStrength.strength <= 1){
+            if(password.isEmpty() || passwordStrength.getStrength() <= 1){
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                 dialog.setTitle("Password Strength Error");
                 String mensage = "Your password needs to:" +
@@ -283,7 +284,7 @@ public class Registration extends Fragment {
         String path = "";
 
         if(rb_User.isChecked()){
-            newuser = googleRegistration ?  new User(name, phone, email,true) : new User(name, email, phone, password);
+            newuser = googleRegistration ?  new SimpleUser(name, phone, email,true) : new SimpleUser(name, email, phone, password);
             path = "Users";
         }
 
@@ -314,9 +315,9 @@ public class Registration extends Fragment {
         // with a calculate static method returning the password strength
         PasswordStrength passwordStrength = PasswordStrength.calculate(str);
 
-        progressBar_passwordstrength_registration.setProgressTintList(ColorStateList.valueOf(passwordStrength.color));
-        progressBar_passwordstrength_registration.setProgress(passwordStrength.strength);
-        tv_passwordstrength_registration.setText(passwordStrength.msg);
+        progressBar_passwordstrength_registration.setProgressTintList(ColorStateList.valueOf(passwordStrength.getColor()));
+        progressBar_passwordstrength_registration.setProgress(passwordStrength.getStrength());
+        tv_passwordstrength_registration.setText(passwordStrength.getMsg());
 
     }
 }

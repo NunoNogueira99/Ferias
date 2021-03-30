@@ -1,6 +1,8 @@
 package com.example.ferias.data.hotel_manager;
 
 import com.example.ferias.data.common.Address;
+import com.example.ferias.data.hotel_manager.HotelFeature;
+import com.example.ferias.data.simple_user.User;
 
 import java.io.Serializable;
 

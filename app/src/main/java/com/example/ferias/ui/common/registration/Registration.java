@@ -36,6 +36,8 @@ import com.example.ferias.data.common.User;
 import com.example.ferias.data.simple_user.SimpleUser;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hbb20.CountryCodePicker;
 
@@ -43,6 +45,7 @@ import com.hbb20.CountryCodePicker;
 public class Registration extends Fragment {
 
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
 
     private Button bt_RegisterUser;
     private ImageButton bt_Backhome_Registration;
@@ -65,6 +68,7 @@ public class Registration extends Fragment {
     private TextView tv_passwordstrength_registration;
     private ProgressBar progressBar_passwordstrength_registration;
 
+    private View mainRoot;
     private boolean googleRegistration;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -72,6 +76,8 @@ public class Registration extends Fragment {
         View root = inflater.inflate(R.layout.fragment_registration, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        mainRoot = root;
 
         initializeElements(root);
 
@@ -259,13 +265,15 @@ public class Registration extends Fragment {
 
     private void registerUser(String name, String phone, String email, String password) {
         progressBar_Register.setVisibility(View.VISIBLE);
-
+        String userId = null;
         if(!googleRegistration){
             firebaseAuth.createUserWithEmailAndPassword(email,password)
             .addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
+                    firebaseUser = firebaseAuth.getCurrentUser();
                     Toast.makeText(getContext(),"An email has been sent to activate your account!", Toast.LENGTH_LONG).show();
-                    FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
+                    firebaseUser.sendEmailVerification();
+                    registerInFirebase(name,phone,email,password,firebaseUser.getUid());
                 }
                 else {
                     Toast.makeText(getContext(),"Failed to register! Try again!", Toast.LENGTH_LONG).show();
@@ -274,12 +282,14 @@ public class Registration extends Fragment {
                 }
             });
         }
-
-        registerInFirebase(name,phone,email,password);
+        else {
+            firebaseUser = firebaseAuth.getCurrentUser();
+            registerInFirebase(name,phone,email,password,firebaseUser.getUid());
+        }
 
     }
 
-    private void registerInFirebase(String name, String phone, String email, String password) {
+    private void registerInFirebase(String name, String phone, String email, String password, String userID) {
         Object newuser = null;
         String path = "";
 
@@ -289,18 +299,20 @@ public class Registration extends Fragment {
         }
 
         if(rb_Manager.isChecked()){
-            newuser = googleRegistration ?   new HotelManager(name, phone, email,true) :  new HotelManager(name, email, phone, password);;
+            newuser = googleRegistration ?   new HotelManager(name, phone, email,true) :  new HotelManager(name, email, phone, password);
             path = "Hotel Manager";
         }
 
         FirebaseDatabase.getInstance().getReference(path)
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .setValue(newuser).addOnCompleteListener(task1 -> {
-            if(task1.isSuccessful()){
+        .child(userID)
+        .setValue(newuser).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
                 Toast.makeText(getContext(),"User has ben registered successfully!", Toast.LENGTH_LONG).show();
                 progressBar_Register.setVisibility(View.GONE);
 
-                final NavController navController = Navigation.findNavController(getView());
+                FirebaseAuth.getInstance().signOut();
+
+                final NavController navController = Navigation.findNavController(mainRoot);
                 navController.navigate(R.id.action_registration_to_login);
             }
             else {

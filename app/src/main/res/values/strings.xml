@@ -36,4 +36,7 @@
     <string name="medium">Medium</string>
     <string name="strong">Strong</string>
     <string name="very_strong">Very Strong</string>
+    <string name="register_now_text"><u>Register now</u></string>
+    <string name="login_now_text"><u>Login now</u></string>
+    <string name="see_all_text"><u>see all</u></string>
 </resources>

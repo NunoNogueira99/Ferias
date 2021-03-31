@@ -76,7 +76,7 @@
             android:text="date selected"
             style="?attr/textAppearanceCaption"
             android:background="@drawable/shape_search_1"
-            android:padding="15dp"
+            android:padding="16dp"
             />
 
         <TextView
@@ -86,7 +86,7 @@
             android:text="number of people selected"
             style="?attr/textAppearanceCaption"
             android:background="@drawable/shape_search_1"
-            android:padding="10dp"
+            android:padding="16dp"
             />
 
     </LinearLayout>

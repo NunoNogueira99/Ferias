@@ -1,5 +1,6 @@
 package com.example.ferias.ui.simple_user.search_hotel;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 
 import com.example.ferias.R;
 import com.example.ferias.data.hotel_manager.Hotel;
+import com.example.ferias.ui.hotel_manager.hotel_view.HotelView;
+import com.example.ferias.ui.simple_user.hotels.HotelViewer;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.button.MaterialButton;
@@ -53,18 +56,18 @@ public class SearchHotel extends Fragment {
         initializeElements(root);
         clickListener(root);
 
-        loadData(getArguments().getString("inputText"));
+        loadData(getArguments().getString("inputText"),root);
         return root;
     }
 
     private void clickListener(View root) {
         mSearchBtn.setOnClickListener(v -> {
             mResultInfo.setText(mSearchField.getText().toString());
-            loadData(mSearchField.getText().toString());
+            loadData(mSearchField.getText().toString(),root);
         });
     }
 
-    private void loadData(String searchText) {
+    private void loadData(String searchText,View root) {
         Query query= databaseReference.orderByChild("_Address/city").startAt(searchText).endAt(searchText + "\uf8ff");
         options = new FirebaseRecyclerOptions.Builder<Hotel>().setQuery(query, Hotel.class).build();
 
@@ -75,6 +78,16 @@ public class SearchHotel extends Fragment {
                 holder.city.setText(model.get_Address().getCity());
                 //holder.price.setText(model.get_Price());
                 //Picasso.get().load(model.getImageURL()).into(holder.image);
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("clickDetails", getRef(position).getKey());
+                        Navigation.findNavController(root).navigate(R.id.action_simple_user_search_to_simple_user_hotelview, bundle);
+
+                    }
+                });
             }
 
             @NonNull

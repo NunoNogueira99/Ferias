@@ -25,6 +25,28 @@ public class HotelFeature  implements Serializable {
     private boolean gymnasium;
     private boolean garden;
 
+    public HotelFeature()
+    {
+        this.restaurant = false;
+        this.service_room = false;
+        this.pub = false;
+
+        this.breakfast = false;
+        this.lunch = false;
+        this.dinner = false;
+
+        this.reception = false;
+        this.air_conditioner = false;
+        this.wifi = false;
+
+        this.outside_pool = false;
+        this.inside_pool = false;
+        this.spa = false;
+
+        this.sauna = false;
+        this.gymnasium = false;
+        this.garden = false;
+    }
 
     public HotelFeature(boolean restaurant, boolean service_room, boolean pub, boolean breakfast, boolean lunch, boolean dinner, boolean reception, boolean air_conditioner, boolean wifi, boolean outside_pool, boolean inside_pool, boolean spa, boolean sauna, boolean gymnasium, boolean garden) {
 

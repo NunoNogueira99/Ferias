@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,6 +56,9 @@ public class Home extends Fragment {
     private Button bt_EditProfile, bt_Logout;
 
     private TextView tv_NameMensage;
+    private MaterialButton search_btn;
+    private TextView textinput_location;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,7 +89,9 @@ public class Home extends Fragment {
 
          cl_HomeUser = root.findViewById(R.id.cl_Home_User);
 
-        tv_NameMensage = root.findViewById(R.id.tv_NameMensage);
+        //tv_NameMensage = root.findViewById(R.id.tv_NameMensage);
+        search_btn = root.findViewById(R.id.home_search_btn);
+        textinput_location= root.findViewById(R.id.textinput_location);
     }
 
     private void clickListener(View root) {
@@ -124,6 +131,12 @@ public class Home extends Fragment {
 
             NavController navController = Navigation.findNavController(root);
             navController.navigate(R.id.action_simple_user_home_to_login);
+        });
+
+        search_btn.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("inputText", textinput_location.getText().toString());
+            Navigation.findNavController(root).navigate(R.id.action_simple_user_home_to_simple_user_search, bundle);
         });
     }
 
@@ -182,7 +195,7 @@ public class Home extends Fragment {
 
     private void loadDatatoElements(){
         if(user != null){
-            tv_NameMensage.setText("Hi "+user.getName());
+            //tv_NameMensage.setText("Hi "+user.getName());
         }
     }
 }

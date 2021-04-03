@@ -1,40 +1,68 @@
 package com.example.ferias.ui.hotel_manager.manage_hotels;
 
+import android.app.AlertDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ferias.R;
+import com.example.ferias.data.GenerateUniqueIds;
 import com.example.ferias.data.common.Address;
 import com.example.ferias.data.hotel_manager.Hotel;
 import com.example.ferias.data.hotel_manager.HotelFeature;
+import com.example.ferias.data.hotel_manager.HotelMoods;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hbb20.CountryCodePicker;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 
 public class Hotel_Registration extends Fragment {
-    private EditText et_Name, et_Phone, et_Description, et_TotalRooms, et_Price, et_City, et_Address, et_ZipCode;
-    private CheckBox cb_Restaurant, cb_ServiceRooms, cb_Pub, cb_Breakfast, cb_Lunch, cb_Dinner, cb_Reception, cb_AirConditioner, cb_Wifi, cb_OutsidePool, cb_InsidePool, cb_Spa, cb_Sauna, cb_Gymnasium, cb_Garden;
-    private ImageButton ib_Gallery;
-    private RatingBar rb_Stars;
-    private CountryCodePicker ccp_PhoneCode_Property, ccp_country;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
 
-    private Button bt_RegisterHotel;
+    private EditText et_Name,  et_TotalRooms, et_Price;
+
+    private TextView tv_Hotel_Stars ;
+    private RatingBar rb_Stars;
+
+    private CountryCodePicker ccp_PhoneCode;
+    private EditText et_Phone;
+
+    private CountryCodePicker ccp_country;
+    private EditText et_City, et_Address, et_ZipCode;
+
+    private ExtendedFloatingActionButton bt_Features;
+    private TextView tv_Features_Selected;
+    private HotelFeature hotelFeatures;
+
+    private EditText et_Description;
+
+    private TextView tv_Hotel_Moods_Title;
+    private LinearLayout ll_Hotel_Moods;
+    private HotelMoods hotelMoods;
+
+    private MaterialButton bt_RegisterHotel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
@@ -47,228 +75,255 @@ public class Hotel_Registration extends Fragment {
         return root;
     }
 
+    private void initializeElements(View root) {
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+
+        et_Name = root.findViewById(R.id.et_Hotel_Name);
+
+        tv_Hotel_Stars = root.findViewById(R.id.tv_Hotel_Stars);
+        rb_Stars = root.findViewById(R.id.rb_Hotel_Stars);
+
+        ccp_PhoneCode = root.findViewById(R.id.ccp_PhoneCode_Hotel);
+        et_Phone=root.findViewById(R.id.et_Phone_Hotel);
+        ccp_PhoneCode.registerCarrierNumberEditText(et_Phone);
+
+        et_TotalRooms = root.findViewById(R.id.et_Hotel_Total_Rooms);
+        et_Price = root.findViewById(R.id.et_Hotel_Price_Rooms);
+
+        ccp_country = root.findViewById(R.id.ccp_Hotel_Country);
+        et_City = root.findViewById(R.id.et_Hotel_City);
+        et_Address = root.findViewById(R.id.et_Hotel_Address);
+        et_ZipCode = root.findViewById(R.id.et_Hotel_ZipCode);
+
+        et_Description = root.findViewById(R.id.et_Description_Hotel);
+
+        bt_Features = root.findViewById(R.id.bt_Features);
+        tv_Features_Selected = root.findViewById(R.id.tv_Features_Selected);
+
+        tv_Hotel_Moods_Title = root.findViewById(R.id.tv_Hotel_Moods_Title);
+        ll_Hotel_Moods = root.findViewById(R.id.ll_Hotel_Moods);
+
+        bt_RegisterHotel = root.findViewById(R.id.bt_RegisterHotel);
+
+    }
+
     private void clickListeners(final View root) {
 
         bt_RegisterHotel.setOnClickListener(v -> {
             verifyData();
         });
-        //ib_Gallery.setOnClickListener();
 
+        hotel_features_listern();
+
+        hotel_moods_listern();
     }
 
-    private void initializeElements(View root) {
+    public void hotel_features_listern(){
+        hotelFeatures = new HotelFeature(getResources().getStringArray(R.array.Features));
 
+        String[] featuresKeys = new String[hotelFeatures.getHotelFeature()];
+        boolean[] featuresValues = new boolean[hotelFeatures.getHotelFeature()];
+        ArrayList<Integer> featuresSelected = new ArrayList<>();
 
-        et_Name = root.findViewById(R.id.et_PropertyName);
-        ccp_PhoneCode_Property = root.findViewById(R.id.ccp_PhoneCode_Property);
-        et_Phone=root.findViewById(R.id.et_Phone_Property);
-        ccp_PhoneCode_Property.registerCarrierNumberEditText(et_Phone);
-        et_Description = root.findViewById(R.id.et_Description);
-        rb_Stars = root.findViewById(R.id.ratingBar_Hotel_Rating);
-        rb_Stars.setNumStars(5);
-        rb_Stars.setMax(5);
-        rb_Stars.setStepSize(1);
+        int index = 0;
+        for (Map.Entry<String, Boolean> entry : hotelFeatures.getFeatures().entrySet()){
+            featuresKeys[index] = entry.getKey();
+            featuresValues[index] = entry.getValue();
+            index++;
+        }
 
-        et_TotalRooms = root.findViewById(R.id.et_TotalRooms);
-        et_Price = root.findViewById(R.id.et_PriceRooms);
+        bt_Features.setOnClickListener(view -> {
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
+            mBuilder.setTitle("Selected features of hotel");
+            mBuilder.setMultiChoiceItems(featuresKeys, featuresValues, (dialogInterface, position, isChecked) -> {
+                if(isChecked){
+                    featuresSelected.add(position);
+                    hotelFeatures.setFeatures_Value(featuresKeys[position],true);
+                }else{
+                    hotelFeatures.setFeatures_Value(featuresKeys[position],false);
+                    featuresSelected.remove(position);
+                }
+            });
 
-        ccp_country = root.findViewById(R.id.ccp_Country);
-        et_City = root.findViewById(R.id.et_City);
-        et_Address = root.findViewById(R.id.et_Address);
-        et_ZipCode = root.findViewById(R.id.et_ZipCode);
+            mBuilder.setCancelable(false);
+            mBuilder.setPositiveButton("Ok", (dialogInterface, which) -> {
+                String item = "";
+                for (int i = 0; i < featuresSelected.size(); i++) {
+                    item = item + featuresKeys[featuresSelected.get(i)];
+                    if (i != featuresSelected.size() - 1) {
+                        item = item + ", ";
+                    }
+                }
+                Log.e("Features", hotelFeatures.toString());
+                tv_Features_Selected.setText(item);
 
+            });
 
-        //////////////HOTEL FEATURES///////////////
+            mBuilder.setNegativeButton("Dismiss", (dialogInterface, i) -> dialogInterface.dismiss());
 
-        cb_Restaurant = root.findViewById(R.id.Restaurant);
-        cb_ServiceRooms = root.findViewById(R.id.ServiceRooms);
-        cb_Pub = root.findViewById(R.id.Pub);
+            mBuilder.setNeutralButton("Clear all", (dialogInterface, which) -> {
+                for (int i = 0; i < featuresValues.length; i++) {
+                    featuresValues[i] = false;
+                    featuresSelected.clear();
+                }
+                tv_Features_Selected.setText("");
+            });
 
-        cb_Lunch = root.findViewById(R.id.Lunch);
-        cb_Dinner = root.findViewById(R.id.Dinner);
-        cb_Breakfast = root.findViewById(R.id.Breakfast);
-
-        cb_Reception = root.findViewById(R.id.Reception);
-        cb_AirConditioner = root.findViewById(R.id.AirConditioner);
-        cb_Wifi = root.findViewById(R.id.WiFiAccess);
-
-        cb_OutsidePool = root.findViewById(R.id.Outside_pool);
-        cb_InsidePool = root.findViewById(R.id.Inside_pool);
-        cb_Spa = root.findViewById(R.id.Spa);
-
-        cb_Sauna = root.findViewById(R.id.Sauna);
-        cb_Gymnasium = root.findViewById(R.id.Gymnasium);
-        cb_Garden = root.findViewById(R.id.Garden);
-
-
-        ib_Gallery = root.findViewById(R.id.adminAddHotelPhotos);
-        bt_RegisterHotel = root.findViewById(R.id.bt_RegisterHotel);
-
+            AlertDialog mDialog = mBuilder.create();
+            mDialog.show();
+        });
     }
 
+    private void hotel_moods_listern() {
+        ExtendedFloatingActionButton moods;
+        hotelMoods = new HotelMoods(getResources().getStringArray(R.array.Moods), getResources().getStringArray(R.array.MoodsIcons));
+
+        for (Map.Entry<String, Boolean> entry : hotelMoods.getMoods().entrySet()){
+            moods = new ExtendedFloatingActionButton(getContext());
+
+            moods.setId(entry.getKey().hashCode());
+            moods.setText(entry.getKey());
+
+            moods.setCheckable(true);
+            moods.setChecked(entry.getValue());
+
+            moods.setMaxLines(3);
+            moods.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+
+            String drawable = hotelMoods.getMoods_Icon(entry.getKey());
+            int id = getContext().getResources().getIdentifier(drawable, "drawable", getContext().getPackageName());
+            moods.setIcon(ContextCompat.getDrawable(getContext(), id));
+            moods.setIconTint(null);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            params.setMargins(30, 15, 30, 5);
+            moods.setLayoutParams(params);
+
+            ExtendedFloatingActionButton finalbutton = moods;
+            finalbutton.setOnClickListener(v -> {
+                if(finalbutton.isChecked()){
+                    finalbutton.setChecked(true);
+                    finalbutton.setBackgroundColor(Color.parseColor("#FF3F51B5"));
+                    hotelMoods.setMoods_Value(entry.getKey(),true);
+                }
+                else{
+                    finalbutton.setChecked(false);
+                    finalbutton.setBackgroundColor(Color.parseColor("#15194A"));
+                    hotelMoods.setMoods_Value(entry.getKey(),false);
+                }
+                Log.e("Moods", hotelMoods.toString());
+            });
+
+            ll_Hotel_Moods.addView(finalbutton);
+
+        }
+    }
 
     private void verifyData(){
 
+        boolean error = false;
+        ////////////// PERSONAL DATA /////////////////
         String name = et_Name.getText().toString().trim();
+        float starts = rb_Stars.getRating();
+        String phone = ccp_PhoneCode.getFormattedFullNumber();
+
+        ////////////// ROOMS DATA /////////////////
+        int total_rooms = Integer.parseInt(et_TotalRooms.getText().toString().trim());
+        float price = Integer.parseInt(et_Price.getText().toString().trim());
+
+        ////////////// ADDRESS /////////////////
+        String country = ccp_country.getSelectedCountryNameCode();
+        String city = et_City.getText().toString().trim();
+        String address_string = et_Address.getText().toString().trim();
+        String zip_code = et_ZipCode.getText().toString().trim();
+
+        ////////////// DESCRIPTION /////////////////
+        String description = et_Description.getText().toString().trim();
+
 
         if(name.isEmpty()){
-            Toast.makeText(getContext(), "You did not enter a Hotel name", Toast.LENGTH_LONG).show();
-            return;
+            et_Name.setError("Hotel name is required");
+            et_Name.requestFocus();
+            error = true;
         }
 
-        float starts = rb_Stars.getRating();
+        if(starts == 0){
+            tv_Hotel_Stars.setError("Hotel stars is required");
+            tv_Hotel_Stars.requestFocus();
+            error = true;
+        }
 
-        String phone = ccp_PhoneCode_Property.getFormattedFullNumber();
+        if(!ccp_PhoneCode.isValidFullNumber()){
+            et_Phone.setError("Phone is required or is not valid");
+            et_Phone.requestFocus();
+            error = true;
+        }
 
-        int total_rooms = Integer.valueOf(et_TotalRooms.getText().toString());
+        if(total_rooms <= 1){
+            et_TotalRooms.setError("Total rooms is required and greater than 1");
+            et_TotalRooms.requestFocus();
+            error = true;
+        }
 
-        float price = Integer.valueOf(et_Price.getText().toString());
-
-        //////////////ADDRESS/////////////////
-
-        String country = ccp_country.getSelectedCountryName();
-
-        String city = et_City.getText().toString().trim();
+        if(price <= 1){
+            et_Price.setError("Price the rooms is required and greater than 1");
+            et_Price.requestFocus();
+            error = true;
+        }
 
         if(city.isEmpty()){
             Toast.makeText(getContext(), "You did not enter a city", Toast.LENGTH_LONG).show();
-            return;
+            et_City.setError("City name is required");
+            et_City.requestFocus();
+            error = true;
         }
-
-        String address_string = et_Address.getText().toString().trim();
 
         if(address_string.isEmpty()){
-            Toast.makeText(getContext(), "You did not enter a address", Toast.LENGTH_LONG).show();
-            return;
+            et_Address.setError("Address name is required");
+            et_Address.requestFocus();
+            error = true;
         }
-
-        String zip_code = et_ZipCode.getText().toString().trim();
 
         if(zip_code.isEmpty()){
-            Toast.makeText(getContext(), "You did not enter a city", Toast.LENGTH_LONG).show();
-            return;
+            et_ZipCode.setError("Zip-Code is required");
+            et_ZipCode.requestFocus();
+            error = true;
         }
 
+        if(tv_Features_Selected.getText().toString().trim().isEmpty()){
+            tv_Features_Selected.setError("Select at least one feature");
+            tv_Features_Selected.requestFocus();
+            error = true;
+        }
 
+        if(description.isEmpty() || description.length() < 20){
+            et_Description.setError("Description is required");
+            et_Description.requestFocus();
+            error = true;
+        }
+
+        if(!hotelMoods.getMoodsVerification()){
+            tv_Hotel_Moods_Title.setError("Select at least one mood");
+            tv_Hotel_Moods_Title.requestFocus();
+            error = true;
+        }
+
+        if(error){
+            return;
+        }
 
         Address address = new Address(country, city, address_string, zip_code);
 
-        //////////////////////////////////////
-
-        //////////////FEATURES////////////////
-
-        boolean restaurant=false;
-        if(cb_Restaurant.isChecked()){
-            restaurant=true;
-        }
-
-        boolean service_rooms=false;
-        if(cb_ServiceRooms.isChecked()){
-            service_rooms=true;
-        }
-
-        boolean pub=false;
-        if(cb_Pub.isChecked()){
-            pub=true;
-        }
-        //----------
-
-        boolean lunch=false;
-        if(cb_Lunch.isChecked()){
-            lunch=true;
-        }
-
-        boolean dinner=false;
-        if(cb_Dinner.isChecked()){
-            dinner=true;
-        }
-
-        boolean breakfast=false;
-        if(cb_Breakfast.isChecked()){
-            breakfast=true;
-        }
-        //-----------
-
-        boolean reception=false;
-        if(cb_Reception.isChecked()){
-            reception=true;
-        }
-
-        boolean air_conditioner=false;
-        if(cb_AirConditioner.isChecked()){
-            air_conditioner=true;
-        }
-
-        boolean wifi=false;
-        if(cb_Wifi.isChecked()){
-            wifi=true;
-        }
-        //------------
-
-        boolean outside_pool=false;
-        if(cb_OutsidePool.isChecked()){
-            outside_pool=true;
-        }
-
-        boolean inside_pool=false;
-        if(cb_InsidePool.isChecked()){
-            inside_pool=true;
-        }
-
-        boolean spa=false;
-        if(cb_Spa.isChecked()){
-            spa=true;
-        }
-        //------------
-
-        boolean sauna=false;
-        if(cb_Sauna.isChecked()){
-            sauna=true;
-        }
-
-        boolean gymnasium=false;
-        if(cb_Gymnasium.isChecked()){
-            gymnasium=true;
-        }
-
-        boolean garden=false;
-        if(cb_Garden.isChecked()){
-            garden=true;
-        }
-
-        HotelFeature hotel_feature = new HotelFeature(restaurant, service_rooms, pub, breakfast, lunch, dinner, reception, air_conditioner, wifi, outside_pool, inside_pool, spa, sauna, gymnasium, garden);
-        //////////////////////////////////////
-
-        String description = et_Description.getText().toString().trim();
-
-        if(description.isEmpty()){
-            Toast.makeText(getContext(), "You did not enter a description", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-
-        /////////////HOTEL MANAGER FROM FIREBASE/////////////////
-
-        //Ler dados da base de dados
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-
-
-        /////////////////////////////////////////////////////////
-
-
-        //Não sei como fazer com o button para adicionar a foto do hotel
-
-        Hotel hotel = new Hotel(name, phone, description, address, firebaseUser.getUid(), price, starts, total_rooms, "none", hotel_feature);
+        Hotel hotel = new Hotel(name, phone, description, address, firebaseUser.getUid(), price, starts, total_rooms, hotelMoods, hotelFeatures);
 
         registerOnFirebase(hotel);
 
     }
 
-
     private void registerOnFirebase(Hotel hotel){
         FirebaseDatabase.getInstance().getReference("Hotel")
-                .child(String.valueOf(hotel.hashCode()))  //ALTERAR AQUI O ID
+                .child(String.valueOf(GenerateUniqueIds.generateId()))  //ALTERAR AQUI O ID
                 .setValue(hotel).addOnCompleteListener(task1 -> {
             if(task1.isSuccessful()){
                 Toast.makeText(getContext(),"Hotel has ben registered successfully!", Toast.LENGTH_LONG).show();

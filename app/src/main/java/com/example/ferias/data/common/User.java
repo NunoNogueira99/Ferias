@@ -7,7 +7,9 @@ import java.io.Serializable;
 public abstract class User implements Serializable {
 
     ////////////////   PERSONAL DATA    ////////////////
+    private String image;
     private String name;
+    private String surname;
     private String birthday;
     private String phone;
     private Address address;
@@ -28,9 +30,10 @@ public abstract class User implements Serializable {
         this.units_currency = "EURO";
     }
 
-    public User(String name, String email, String phone, String password) {
+    public User(String name, String surname, String email, String phone, String password) {
 
         this.name = name;
+        this.surname = surname;
         //////////////////////////////
         this.phone = phone;
         this.email = email;
@@ -41,8 +44,10 @@ public abstract class User implements Serializable {
         this.units_currency = "euro";
     }
 
-    public User(String name, String email, String birthday, String phone, String password, String language, String units_currency, String units_distance) {
+    public User(String name, String surname, String email, String birthday, String phone, String password, String language, String units_currency, String units_distance) {
+
         this.name = name;
+        this.surname = surname;
         this.birthday = birthday;
         //////////////////////////////
         this.phone = phone;
@@ -54,8 +59,10 @@ public abstract class User implements Serializable {
         this.units_currency = units_currency;
     }
 
-    public User(String name, String phone, String email, boolean isGoogle) {
+    public User(String name, String surname, String phone, String email, boolean isGoogle) {
+
         this.name = name;
+        this.surname = surname;
         this.phone = phone;
         this.email = email;
         this.isGoogle = isGoogle;
@@ -63,8 +70,16 @@ public abstract class User implements Serializable {
 
 
     //////////////// GETS BEGIN ////////////////
+    public String getImage() {
+        return image;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public String getSurname() {
+        return surname;
     }
 
     public String getBirthday() {
@@ -103,8 +118,16 @@ public abstract class User implements Serializable {
     //////////////// GETS END ////////////////
 
     //////////////// SETS BEGIN ////////////////
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public void setBirthday(String birthday) {

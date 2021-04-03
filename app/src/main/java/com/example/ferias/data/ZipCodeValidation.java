@@ -47,18 +47,19 @@ public class ZipCodeValidation {
         postalformat.put("BY","^(\\d{6})$");
         postalformat.put("BZ","");
         postalformat.put("CA","^([ABCEGHJKLMNPRSTVXY]\\d[ABCEGHJKLMNPRSTVWXYZ]) ?(\\d[ABCEGHJKLMNPRSTVWXYZ]\\d)$");
-        postalformat.put("CC","");
+        postalformat.put("CC","6799");
         postalformat.put("CD","");
         postalformat.put("CF","");
         postalformat.put("CG","");
         postalformat.put("CH","^(\\d{4})$");
         postalformat.put("CI","");
-        postalformat.put("CK","");
+        postalformat.put("CK","^(\\d{4})$");
         postalformat.put("CL","^(\\d{7})$");
         postalformat.put("CM","");
         postalformat.put("CN","^(\\d{6})$");
         postalformat.put("CO","^(\\d{6})$");
-        postalformat.put("CR","^(\\d{5})$");
+        postalformat.put("CR","^\\d{4,5}|\\d{3}-\\d{4}$");
+        postalformat.put("CS","^(\\d{5})$");
         postalformat.put("CU","^(?:CP)*(\\d{5})$");
         postalformat.put("CV","^(\\d{4})$");
         postalformat.put("CW","");
@@ -80,10 +81,10 @@ public class ZipCodeValidation {
         postalformat.put("ET","^(\\d{4})$");
         postalformat.put("FI","^(?:FI)*(\\d{5})$");
         postalformat.put("FJ","");
-        postalformat.put("FK","");
-        postalformat.put("FM","^(\\d{5})$");
+        postalformat.put("FK","FIQQ 1ZZ");
+        postalformat.put("FM","^(9694[1-4])([ \\-]\\d{4})?$");
         postalformat.put("FO","^(?:FO)*(\\d{3})$");
-        postalformat.put("FR","^(\\d{5})$");
+        postalformat.put("FR","^\\d{2}[ ]?\\d{3}$");
         postalformat.put("GA","");
         postalformat.put("GB","^([Gg][Ii][Rr]\\s?0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))\\s?[0-9][A-Za-z]{2})$");
         postalformat.put("GD","");
@@ -94,17 +95,17 @@ public class ZipCodeValidation {
         postalformat.put("GI","");
         postalformat.put("GL","^(\\d{4})$");
         postalformat.put("GM","");
-        postalformat.put("GN","");
+        postalformat.put("GN","^(\\d{3})$");
         postalformat.put("GP","^((97|98)\\d{3})$");
         postalformat.put("GQ","");
-        postalformat.put("GR","^(\\d{5})$");
-        postalformat.put("GS","");
+        postalformat.put("GR","^\\d{3}[ ]?\\d{2}$");
+        postalformat.put("GS","SIQQ 1ZZ");
         postalformat.put("GT","^(\\d{5})$");
-        postalformat.put("GU","^(969\\d{2})$");
+        postalformat.put("GU","^969[123]\\d([ \\-]\\d{4})?$");
         postalformat.put("GW","^(\\d{4})$");
         postalformat.put("GY","");
         postalformat.put("HK","");
-        postalformat.put("HM","");
+        postalformat.put("HM","^(\\d{4})$");
         postalformat.put("HN","^([A-Z]{2}\\d{4})$");
         postalformat.put("HR","^(?:HR)*(\\d{5})$");
         postalformat.put("HT","^(?:HT)*(\\d{4})$");
@@ -114,7 +115,7 @@ public class ZipCodeValidation {
         postalformat.put("IL","^(\\d{7}|\\d{5})$");
         postalformat.put("IM","^((?:(?:[A-PR-UWYZ][A-HK-Y]\\d[ABEHMNPRV-Y0-9]|[A-PR-UWYZ]\\d[A-HJKPS-UW0-9])\\s\\d[ABD-HJLNP-UW-Z]{2})|GIR\\s?0AA)$");
         postalformat.put("IN","^(\\d{6})$");
-        postalformat.put("IO","");
+        postalformat.put("IO","BBND 1ZZ");
         postalformat.put("IQ","^(\\d{5})$");
         postalformat.put("IR","^(\\d{10})$");
         postalformat.put("IS","^(\\d{3})$");
@@ -130,15 +131,14 @@ public class ZipCodeValidation {
         postalformat.put("KM","");
         postalformat.put("KN","");
         postalformat.put("KP","^(\\d{6})$");
-        postalformat.put("KR","^(\\d{5})$");
-        postalformat.put("XK","");
+        postalformat.put("KR","^\\d{3}[\\-]\\d{3}$");
         postalformat.put("KW","^(\\d{5})$");
         postalformat.put("KY","");
         postalformat.put("KZ","^(\\d{6})$");
         postalformat.put("LA","^(\\d{5})$");
         postalformat.put("LB","^(\\d{4}(\\d{4})?)$");
         postalformat.put("LC","");
-        postalformat.put("LI","^(\\d{4})$");
+        postalformat.put("LI","^(948[5-9])|(949[0-7])$");
         postalformat.put("LK","^(\\d{5})$");
         postalformat.put("LR","^(\\d{4})$");
         postalformat.put("LS","^(\\d{3})$");
@@ -158,12 +158,12 @@ public class ZipCodeValidation {
         postalformat.put("MM","^(\\d{5})$");
         postalformat.put("MN","^(\\d{6})$");
         postalformat.put("MO","");
-        postalformat.put("MP","^9695\\d{1}$");
-        postalformat.put("MQ","^(\\d{5})$");
+        postalformat.put("MP","^9695[012]([ \\-]\\d{4})?$");
+        postalformat.put("MQ","^9[78]2\\d{2}$");
         postalformat.put("MR","");
         postalformat.put("MS","");
         postalformat.put("MT","^[A-Z]{3}\\s?\\d{4}$");
-        postalformat.put("MU","");
+        postalformat.put("MU","(\\d{3}[A-Z]{2}\\d{3})?");
         postalformat.put("MV","^(\\d{5})$");
         postalformat.put("MW","^(\\d{6})$");
         postalformat.put("MX","^(\\d{5})$");
@@ -174,14 +174,14 @@ public class ZipCodeValidation {
         postalformat.put("NE","^(\\d{4})$");
         postalformat.put("NF","^(\\d{4})$");
         postalformat.put("NG","^(\\d{6})$");
-        postalformat.put("NI","^(\\d{7})$");
+        postalformat.put("NI","^((\\d{4}-)?\\d{3}-\\d{3}(-\\d{1})?)?$");
         postalformat.put("NL","^(\\d{4}\\s?[a-zA-Z]{2})$");
         postalformat.put("NO","^(\\d{4})$");
         postalformat.put("NP","^(\\d{5})$");
         postalformat.put("NR","");
         postalformat.put("NU","");
         postalformat.put("NZ","^(\\d{4})$");
-        postalformat.put("OM","^(\\d{3})$");
+        postalformat.put("OM","^(PC )?\\d{3}$");
         postalformat.put("PA","");
         postalformat.put("PE","");
         postalformat.put("PF","^((97|98)7\\d{2})$");
@@ -189,8 +189,8 @@ public class ZipCodeValidation {
         postalformat.put("PH","^(\\d{4})$");
         postalformat.put("PK","^(\\d{5})$");
         postalformat.put("PL","^\\d{2}-\\d{3}$");
-        postalformat.put("PM","^(97500)$");
-        postalformat.put("PN","");
+        postalformat.put("PM","^9[78]5\\d{2}$");
+        postalformat.put("PN","\"PCRN 1ZZ\"");
         postalformat.put("PR","^00[679]\\d{2}(?:-\\d{4})?$");
         postalformat.put("PS","");
         postalformat.put("PT","^\\d{4}([\\-]\\d{3})?$");
@@ -237,30 +237,44 @@ public class ZipCodeValidation {
         postalformat.put("TR","^(\\d{5})$");
         postalformat.put("TT","");
         postalformat.put("TV","");
-        postalformat.put("TW","^(\\d{5})$");
+        postalformat.put("TW","^\\d{3}(\\d{2})?$");
         postalformat.put("TZ","");
         postalformat.put("UA","^(\\d{5})$");
         postalformat.put("UG","");
         postalformat.put("UM","");
-        postalformat.put("US","^\\d{5}(-\\d{4})?$");
+        postalformat.put("US","^\\d{5}([ \\-]\\d{4})?$");
         postalformat.put("UY","^(\\d{5})$");
         postalformat.put("UZ","^(\\d{6})$");
         postalformat.put("VA","^(\\d{5})$");
         postalformat.put("VC","");
         postalformat.put("VE","^(\\d{4})$");
         postalformat.put("VG","");
-        postalformat.put("VI","^008\\d{2}(?:-\\d{4})?$");
+        postalformat.put("VI","^008(([0-4]\\d)|(5[01]))([ \\-]\\d{4})?$");
         postalformat.put("VN","^(\\d{6})$");
         postalformat.put("VU","");
         postalformat.put("WF","^(986\\d{2})$");
         postalformat.put("WS","");
+        postalformat.put("XK","^\\d{5}$");
         postalformat.put("YE","");
-        postalformat.put("YT","^(\\d{5})$");
-        postalformat.put("ZA","^(\\d{4})$");
-        postalformat.put("ZM","^(\\d{5})$");
+        postalformat.put("YT","^(976\\d{2})$");
+        postalformat.put("YU","^\\d{5}$");
+        postalformat.put("ZA","^\\d{4}$");
+        postalformat.put("ZM","^\\d{5}$");
         postalformat.put("ZW","");
         postalformat.put("CS","^(\\d{5})$");
     }
+
+    public boolean validation_code(String country, String zipcode){
+        String matches = postalformat.get(country);
+
+        if(!matches.isEmpty()){
+            return zipcode.matches(matches);
+        }
+
+        return true;
+    }
+
+    /*
 
     public HashMap<String, String> getPostalformat() {
         return postalformat;
@@ -274,13 +288,5 @@ public class ZipCodeValidation {
         this.postalformat.put(key, value);
     }
 
-    public boolean validation_code(String country, String zipcode){
-        String matches = postalformat.get(country);
-
-        if(!matches.isEmpty()){
-            return zipcode.matches(matches);
-        }
-
-        return true;
-    }
+     */
 }

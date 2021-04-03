@@ -39,4 +39,39 @@
     <string name="register_now_text"><u>Register now</u></string>
     <string name="login_now_text"><u>Login now</u></string>
     <string name="see_all_text"><u>see all</u></string>
+
+    <string-array name="Features">
+        <item>Restaurant</item>
+        <item>Service Room</item>
+        <item>Pub</item>
+        <item>Lunch</item>
+        <item>Dinner</item>
+        <item>Breakfast</item>
+        <item>24h Reception</item>
+        <item>Air conditioner</item>
+        <item>Wifi</item>
+        <item>Outside Pool</item>
+        <item>Inside Pool</item>
+        <item>SPA</item>
+        <item>Garden</item>
+        <item>Gymnasium</item>
+        <item>Sauna</item>
+    </string-array>
+
+    <string-array name="Moods">
+        <item>Nightlife, clubs and parties</item>
+        <item>Ready to be explored! Embark on an adventure</item>
+        <item>You can do some sport activities</item>
+        <item>Very chill, perfect to relax</item>
+        <item>Admire the city and local shops</item>
+    </string-array>
+
+    <string-array name="MoodsIcons">
+        <item>ic_mood_party</item>
+        <item>ic_mood_adventure</item>
+        <item>ic_mood_sport</item>
+        <item>ic_mood_relax</item>
+        <item>ic_mood_city</item>
+    </string-array>
+
 </resources>

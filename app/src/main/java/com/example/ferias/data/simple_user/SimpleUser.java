@@ -15,12 +15,12 @@ public class SimpleUser extends User implements Serializable {
         super();
     }
 
-    public SimpleUser(String name, String phone, String email, boolean isGoogle) {
-        super(name, phone, email, isGoogle);
+    public SimpleUser(String name, String surname, String phone, String email, boolean isGoogle) {
+        super(name, surname, phone, email, isGoogle);
     }
 
-    public SimpleUser(String name, String email, String phone, String password) {
-        super(name, email, phone, password);
+    public SimpleUser(String name, String surname, String email, String phone, String password) {
+        super(name, surname, email, phone, password);
     }
 
     //////////////// GETS BEGIN ////////////////

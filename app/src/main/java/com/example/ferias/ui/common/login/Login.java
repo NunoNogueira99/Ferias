@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ferias.R;
+import com.example.ferias.data.GenerateUniqueIds;
 import com.example.ferias.data.InternalStorage;
 import com.example.ferias.data.hotel_manager.HotelManager;
 import com.example.ferias.data.common.User;
@@ -46,6 +47,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+
 
 import java.io.IOException;
 
@@ -187,13 +190,10 @@ public class Login extends Fragment {
             if (task.isSuccessful()) {
                 boolean isNewUser = task.getResult().getAdditionalUserInfo().isNewUser();
                 if (isNewUser) {
-                    SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putBoolean("IsGoogle", true);
-                    editor.commit();
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean("IsGoogle", true);
 
-                    NavController navController = Navigation.findNavController(getView());
-                    navController.navigate(R.id.action_login_to_registration);
+                    Navigation.findNavController(mainRoot).navigate(R.id.action_login_to_registration, bundle);
                 } else {
                     verifyTypeUser(mainRoot,firebaseAuth.getCurrentUser().getUid());
                 }
@@ -273,7 +273,7 @@ public class Login extends Fragment {
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
-        database.child("Users").child(userId).addValueEventListener(new ValueEventListener() {
+        database.child("Users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 simpleUser = snapshot.getValue(SimpleUser.class);
@@ -289,7 +289,7 @@ public class Login extends Fragment {
             }
         });
 
-        database.child("Hotel Manager").child(userId).addValueEventListener(new ValueEventListener() {
+        database.child("Hotel Manager").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 manager = snapshot.getValue(HotelManager.class);

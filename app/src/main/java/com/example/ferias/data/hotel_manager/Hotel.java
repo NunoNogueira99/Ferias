@@ -17,14 +17,14 @@ public class Hotel implements Serializable {
     private float stars;
     private int total_rooms;
     private int rooms_occupied;
-    private String category;
+    private HotelMoods moods;
     private HotelFeature feature;
 
 
     public Hotel(){
     }
 
-    public Hotel(String name, String phone, String description, Address address, String manager, float price, float stars, int total_rooms, String category, HotelFeature feature) {
+    public Hotel(String name, String phone, String description, Address address, String manager, float price, float stars, int total_rooms, HotelMoods moods, HotelFeature feature) {
 
         this.name = name;
         this.phone = phone;
@@ -36,7 +36,7 @@ public class Hotel implements Serializable {
         this.stars = stars;
         this.total_rooms = total_rooms;
         this.rooms_occupied = 0;
-        this.category = category;
+        this.moods = moods;
         this.feature = feature;
     }
 
@@ -81,7 +81,7 @@ public class Hotel implements Serializable {
         return rooms_occupied;
     }
 
-    public String getCategory() { return category; }
+    public HotelMoods getMoods() { return moods; }
 
     public HotelFeature getFeature() { return feature; }
 
@@ -126,7 +126,7 @@ public class Hotel implements Serializable {
         this.rooms_occupied = rooms_occupied;
     }
 
-    public void setCategory(String category) { this.category = category; }
+    public void setMoods(HotelMoods moods) { this.moods = moods; }
 
     public void setHotelFeature(HotelFeature feature) { this.feature = feature; }
 

@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ferias.R;
 import com.example.ferias.data.InternalStorage;
@@ -25,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,7 +49,7 @@ public class Home extends Fragment {
     private ConstraintLayout cl_HomeManager;
 
     private ShapeableImageView bt_ProfileMenu;
-    private ExtendedFloatingActionButton bt_ManageHotels;
+    private MaterialCardView bt_ManageHotels;
 
     private LinearLayout profileMenu;
     private Button bt_EditProfile, bt_Logout;
@@ -82,11 +82,11 @@ public class Home extends Fragment {
         profileMenu = root.findViewById(R.id.ll_ProfileMenu_Manager);
         profileMenu.setVisibility(View.GONE);
 
-        bt_EditProfile = root.findViewById(R.id.bt_editProfile_Manager);
+        bt_EditProfile = root.findViewById(R.id.bt_EditProfile_Manager);
 
         bt_Logout = root.findViewById(R.id.bt_Logout_Manager);
 
-        tv_NameMensage = root.findViewById(R.id.tv_NameMensageManager);
+        tv_NameMensage = root.findViewById(R.id.tv_NameMensage_Manager);
 
         bt_ManageHotels = root.findViewById(R.id.bt_ManageHotels);
     }
@@ -168,7 +168,7 @@ public class Home extends Fragment {
             }
         });
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 user = snapshot.getValue(HotelManager.class);

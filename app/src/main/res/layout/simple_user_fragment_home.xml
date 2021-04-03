@@ -7,266 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.simple_user.home.Home">
 
-    <!--
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/home_cover"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.4"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageView8"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/home_cover_mask"
-                app:layout_constraintEnd_toEndOf="@+id/imageView4"
-                app:layout_constraintHeight_percent="0.4"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="32dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/home_top_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/bt_ProfileMenu"
-                        android:layout_width="50dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/profile_pic_example" />
-
-                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                        android:id="@+id/my_bookings_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="My bookings"
-                        android:textAllCaps="false"
-                        app:icon="@drawable/ic_mybookings"
-                        app:iconPadding="8dp"
-                        app:iconSize="16dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/my_favs_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="4dp"
-                        android:src="@drawable/ic_favorites"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/my_bookings_btn"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <LinearLayout
-                    android:id="@+id/profile_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:elevation="10dp"
-                    android:orientation="vertical"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/home_top_bar">
-
-                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                        android:id="@+id/bt_editProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Edit Profile"
-                        android:textAllCaps="false"
-                        app:icon="@drawable/ic_baseline_edit_24"
-                        app:iconPadding="8dp"
-                        app:iconSize="16dp" />
-
-                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                        android:id="@+id/bt_Logout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Logout"
-                        android:textAllCaps="false"
-                        app:icon="@drawable/ic_baseline_logout_24"
-                        app:iconPadding="8dp"
-                        app:iconSize="16dp" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/home_top_bar">
-
-                    <TextView
-                        style="?attr/textAppearanceSubtitle1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hi, Martin" />
-
-                    <TextView
-                        style="?attr/textAppearanceHeadline6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Plan your next trip!" />
-
-                    <GridLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:columnCount="2"
-                        android:orientation="horizontal"
-                        android:rowCount="2">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_height="wrap_content"
-                            android:layout_columnSpan="2"
-                            android:layout_columnWeight="1"
-                            android:layout_marginBottom="8dp"
-                            android:hint="Where you want to go?">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/textinput_location"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionDone"
-                                android:inputType="text" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textinput_date_selection"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:layout_marginRight="4dp"
-                            android:hint="When?">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/textinput_date"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:layout_marginLeft="4dp"
-                            android:hint="Guests">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/textinput_guests"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="number" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </GridLayout>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="16dp"
-                        android:text="See results"
-                        app:icon="@drawable/ic_arrow_forward"
-                        app:iconGravity="textEnd"
-                        app:iconSize="16dp" />
-
-                    <TextView
-                        style="?attr/textAppearanceSubtitle1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="48dp"
-                        android:text="Don't know where to go...?" />
-
-                    <TextView
-                        style="?attr/textAppearanceHeadline6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Choose based on your mood!" />
-
-                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginEnd="40dp"
-                        android:text="🎉 I'm on party mode"
-                        android:textAllCaps="false" />
-
-                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="40dp"
-                        android:text="⛱️ I hust need to chill"
-                        android:textAllCaps="false" />
-
-                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="40dp"
-                        android:text="⛰️ Looking for an adventure"
-                        android:textAllCaps="false" />
-
-                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="40dp"
-                        android:text="⛷️ I Want to do some sport"
-                        android:textAllCaps="false" />
-
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
-    -->
-
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -299,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@drawable/home_cover_mask"
-                app:layout_constraintEnd_toEndOf="@+id/imageView4"
+                app:layout_constraintEnd_toEndOf="@+id/imageView10"
                 app:layout_constraintHeight_percent="0.4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -357,7 +97,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_profile_menu"
+                android:id="@+id/ll_profile_menu_User"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
@@ -367,7 +107,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout11">
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                    android:id="@+id/bt_editProfile"
+                    android:id="@+id/bt_editProfile_User"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Edit Profile"
@@ -377,7 +117,7 @@
                     app:iconSize="16dp" />
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                    android:id="@+id/bt_Logout"
+                    android:id="@+id/bt_Logout_User"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -400,6 +140,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout11">
 
                 <TextView
+                    android:id="@+id/tv_NameMensage_User"
                     style="?attr/textAppearanceSubtitle1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

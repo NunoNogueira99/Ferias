@@ -15,11 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ferias.R;
 import com.example.ferias.data.InternalStorage;
-import com.example.ferias.data.common.User;
 import com.example.ferias.data.simple_user.SimpleUser;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -75,16 +73,16 @@ public class Home extends Fragment {
     private void initializeElements(View root) {
         bt_ProfileMenu = root.findViewById(R.id.bt_ProfileMenu);
 
-        profileMenu = root.findViewById(R.id.ll_profile_menu);
+        profileMenu = root.findViewById(R.id.ll_profile_menu_User);
         profileMenu.setVisibility(View.GONE);
 
-        bt_EditProfile = root.findViewById(R.id.bt_editProfile);
+        bt_EditProfile = root.findViewById(R.id.bt_editProfile_User);
 
-        bt_Logout = root.findViewById(R.id.bt_Logout);
+        bt_Logout = root.findViewById(R.id.bt_Logout_User);
 
-         cl_HomeUser = root.findViewById(R.id.cl_Home_User);
+        cl_HomeUser = root.findViewById(R.id.cl_Home_User);
 
-        tv_NameMensage = root.findViewById(R.id.tv_NameMensage);
+        tv_NameMensage = root.findViewById(R.id.tv_NameMensage_User);
     }
 
     private void clickListener(View root) {

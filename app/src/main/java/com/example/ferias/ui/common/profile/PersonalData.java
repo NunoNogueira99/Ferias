@@ -224,9 +224,9 @@ public class PersonalData extends Fragment {
             error = true;
         }
 
-        //ZipCodeValidation zipCodeValidation = new ZipCodeValidation();
-        //if(zipcode.isEmpty() || zipCodeValidation.validation_code(ccp_Country.getSelectedCountryNameCode(),zipcode)){
-        if(zipcode.isEmpty()){
+        ZipCodeValidation zipCodeValidation = new ZipCodeValidation();
+        if(zipcode.isEmpty() || zipCodeValidation.validation_code(ccp_Country.getSelectedCountryNameCode(),zipcode)){
+            //if(zipcode.isEmpty()){
             et_ZipCode.setError("Zip-Code is required and valid");
             et_ZipCode.requestFocus();
             error = true;

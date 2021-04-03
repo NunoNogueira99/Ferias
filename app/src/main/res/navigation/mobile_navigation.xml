@@ -87,6 +87,9 @@
         <action
             android:id="@+id/action_simple_user_home_to_searchHotel"
             app:destination="@id/search_hotel" />
+        <action
+            android:id="@+id/action_simple_user_home_to_simple_user_search"
+            app:destination="@id/simple_user_search" />
     </fragment>
     <fragment
         android:id="@+id/profile"
@@ -133,4 +136,18 @@
             android:id="@+id/action_searchHotel_to_simple_user_home"
             app:destination="@id/simple_user_home" />
     </fragment>
+    <fragment
+        android:id="@+id/simple_user_search"
+        android:name="com.example.ferias.ui.simple_user.search_hotel.SearchHotel"
+        android:label="fragment_simple_user_search"
+        tools:layout="@layout/simple_user_fragment_hotel_search" >
+        <action
+            android:id="@+id/action_simple_user_search_to_simple_user_hotelview"
+            app:destination="@id/simple_user_hotelview" />
+    </fragment>
+    <fragment
+        android:id="@+id/simple_user_hotelview"
+        android:name="com.example.ferias.ui.simple_user.hotels.HotelViewer"
+        android:label="fragment_simple_user_hotelview"
+        tools:layout="@layout/simple_user_fragment_hotel_view" />
 </navigation>

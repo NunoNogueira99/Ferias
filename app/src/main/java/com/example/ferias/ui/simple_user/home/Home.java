@@ -24,6 +24,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -52,6 +54,13 @@ public class Home extends Fragment {
     private Button bt_EditProfile, bt_Logout;
 
     private TextView tv_NameMensage;
+    private MaterialButton search_btn;
+    private TextView textinput_location;
+
+    private ExtendedFloatingActionButton partyBtn;
+    private ExtendedFloatingActionButton chillBtn;
+    private ExtendedFloatingActionButton adventureBtn;
+    private ExtendedFloatingActionButton sportsBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,6 +92,14 @@ public class Home extends Fragment {
         cl_HomeUser = root.findViewById(R.id.cl_Home_User);
 
         tv_NameMensage = root.findViewById(R.id.tv_NameMensage_User);
+
+        search_btn = root.findViewById(R.id.home_search_btn);
+        textinput_location= root.findViewById(R.id.textinput_location);
+
+        partyBtn = root.findViewById(R.id.simple_userParty_search);;
+        chillBtn = root.findViewById(R.id.simple_userChill_search);;
+        adventureBtn = root.findViewById(R.id.simple_userAdventure_search);;
+        sportsBtn = root.findViewById(R.id.simple_userSport_search);;
     }
 
     private void clickListener(View root) {
@@ -123,6 +140,17 @@ public class Home extends Fragment {
             NavController navController = Navigation.findNavController(root);
             navController.navigate(R.id.action_simple_user_home_to_login);
         });
+
+        search_btn.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("inputText", textinput_location.getText().toString());
+            Navigation.findNavController(root).navigate(R.id.action_simple_user_home_to_simple_user_search, bundle);
+        });
+
+        partyBtn.setOnClickListener(v -> {SearchByMods(root,"Party");});
+        chillBtn.setOnClickListener(v -> {SearchByMods(root,"Chill");});
+        adventureBtn.setOnClickListener(v -> {SearchByMods(root,"Adventure");});
+        sportsBtn.setOnClickListener(v -> {SearchByMods(root,"Sports");});
     }
 
     private void readUserData() {
@@ -183,4 +211,12 @@ public class Home extends Fragment {
             tv_NameMensage.setText("Hi "+user.getName());
         }
     }
+
+    private void SearchByMods(View root,String mod)
+    {
+        Bundle bundle = new Bundle();
+        bundle.putString("modsWanted", mod);
+        Navigation.findNavController(root).navigate(R.id.action_simple_user_home_to_simple_user_search, bundle);
+    }
+
 }

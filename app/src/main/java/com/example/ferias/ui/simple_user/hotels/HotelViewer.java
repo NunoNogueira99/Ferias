@@ -15,11 +15,20 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ferias.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.InternalHelpers;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HotelViewer extends Fragment {
     ImageButton favBtn;
@@ -74,5 +83,54 @@ public class HotelViewer extends Fragment {
             }
         });
 
+        favBtn.setOnClickListener(v ->
+        {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            Map <String, String> map = new HashMap<>();
+
+            DatabaseReference dbUsers = FirebaseDatabase.getInstance().getReference().child("Users/" + user.getUid());
+            dbUsers.child("Favs").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()) {
+                        ArrayList<String> list = (ArrayList<String>)snapshot.getValue();
+                        add_removeValue(list, map, dbUsers);
+                    }
+                    else{
+                        map.put("0", hotelKey);
+                        dbUsers.child("Favs").setValue(map);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+            favBtn.setImageResource(R.drawable.ic_favorite_full);
+        });
+
+    }
+
+    private void add_removeValue(ArrayList<String> list, Map <String, String> map,DatabaseReference dbUsers) {
+        map = new HashMap<>();
+        if(!list.contains(hotelKey)){
+            for (Integer i=0; i<list.size(); i++)
+            {
+                map.put(i.toString(), list.get(i));
+            }
+            Integer sizeValue = list.size();
+            map.put(sizeValue.toString(),hotelKey);
+        } else
+        {
+            list.remove(hotelKey);
+            for (Integer i=0; i<list.size(); i++)
+            {
+                map.put(i.toString(), list.get(i));
+            }
+            favBtn.setImageResource(R.drawable.ic_favorites);
+        }
+        dbUsers.child("Favs").setValue(map);
     }
 }

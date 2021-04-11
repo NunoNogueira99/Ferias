@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -61,6 +62,8 @@ public class Home extends Fragment {
     private ExtendedFloatingActionButton chillBtn;
     private ExtendedFloatingActionButton adventureBtn;
     private ExtendedFloatingActionButton sportsBtn;
+
+    private FloatingActionButton favsBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,6 +103,8 @@ public class Home extends Fragment {
         chillBtn = root.findViewById(R.id.simple_userChill_search);;
         adventureBtn = root.findViewById(R.id.simple_userAdventure_search);;
         sportsBtn = root.findViewById(R.id.simple_userSport_search);;
+
+        favsBtn=root.findViewById(R.id.my_favs_btn2);
     }
 
     private void clickListener(View root) {
@@ -151,6 +156,11 @@ public class Home extends Fragment {
         chillBtn.setOnClickListener(v -> {SearchByMods(root,"Chill");});
         adventureBtn.setOnClickListener(v -> {SearchByMods(root,"Adventure");});
         sportsBtn.setOnClickListener(v -> {SearchByMods(root,"Sports");});
+
+        favsBtn.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(root);
+            navController.navigate(R.id.action_simple_user_home_to_favorites);
+        });
     }
 
     private void readUserData() {

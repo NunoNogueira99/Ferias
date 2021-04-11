@@ -45,7 +45,6 @@ public class SearchHotel extends Fragment {
         clickListener(root);
 
         initialSearch(root);
-        //loadData(getArguments().getString("inputText"),root);
         return root;
     }
 
@@ -99,7 +98,7 @@ public class SearchHotel extends Fragment {
             protected void onBindViewHolder(@NonNull MyViewHolderClass holder, int position, @NonNull Hotel model) {
                 holder.name.setText(model.get_Name());
                 holder.city.setText(model.get_Address().getCity());
-                //holder.price.setText((int)model.get_Price());
+                holder.price.setText(Float.toString(model.get_Price()));
                 //Picasso.get().load(model.getImageURL()).into(holder.image);
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {

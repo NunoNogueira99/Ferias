@@ -90,6 +90,9 @@
         <action
             android:id="@+id/action_simple_user_home_to_simple_user_search"
             app:destination="@id/simple_user_search" />
+        <action
+            android:id="@+id/action_simple_user_home_to_favorites"
+            app:destination="@id/favorites" />
     </fragment>
     <fragment
         android:id="@+id/profile"
@@ -150,4 +153,9 @@
         android:name="com.example.ferias.ui.simple_user.hotels.HotelViewer"
         android:label="fragment_simple_user_hotelview"
         tools:layout="@layout/simple_user_fragment_hotel_view" />
+    <fragment
+        android:id="@+id/favorites"
+        android:name="com.example.ferias.ui.simple_user.Favorites.Favorites"
+        android:label="fragment_favorites"
+        tools:layout="@layout/simple_user_fragment_favorites_hotels" />
 </navigation>

@@ -123,6 +123,8 @@ public class Login extends Fragment {
 
         googleSignInClient = GoogleSignIn.getClient(getActivity(),googleSignInOptions);
 
+
+
         Intent intent = googleSignInClient.getSignInIntent();
 
         startActivityForResult(intent,100);

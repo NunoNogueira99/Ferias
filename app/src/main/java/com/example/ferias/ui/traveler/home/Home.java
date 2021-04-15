@@ -222,7 +222,7 @@ public class Home extends Fragment {
         if(user != null){
             tv_NameMensage.setText("Hi "+user.getName());
 
-            Glide.with(this)
+            Glide.with(getActivity())
             .load(user.getImage())
             .placeholder(R.drawable.profile_pic_example)
             .fitCenter()

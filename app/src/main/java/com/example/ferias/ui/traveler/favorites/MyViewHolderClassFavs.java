@@ -1,11 +1,13 @@
 package com.example.ferias.ui.traveler.favorites;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -22,24 +24,16 @@ public class MyViewHolderClassFavs extends RecyclerView.Adapter<MyViewHolderClas
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         Fragment fragment;
-        TextView name, city, price;
+        TextView name, price, rating;
         ImageView photo;
+        Dialog d;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            name=itemView.findViewById(R.id.Favs_listName);
-            city=itemView.findViewById(R.id.Favs_listCity);
-            price=itemView.findViewById(R.id.Favs_listPrice);
-            photo=itemView.findViewById(R.id.Favs_listPhoto);
-        }
-
-        @Override
-        public String toString() {
-            return "MyViewHolderClass{" +
-                    "name=" + name +
-                    ", city=" + city +
-                    ", price=" + price +
-                    '}';
+            name = itemView.findViewById(R.id.hotellist_item_name);
+            price = itemView.findViewById(R.id.hotellist_item_price);
+            photo = itemView.findViewById(R.id.hotellist_item_img);
+            rating = itemView.findViewById(R.id.hotellist_item_rating);
         }
     }
 
@@ -50,30 +44,35 @@ public class MyViewHolderClassFavs extends RecyclerView.Adapter<MyViewHolderClas
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
-        View FavsView = inflater.inflate(R.layout.fav_list_layout, parent, false);
-
+        View favoriteView = inflater.inflate(R.layout.traveler_hotellist_item, parent, false);
+        favoriteView.setFocusable(true);
+        favoriteView.setClickable(true);
         // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(FavsView);
+        ViewHolder viewHolder = new ViewHolder(favoriteView);
+
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         Hotel hotel = mHotels.get(position);
         holder.name.setText(hotel.getName());
-        holder.city.setText(hotel.getAddress().getCity());
         holder.price.setText(Float.toString(hotel.getPrice()));
+        holder.rating.setText(Integer.toString(hotel.getRate()));
 
-        /*Glide.with(holder.fragment)
+        /*
+        Glide.with(holder.fragment)
         .load(hotel.getCoverPhoto())
         .placeholder(R.drawable.admin_backgrounf_pic)
         .fitCenter()
-        .into(holder.photo);*/
-
+        .into(holder.photo);
+        */
         /*holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

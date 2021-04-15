@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    app:cardCornerRadius="25dp"
+    app:contentPadding="0dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/hotellist_item_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/testimagehotel"
+            android:scaleType="centerCrop"
+            />
+
+        <ImageView
+            android:elevation="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/home_cover_mask"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:elevation="11dp"
+            android:padding="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/hotellist_item_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hotelname item"
+                    style="?attr/textAppearanceSubtitle1"
+                    android:textColor="@color/primary_white"
+                    />
+
+                <TextView
+                    android:id="@+id/hotellist_item_rating"
+                    style="?attr/textAppearanceCaption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rating"
+                    android:drawableRight="@drawable/ic_star"
+                    android:gravity="center_vertical"
+                    android:drawablePadding="10dp"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/hotellist_item_price"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="?attr/textAppearanceCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hotelprice €"
+                android:background="@drawable/rounded_rectangle"
+                android:padding="10dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

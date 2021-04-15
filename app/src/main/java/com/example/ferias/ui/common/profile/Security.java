@@ -10,13 +10,11 @@ import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,7 +25,7 @@ import com.example.ferias.data.InternalStorage;
 import com.example.ferias.data.PasswordStrength;
 import com.example.ferias.data.hotel_manager.HotelManager;
 import com.example.ferias.data.common.User;
-import com.example.ferias.data.simple_user.SimpleUser;
+import com.example.ferias.data.traveler.Traveler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -46,10 +44,8 @@ public class Security extends Fragment {
 
     private LinearLayout ll_ChangePassword;
     private EditText et_Old_Password;
-    private ImageView bt_oldpassword_view;
 
     private EditText et_New_Password;
-    private ImageView bt_newpassword_view;
 
     private TextView tv_passwordstrength_change;
     private ProgressBar progressBar_passwordstrength_change;
@@ -78,8 +74,8 @@ public class Security extends Fragment {
     private void readUserData() {
         try {
             user = (User) InternalStorage.readObject(getContext(), "User");
-            if(user instanceof  SimpleUser){
-                path = "Users";
+            if(user instanceof Traveler){
+                path = "Traveler";
             }
 
             if(user instanceof  HotelManager){
@@ -102,10 +98,7 @@ public class Security extends Fragment {
             ll_ChangePassword.setVisibility(View.GONE);
         }
 
-        bt_oldpassword_view = root.findViewById(R.id.bt_oldpassword_view);
         et_Old_Password = root.findViewById(R.id.et_Old_Password);
-
-        bt_newpassword_view = root.findViewById(R.id.bt_newpassword_view);
         et_New_Password = root.findViewById(R.id.et_New_Password);
 
         progressBar_passwordstrength_change = root.findViewById(R.id.progressBar_passwordstrength_change);
@@ -132,28 +125,6 @@ public class Security extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-            }
-        });
-
-        bt_oldpassword_view.setOnClickListener(v -> {
-            if(et_Old_Password.getTransformationMethod() == null){
-                et_Old_Password.setTransformationMethod(new PasswordTransformationMethod());
-                bt_oldpassword_view.setImageResource(R.drawable.ic_baseline_visibility_off_24);
-            }
-            else {
-                et_Old_Password.setTransformationMethod(null);
-                bt_oldpassword_view.setImageResource(R.drawable.ic_baseline_visibility_24);
-            }
-        });
-
-        bt_newpassword_view.setOnClickListener(v -> {
-            if(et_New_Password.getTransformationMethod() == null){
-                et_New_Password.setTransformationMethod(new PasswordTransformationMethod());
-                bt_newpassword_view.setImageResource(R.drawable.ic_baseline_visibility_off_24);
-            }
-            else {
-                et_New_Password.setTransformationMethod(null);
-                bt_newpassword_view.setImageResource(R.drawable.ic_baseline_visibility_24);
             }
         });
 

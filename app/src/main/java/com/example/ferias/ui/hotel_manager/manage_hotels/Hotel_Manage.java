@@ -19,22 +19,6 @@ public class Hotel_Manage extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.hotel_manager_fragment_manage_hotels, container, false);
 
-        // Img Gallery
-        LinearLayout adminGalleryItem = root.findViewById(R.id.adminGallery);
-
-        for(int i=0; i < 6; i++)
-        {
-            View view = inflater.inflate(R.layout.hotel_manager_fragment_profile_gallery_item, adminGalleryItem,false);
-            TextView textView = view.findViewById(R.id.imgTextadmin);
-
-            String hotelName ="",totalProfitsByhotel=""; //sub this with actual correct values
-            textView.setText(hotelName + ":n" + totalProfitsByhotel);
-
-            ImageView imageView = view.findViewById(R.id.imgGalleryadmin);
-            imageView.setImageResource(R.mipmap.ic_launcher);
-
-            adminGalleryItem.addView(view);
-        }
 
         return root;
     }

@@ -18,7 +18,7 @@ import com.example.ferias.R;
 import com.example.ferias.data.InternalStorage;
 import com.example.ferias.data.common.User;
 import com.example.ferias.data.hotel_manager.HotelManager;
-import com.example.ferias.data.simple_user.SimpleUser;
+import com.example.ferias.data.traveler.Traveler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -96,8 +96,8 @@ public class Preferences extends Fragment {
     private void readUserData() {
         try {
             user = (User) InternalStorage.readObject(getContext(), "User");
-            if(user instanceof SimpleUser){
-                path = "Users";
+            if(user instanceof Traveler){
+                path = "Traveler";
             }
 
             if(user instanceof HotelManager){

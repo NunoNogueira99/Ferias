@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.ferias.R;
 import com.example.ferias.data.InternalStorage;
 import com.example.ferias.data.hotel_manager.HotelManager;
@@ -25,7 +26,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,8 +40,6 @@ import java.io.IOException;
 public class Home extends Fragment {
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser firebaseUser;
-    private DatabaseReference databaseReference;
     private HotelManager user;
 
     private GoogleSignInClient googleSignInClient;
@@ -106,8 +104,9 @@ public class Home extends Fragment {
         });
 
         bt_EditProfile.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(root);
-            navController.navigate(R.id.action_hotel_manager_home_to_profile);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("User", user);
+            Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_profile, bundle);
         });
 
         bt_ManageHotels.setOnClickListener(v -> {
@@ -117,13 +116,14 @@ public class Home extends Fragment {
 
         bt_Logout.setOnClickListener(v -> {
 
-            if(user.isGoogle() == true){
+            if(user.isGoogle()){
                 googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            firebaseAuth.signOut();
+                        if (!task.isSuccessful()) {
+                            return;
                         }
+                        firebaseAuth.signOut();
                     }
                 });
             }
@@ -138,13 +138,13 @@ public class Home extends Fragment {
 
     private void readUserData() {
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         if(firebaseUser != null){
             googleSignInClient = GoogleSignIn.getClient(getActivity(), GoogleSignInOptions.DEFAULT_SIGN_IN);
         }
 
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Hotel Manager").child(firebaseUser.getUid());
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Hotel Manager").child(firebaseUser.getUid());
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -193,6 +193,12 @@ public class Home extends Fragment {
     private void loadDatatoElements(){
         if(user != null){
             tv_NameMensage.setText("Hi "+user.getName());
+
+            Glide.with(this)
+            .load(user.getImage())
+            .placeholder(R.drawable.profile_pic_example)
+            .fitCenter()
+            .into(bt_ProfileMenu);
         }
     }
 }

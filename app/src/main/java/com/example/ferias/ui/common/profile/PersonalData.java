@@ -5,8 +5,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +20,7 @@ import com.example.ferias.data.ZipCodeValidation;
 import com.example.ferias.data.common.Address;
 import com.example.ferias.data.common.User;
 import com.example.ferias.data.hotel_manager.HotelManager;
-import com.example.ferias.data.simple_user.SimpleUser;
+import com.example.ferias.data.traveler.Traveler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -41,7 +39,7 @@ public class PersonalData extends Fragment {
     private User user;
     private String path;
 
-    private EditText et_FullName,et_Age,et_EmailAddress;
+    private EditText et_Name, et_Surname, et_Age,et_EmailAddress;
     private EditText et_City,et_Address,et_ZipCode;
 
     private CountryCodePicker ccp_PhoneCode;
@@ -73,19 +71,20 @@ public class PersonalData extends Fragment {
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference= FirebaseDatabase.getInstance().getReference().child(path).child(firebaseUser.getUid());
 
-        et_FullName =  root.findViewById(R.id.et_FullName);
-        et_Age =  root.findViewById(R.id.et_Age);
-        et_EmailAddress =  root.findViewById(R.id.et_Email);
+        et_Name = root.findViewById(R.id.et_Name);
+        et_Surname = root.findViewById(R.id.et_Surname);
+        et_Age = root.findViewById(R.id.et_Age);
+        et_EmailAddress = root.findViewById(R.id.et_Email);
 
         ccp_PhoneCode = root.findViewById(R.id.ccp_PhoneCode);
-        et_Phone =  root.findViewById(R.id.et_Phone);
+        et_Phone = root.findViewById(R.id.et_Phone);
         ccp_PhoneCode.registerCarrierNumberEditText(et_Phone);
 
-        ccp_Country =  root.findViewById(R.id.ccp_Country);
+        ccp_Country = root.findViewById(R.id.ccp_Country);
 
-        et_City =  root.findViewById(R.id.et_City);
-        et_Address =  root.findViewById(R.id.et_Address);
-        et_ZipCode =  root.findViewById(R.id.et_ZipCode);
+        et_City = root.findViewById(R.id.et_City);
+        et_Address = root.findViewById(R.id.et_Address);
+        et_ZipCode = root.findViewById(R.id.et_ZipCode);
 
         bt_save_preferences = root.findViewById(R.id.bt_save_preferences);
     }
@@ -134,8 +133,8 @@ public class PersonalData extends Fragment {
     private void readUserData() {
         try {
             user = (User) InternalStorage.readObject(getContext(), "User");
-            if(user instanceof SimpleUser){
-                path = "Users";
+            if(user instanceof Traveler){
+                path = "Traveler";
             }
 
             if(user instanceof HotelManager){
@@ -150,7 +149,8 @@ public class PersonalData extends Fragment {
     }
 
     private void loadDatatoElements(){
-        et_FullName.setText(user.getName());
+        et_Name.setText(user.getName());
+        et_Surname.setText(user.getSurname());
         et_Age.setText(user.getBirthday());
         ccp_PhoneCode.setFullNumber(user.getPhone());
         et_EmailAddress.setText(user.getEmail());
@@ -166,7 +166,8 @@ public class PersonalData extends Fragment {
     }
 
     private void savePersonalData(){
-        String name = et_FullName.getText().toString().trim();
+        String name = et_Name.getText().toString().trim();
+        String surname = et_Surname.getText().toString().trim();
         String age = et_Age.getText().toString().trim();
         String phone = ccp_PhoneCode.getFormattedFullNumber();
         String email = et_EmailAddress.getText().toString().trim();
@@ -179,8 +180,14 @@ public class PersonalData extends Fragment {
         boolean error = false;
 
         if(name.isEmpty()){
-            et_FullName.setError("Full name is required");
-            et_FullName.requestFocus();
+            et_Name.setError("Full name is required");
+            et_Name.requestFocus();
+            error = true;
+        }
+
+        if(surname.isEmpty()){
+            et_Surname.setError("Full name is required");
+            et_Surname.requestFocus();
             error = true;
         }
 
@@ -238,6 +245,7 @@ public class PersonalData extends Fragment {
         }
 
         user.setName(name);
+        user.setSurname(surname);
         user.setBirthday(age);
         user.setPhone(phone);
         user.setEmail(email);

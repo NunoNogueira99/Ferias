@@ -19,8 +19,8 @@
             android:id="@+id/action_login_to_hotel_manager_home"
             app:destination="@id/hotel_manager_home" />
         <action
-            android:id="@+id/action_login_to_simple_user_home"
-            app:destination="@id/simple_user_home" />
+            android:id="@+id/action_login_to_traveler_home"
+            app:destination="@id/traveler_home" />
     </fragment>
     <fragment
         android:id="@+id/forgot_password"
@@ -71,27 +71,27 @@
             app:destination="@id/hotel_registration" />
     </fragment>
     <fragment
-        android:id="@+id/simple_user_home"
-        android:name="com.example.ferias.ui.simple_user.home.Home"
-        android:label="simple_user_fragment_home"
-        tools:layout="@layout/simple_user_fragment_home" >
+        android:id="@+id/traveler_home"
+        android:name="com.example.ferias.ui.traveler.home.Home"
+        android:label="traveler_fragment_home"
+        tools:layout="@layout/traveler_fragment_home" >
         <action
-            android:id="@+id/action_simple_user_home_to_login"
+            android:id="@+id/action_traveler_home_to_login"
             app:destination="@id/login" />
         <action
-            android:id="@+id/action_simple_user_home_self"
-            app:destination="@id/simple_user_home" />
+            android:id="@+id/action_traveler_home_self"
+            app:destination="@id/traveler_home" />
         <action
-            android:id="@+id/action_simple_user_home_to_profile"
+            android:id="@+id/action_traveler_home_to_profile"
             app:destination="@id/profile" />
         <action
-            android:id="@+id/action_simple_user_home_to_searchHotel"
+            android:id="@+id/action_traveler_home_to_searchHotel"
             app:destination="@id/search_hotel" />
         <action
-            android:id="@+id/action_simple_user_home_to_simple_user_search"
-            app:destination="@id/simple_user_search" />
+            android:id="@+id/action_traveler_home_to_traveler_search"
+            app:destination="@id/traveler_search" />
         <action
-            android:id="@+id/action_simple_user_home_to_favorites"
+            android:id="@+id/action_traveler_home_to_favorites"
             app:destination="@id/favorites" />
     </fragment>
     <fragment
@@ -103,8 +103,8 @@
             android:id="@+id/action_profile_to_hotel_manager_home"
             app:destination="@id/hotel_manager_home" />
         <action
-            android:id="@+id/action_profile_to_simple_user_home"
-            app:destination="@id/simple_user_home" />
+            android:id="@+id/action_profile_to_traveler_home"
+            app:destination="@id/traveler_home" />
     </fragment>
     <fragment
         android:id="@+id/hotel_manage"
@@ -132,30 +132,30 @@
     </fragment>
     <fragment
         android:id="@+id/search_hotel"
-        android:name="com.example.ferias.ui.simple_user.search_hotel.SearchHotel"
-        android:label="simple_user_fragment_search_hotel"
-        tools:layout="@layout/simple_user_fragment_search_hotel" >
+        android:name="com.example.ferias.ui.traveler.search_hotel.SearchHotel"
+        android:label="traveler_fragment_search_hotel"
+        tools:layout="@layout/traveler_fragment_search_hotel" >
         <action
-            android:id="@+id/action_searchHotel_to_simple_user_home"
-            app:destination="@id/simple_user_home" />
+            android:id="@+id/action_searchHotel_to_traveler_home"
+            app:destination="@id/traveler_home" />
     </fragment>
     <fragment
-        android:id="@+id/simple_user_search"
-        android:name="com.example.ferias.ui.simple_user.search_hotel.SearchHotel"
-        android:label="fragment_simple_user_search"
-        tools:layout="@layout/simple_user_fragment_hotel_search" >
+        android:id="@+id/traveler_search"
+        android:name="com.example.ferias.ui.traveler.search_hotel.SearchHotel"
+        android:label="fragment_traveler_search"
+        tools:layout="@layout/traveler_fragment_hotel_search" >
         <action
-            android:id="@+id/action_simple_user_search_to_simple_user_hotelview"
-            app:destination="@id/simple_user_hotelview" />
+            android:id="@+id/action_traveler_search_to_traveler_hotelview"
+            app:destination="@id/traveler_hotelview" />
     </fragment>
     <fragment
-        android:id="@+id/simple_user_hotelview"
-        android:name="com.example.ferias.ui.simple_user.hotels.HotelViewer"
-        android:label="fragment_simple_user_hotelview"
-        tools:layout="@layout/simple_user_fragment_hotel_view" />
+        android:id="@+id/traveler_hotelview"
+        android:name="com.example.ferias.ui.traveler.hotels.HotelViewer"
+        android:label="fragment_traveler_hotelview"
+        tools:layout="@layout/traveler_fragment_hotel_view" />
     <fragment
         android:id="@+id/favorites"
-        android:name="com.example.ferias.ui.simple_user.Favorites.Favorites"
+        android:name="com.example.ferias.ui.traveler.favorites.Favorites"
         android:label="fragment_favorites"
-        tools:layout="@layout/simple_user_fragment_favorites_hotels" />
+        tools:layout="@layout/traveler_fragment_favorites_hotels" />
 </navigation>

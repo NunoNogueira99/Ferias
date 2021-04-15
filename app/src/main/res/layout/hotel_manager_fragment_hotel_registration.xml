@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             android:focusable="true"
             android:focusableInTouchMode="true">
-            <!--android:background="@drawable/round_rectangle_v2"!-->
 
             <ImageButton
                 android:id="@+id/imageButton"
@@ -41,43 +40,47 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="25dp"
-                android:text="Register your hotel!"
+                android:text="@string/register_your_hotel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageButton" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/materialCardView"
+            <LinearLayout
+                android:id="@+id/ll_Hotel_Cover_Photo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="25dp"
+                android:background="@drawable/rounded_rectangle"
                 android:clickable="true"
                 android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView15">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                    <ImageView
+                    <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                        android:background="@null"
+                        android:padding="10dp"
                         android:src="@drawable/ic_add_a_photo" />
+                </com.google.android.material.card.MaterialCardView>
 
-                    <TextView
-                        style="?attr/textAppearanceSubtitle1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Add cover photo" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/tv_title_cover_photo"
+                    style="?attr/textAppearanceSubtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/add_cover_photo" />
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_Hotel_Name"
@@ -91,13 +94,13 @@
                 app:hintTextColor="#FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/materialCardView">
+                app:layout_constraintTop_toBottomOf="@+id/ll_Hotel_Cover_Photo">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_Hotel_Name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Hotel name"
+                    android:hint="@string/hotel_name"
                     android:inputType="text"
                     android:textColor="#FFFFFF"
                     android:textColorLink="#FFFFFF" />
@@ -123,7 +126,7 @@
                     android:id="@+id/tv_Hotel_Stars"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Hotel Rating"
+                    android:text="@string/hotel_rating"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp"
@@ -181,7 +184,7 @@
                         android:id="@+id/et_Phone_Hotel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Phone number"
+                        android:hint="@string/phone"
                         android:inputType="phone"
                         android:textColor="#FFFFFF"
                         android:textColorLink="#FFFFFF" />
@@ -206,7 +209,7 @@
                     android:id="@+id/et_Hotel_Total_Rooms"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Total Rooms"
+                    android:hint="@string/total_rooms"
                     android:inputType="number"
                     android:textColor="#FFFFFF"
                     android:textColorLink="#FFFFFF" />
@@ -230,7 +233,7 @@
                     android:id="@+id/et_Hotel_Price_Rooms"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Price per night"
+                    android:hint="@string/price_per_night"
                     android:inputType="number"
                     android:textColor="#FFFFFF"
                     android:textColorLink="#FFFFFF" />
@@ -287,7 +290,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:hint="City"
+                        android:hint="@string/city"
                         android:inputType="textPersonName"
                         android:textColor="#FFFFFF"
                         android:textColorLink="#FFFFFF" />
@@ -313,7 +316,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:hint="Address"
+                        android:hint="@string/address"
                         android:inputType="textPersonName"
                         android:textColor="#FFFFFF"
                         android:textColorLink="#FFFFFF" />
@@ -339,7 +342,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:hint="Zip Code"
+                        android:hint="@string/zip_code"
                         android:inputType="textPersonName"
                         android:textColor="#FFFFFF"
                         android:textColorLink="#FFFFFF" />
@@ -376,7 +379,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="Select features of hotel"
+                    android:text="@string/select_features_of_hotel"
                     app:icon="@drawable/ic_arrow_forward"
                     app:iconGravity="textEnd" />
 
@@ -400,7 +403,7 @@
                     android:id="@+id/et_Description_Hotel"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Description"
+                    android:hint="@string/description"
                     android:inputType="textMultiLine"
                     android:textColor="#FFFFFF"
                     android:textColorLink="#FFFFFF" />
@@ -414,9 +417,11 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="25dp"
                 android:background="@drawable/rounded_rectangle"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="16dp"
+                android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/til_Description_Hotel">
@@ -428,17 +433,18 @@
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/circle_background_clickable"
+                        android:background="@null"
                         android:padding="10dp"
                         android:src="@drawable/ic_add_a_photo" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
+                    android:id="@+id/tv_title_others_photo"
                     style="?attr/textAppearanceSubtitle2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:text="Add other photos to show" />
+                    android:layout_marginStart="16dp"
+                    android:text="@string/add_other_photos" />
             </LinearLayout>
 
             <TextView
@@ -448,7 +454,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="25dp"
-                android:text="How is the area around?"
+                android:text="@string/how_is_the_area_around"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_Hotel_Photos" />
 
@@ -459,7 +465,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="5dp"
-                android:text="(You can choose more than one)"
+                android:text="@string/choose_more_than_one"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
@@ -484,7 +490,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="15dp"
-                android:text="Register the hotel"
+                android:text="@string/register_the_hotel"
                 app:icon="@drawable/ic_arrow_forward"
                 app:iconGravity="textEnd"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -1,0 +1,240 @@
+package com.example.ferias.ui.traveler.home;
+
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.example.ferias.R;
+import com.example.ferias.data.InternalStorage;
+import com.example.ferias.data.traveler.Traveler;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.io.IOException;
+
+
+public class Home extends Fragment {
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private DatabaseReference databaseReference;
+    private Traveler user;
+
+    private GoogleSignInClient googleSignInClient;
+
+    private ConstraintLayout cl_HomeUser;
+
+    private ShapeableImageView bt_ProfileMenu;
+    private LinearLayout profileMenu;
+    private Button bt_EditProfile, bt_Logout;
+
+    private TextView tv_NameMensage;
+    private MaterialButton search_btn;
+    private TextView textinput_location;
+
+    private ExtendedFloatingActionButton partyBtn;
+    private ExtendedFloatingActionButton chillBtn;
+    private ExtendedFloatingActionButton adventureBtn;
+    private ExtendedFloatingActionButton sportsBtn;
+
+    private FloatingActionButton favsBtn;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View root = inflater.inflate(R.layout.traveler_fragment_home, container, false);
+
+        readUserData();
+
+        initializeElements(root);
+
+        clickListener(root);
+
+        loadDatatoElements();
+
+        return root;
+    }
+
+    private void initializeElements(View root) {
+        bt_ProfileMenu = root.findViewById(R.id.bt_ProfileMenu);
+
+        profileMenu = root.findViewById(R.id.ll_profile_menu_User);
+        profileMenu.setVisibility(View.GONE);
+
+        bt_EditProfile = root.findViewById(R.id.bt_editProfile_User);
+
+        bt_Logout = root.findViewById(R.id.bt_Logout_User);
+
+        cl_HomeUser = root.findViewById(R.id.cl_Home_User);
+
+        tv_NameMensage = root.findViewById(R.id.tv_NameMensage_User);
+
+        search_btn = root.findViewById(R.id.home_search_btn);
+        textinput_location= root.findViewById(R.id.textinput_location);
+
+        partyBtn = root.findViewById(R.id.travelerParty_search);
+        chillBtn = root.findViewById(R.id.travelerChill_search);
+        adventureBtn = root.findViewById(R.id.travelerAdventure_search);
+        sportsBtn = root.findViewById(R.id.travelerSport_search);
+
+        favsBtn=root.findViewById(R.id.my_favs_btn2);
+    }
+
+    private void clickListener(View root) {
+        cl_HomeUser.setOnClickListener(v -> profileMenu.setVisibility(View.GONE));
+
+        bt_ProfileMenu.setOnClickListener(v -> {
+            if(profileMenu.getVisibility() == View.GONE){
+                profileMenu.setVisibility(View.VISIBLE);
+                profileMenu.bringToFront();
+            }
+            else{
+                profileMenu.setVisibility(View.GONE);
+            }
+
+        });
+
+        bt_EditProfile.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("User", user);
+            Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_profile, bundle);
+        });
+
+        bt_Logout.setOnClickListener(v -> {
+
+            if(user.isGoogle()  == true){
+                googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            firebaseAuth.signOut();
+                        }
+                    }
+                });
+            }
+            else{
+                firebaseAuth.signOut();
+            }
+
+            NavController navController = Navigation.findNavController(root);
+            navController.navigate(R.id.action_traveler_home_to_login);
+        });
+
+        search_btn.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("inputText", textinput_location.getText().toString());
+            Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_traveler_search, bundle);
+        });
+
+        partyBtn.setOnClickListener(v -> {SearchByMods(root,"Party");});
+        chillBtn.setOnClickListener(v -> {SearchByMods(root,"Chill");});
+        adventureBtn.setOnClickListener(v -> {SearchByMods(root,"Adventure");});
+        sportsBtn.setOnClickListener(v -> {SearchByMods(root,"Sports");});
+
+        favsBtn.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(root);
+            navController.navigate(R.id.action_traveler_home_to_favorites);
+        });
+    }
+
+    private void readUserData() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+
+        if(firebaseUser != null){
+            googleSignInClient = GoogleSignIn.getClient(getActivity(), GoogleSignInOptions.DEFAULT_SIGN_IN);
+        }
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Traveler").child(firebaseUser.getUid());
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                user = snapshot.getValue(Traveler.class);
+                if(user != null){
+                    loadDatatoElements();
+
+                    try {
+                        InternalStorage.writeObject(getContext(), "User", user);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("ERROR", "getUser:onCancelled",error.toException());
+            }
+        });
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                user = snapshot.getValue(Traveler.class);
+                if(user != null){
+                    loadDatatoElements();
+
+                    try {
+                        InternalStorage.writeObject(getContext(), "User", user);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("ERROR", "getUser:onCancelled",error.toException());
+            }
+        });
+    }
+
+    private void loadDatatoElements(){
+        if(user != null){
+            tv_NameMensage.setText("Hi "+user.getName());
+
+            Glide.with(this)
+            .load(user.getImage())
+            .placeholder(R.drawable.profile_pic_example)
+            .fitCenter()
+            .into(bt_ProfileMenu);
+        }
+    }
+
+    private void SearchByMods(View root,String mod)
+    {
+        Bundle bundle = new Bundle();
+        bundle.putString("modsWanted", mod);
+        Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_traveler_search, bundle);
+    }
+
+}

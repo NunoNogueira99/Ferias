@@ -1,5 +1,7 @@
 package com.example.ferias.data.common;
 
+import android.net.Uri;
+
 import com.example.ferias.data.common.Address;
 
 import java.io.Serializable;
@@ -25,15 +27,31 @@ public abstract class User implements Serializable {
 
 
     public User(){
-        this.language = "EN";
-        this.units_distance = "M";
-        this.units_currency = "EURO";
+        image = "";
+        //////////////////////////////
+        name = "";
+        surname = "";
+        birthday = "";
+        //////////////////////////////
+        phone = "";
+        address = new Address();
+        //////////////////////////////
+        email = "";
+        password = "";
+        //////////////////////////////
+        this.language = "en";
+        this.units_distance = "km";
+        this.units_currency = "euro";
+        isGoogle = false;
     }
 
     public User(String name, String surname, String email, String phone, String password) {
-
+        image = "";
+        //////////////////////////////
         this.name = name;
         this.surname = surname;
+        birthday = "";
+        address = new Address();
         //////////////////////////////
         this.phone = phone;
         this.email = email;
@@ -42,29 +60,44 @@ public abstract class User implements Serializable {
         this.language = "en";
         this.units_distance = "km";
         this.units_currency = "euro";
+        isGoogle = false;
     }
 
     public User(String name, String surname, String email, String birthday, String phone, String password, String language, String units_currency, String units_distance) {
-
+        image = "";
+        //////////////////////////////
         this.name = name;
         this.surname = surname;
         this.birthday = birthday;
         //////////////////////////////
         this.phone = phone;
+        address = new Address();
+        //////////////////////////////
         this.email = email;
         this.password = password;
         //////////////////////////////
         this.language = language;
         this.units_distance = units_distance;
         this.units_currency = units_currency;
+        isGoogle = false;
     }
 
     public User(String name, String surname, String phone, String email, boolean isGoogle) {
-
+        image = "";
+        //////////////////////////////
         this.name = name;
         this.surname = surname;
+        birthday = "";
+        //////////////////////////////
         this.phone = phone;
+        address = new Address();
+        //////////////////////////////
         this.email = email;
+        password = "";
+        //////////////////////////////
+        this.language = "en";
+        this.units_distance = "km";
+        this.units_currency = "euro";
         this.isGoogle = isGoogle;
     }
 

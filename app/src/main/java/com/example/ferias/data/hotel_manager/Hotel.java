@@ -3,25 +3,59 @@ package com.example.ferias.data.hotel_manager;
 import com.example.ferias.data.common.Address;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Hotel implements Serializable {
 
     ////////////////   DATA    ////////////////
+    private String manager;
+    //////////////////////////////
     private String name;
     private String phone;
-    private String description;
+    //////////////////////////////
     private Address address;
-    private String manager;
-    private float price;
+    //////////////////////////////
     private int rate;
     private float stars;
+    //////////////////////////////
     private int total_rooms;
     private int rooms_occupied;
+    private float price;
+    //////////////////////////////
+    private String description;
+    //////////////////////////////
     private HotelMoods moods;
+    //////////////////////////////
     private HotelFeature feature;
-
+    //////////////////////////////
+    private String coverPhoto;
+    private List<String> otherPhotos;
 
     public Hotel(){
+        ////////////////   DATA    ////////////////
+        manager = "";
+        //////////////////////////////
+        name = "";
+        phone = "";
+        //////////////////////////////
+        address = new Address();
+        //////////////////////////////
+        rate = 0;
+        stars = 0;
+        //////////////////////////////
+        total_rooms = 0;
+        rooms_occupied = 0;
+        price = 0;
+        //////////////////////////////
+        description = "";
+        //////////////////////////////
+        moods = new HotelMoods();
+        //////////////////////////////
+        feature = new HotelFeature();
+        //////////////////////////////
+        coverPhoto = "";
+        otherPhotos = new ArrayList<>();
     }
 
     public Hotel(String name, String phone, String description, Address address, String manager, float price, float stars, int total_rooms, HotelMoods moods, HotelFeature feature) {
@@ -38,98 +72,125 @@ public class Hotel implements Serializable {
         this.rooms_occupied = 0;
         this.moods = moods;
         this.feature = feature;
+        this.coverPhoto = "";
+        this.otherPhotos = new ArrayList<>();
     }
 
 
     //////////////// GETS BEGIN ////////////////
-
-    public String get_Name() {
-        return name;
-    }
-
-    public String get_Phone() {
-        return phone;
-    }
-
-    public String get_Description() {
-        return description;
-    }
-
-    public Address get_Address(){ return address;}
-
-    public String get_Manager() {
+    public String getManager() {
         return manager;
     }
 
-    public float get_Price() {
-        return price;
+    public String getName() {
+        return name;
     }
 
-    public int get_Rate() {
+    public String getPhone() {
+        return phone;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public int getRate() {
         return rate;
     }
 
-    public float get_Stars() {
+    public float getStars() {
         return stars;
     }
 
-    public int get_Total_Rooms() {
+    public int getTotal_Rooms() {
         return total_rooms;
     }
 
-    public int get_Rooms_Occupied() {
+    public int getRooms_Occupied() {
         return rooms_occupied;
     }
 
-    public HotelMoods getMoods() { return moods; }
+    public float getPrice() {
+        return price;
+    }
 
-    public HotelFeature getFeature() { return feature; }
+    public String getDescription() {
+        return description;
+    }
 
+    public HotelMoods getMoods() {
+        return moods;
+    }
+
+    public HotelFeature getFeature() {
+        return feature;
+    }
+
+    public String getCoverPhoto() {
+        return coverPhoto;
+    }
+
+    public List<String> getOtherPhotos() {
+        return otherPhotos;
+    }
     //////////////// GETS END ////////////////
 
     //////////////// SETS BEGIN ////////////////
-    public void set_Name(String name) {
-        this.name = name;
-    }
-
-    public void set_Phone(String phone) {
-        this.phone = phone;
-    }
-
-    public void set_Description(String description) {
-        this.description = description;
-    }
-
-    public void set_Address(Address address){ this.address = address;}
-
-    public void set_Manager(String manager) {
+    public void setManager(String manager) {
         this.manager = manager;
     }
 
-    public void set_Price(float price) {
-        this.price = price;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void set_Rate(int rate) {
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public void setRate(int rate) {
         this.rate = rate;
     }
 
-    public void set_Stars(float stars) {
+    public void setStars(float stars) {
         this.stars = stars;
     }
 
-    public void set_Total_Rooms(int total_rooms) {
+    public void setTotal_Rooms(int total_rooms) {
         this.total_rooms = total_rooms;
     }
 
-    public void set_Rooms_Occupied(int rooms_occupied) {
+    public void setRooms_Occupied(int rooms_occupied) {
         this.rooms_occupied = rooms_occupied;
     }
 
-    public void setMoods(HotelMoods moods) { this.moods = moods; }
+    public void setPrice(float price) {
+        this.price = price;
+    }
 
-    public void setHotelFeature(HotelFeature feature) { this.feature = feature; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
+    public void setMoods(HotelMoods moods) {
+        this.moods = moods;
+    }
+
+    public void setFeature(HotelFeature feature) {
+        this.feature = feature;
+    }
+
+    public void setCoverPhoto(String coverPhoto) {
+        this.coverPhoto = coverPhoto;
+    }
+
+    public void setOtherPhotos(List<String> otherPhotos) {
+        this.otherPhotos = otherPhotos;
+    }
     //////////////// SETS END ////////////////
 
 

@@ -11,7 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:contentDescription="@string/profile_pic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -45,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="@string/Email"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:textColor="#FFFFFF"
                 android:textColorLink="#FFFFFF" />
@@ -70,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"
                 android:textColor="#FFFFFF"
                 android:textColorLink="#FFFFFF" />
@@ -82,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Login"
+            android:text="@string/login"
             app:icon="@drawable/ic_arrow_forward"
             app:iconGravity="textEnd"
             app:layout_constraintEnd_toEndOf="parent"
@@ -96,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="25dp"
-            android:text="I forgot the password"
+            android:text="@string/forgot_password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
 
@@ -118,7 +117,7 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="3dp"
             android:buttonTint="@color/secondary_white"
-            android:text="Remember me"
+            android:text="@string/remember"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
 
@@ -144,7 +143,7 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="25dp"
-            android:text="Register with Email"
+            android:text="@string/register_with_email"
             app:icon="@drawable/ic_arrow_forward"
             app:iconGravity="textEnd"
             app:iconTint="@null"

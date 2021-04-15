@@ -15,13 +15,13 @@
         android:layout_alignParentEnd="true"
         android:layout_marginStart="16dp"
         android:fontFamily="@font/archivo_bold"
-        android:text="Name place"
+        android:text="@string/hotel_name"
         android:textAppearance="@style/custom_headline6"
         android:textColor="@color/primary_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintStart_toEndOf="@+id/Favs_listPhoto"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -32,26 +32,23 @@
         android:layout_below="@+id/search_listName"
         android:layout_marginStart="16dp"
         android:fontFamily="@font/archivo_semibold"
-        android:text="City place"
+        android:text="@string/city"
         android:textAppearance="@style/custom_body2"
         android:textColor="@color/secondary_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintStart_toEndOf="@+id/Favs_listPhoto"
         app:layout_constraintTop_toBottomOf="@+id/search_listName"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/Favs_listPhoto"
         android:layout_width="131dp"
         android:layout_height="109dp"
         android:elevation="10dp"
-        android:foreground="@drawable/admin_backgrounf_pic"
         app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
@@ -68,14 +65,14 @@
         android:layout_marginStart="232dp"
         android:layout_marginEnd="16dp"
         android:layout_toEndOf="@id/search_listName"
-        android:text="xxxxxx"
         android:textAppearance="@style/custom_subtitle2"
         android:textColor="@color/primary_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintStart_toEndOf="@+id/Favs_listPhoto"
         app:layout_constraintTop_toBottomOf="@+id/search_listName"
-        app:layout_constraintVertical_bias="0.885" />
+        app:layout_constraintVertical_bias="0.885"
+        tools:text="xxxxxx" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

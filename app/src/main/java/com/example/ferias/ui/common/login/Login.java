@@ -1,8 +1,6 @@
 package com.example.ferias.ui.common.login;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,25 +21,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ferias.R;
-import com.example.ferias.data.GenerateUniqueIds;
 import com.example.ferias.data.InternalStorage;
 import com.example.ferias.data.hotel_manager.HotelManager;
-import com.example.ferias.data.common.User;
-import com.example.ferias.data.simple_user.SimpleUser;
+import com.example.ferias.data.traveler.Traveler;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.SignInMethodQueryResult;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,29 +48,24 @@ public class Login extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
-    private SimpleUser simpleUser;
+
+    private Traveler traveler;
     private HotelManager manager;
 
     private EditText et_EmailAddress,et_Password;
 
     private CheckBox cb_Remeber;
 
-    private Button bt_Login, bt_Register;
+    private Button bt_Login, bt_Login_Google, bt_Register;
 
     private ProgressBar progressBar_Login;
 
-    private Button bt_Login_Google;
     private TextView tv_Forgot_Password;
 
-    private boolean autoLogin = true;
+    private final boolean autoLogin = true;
 
-    private View mainRoot;
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_login, container, false);
-
-        mainRoot = root;
 
         initializeElements(root);
 
@@ -110,13 +97,14 @@ public class Login extends Fragment {
     }
 
     private void clickListener(View root) {
-        bt_Login.setOnClickListener(v -> verifyData(root));
+        bt_Login.setOnClickListener(v -> verifyData());
 
         bt_Login_Google.setOnClickListener(v -> loginWithGoogle());
 
         bt_Register.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(root);
-            navController.navigate(R.id.action_login_to_registration);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("IsGoogle", false);
+            Navigation.findNavController(root).navigate(R.id.action_login_to_registration, bundle);
         });
 
         tv_Forgot_Password.setOnClickListener(v -> {
@@ -125,37 +113,13 @@ public class Login extends Fragment {
         });
     }
 
-    private void getRemeberData() {
-        try {
-            String email = (String) InternalStorage.readObject(getContext(), "Email");
-            String password = (String) InternalStorage.readObject(getContext(), "Password");
-
-            if(!email.isEmpty() && !password.isEmpty()){
-                et_EmailAddress.setText(email);
-                et_Password.setText(password);
-
-                cb_Remeber.setChecked(true);
-
-                /*if(autoLogin){
-                    bt_Login.performClick();
-                }*/
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     private void loginWithGoogle() {
         // Configure Google Sign In
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
-                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
+        .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken(getString(R.string.default_web_client_id))
+        .requestEmail()
+        .build();
 
         googleSignInClient = GoogleSignIn.getClient(getActivity(),googleSignInOptions);
 
@@ -168,18 +132,15 @@ public class Login extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == 100) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
+                // Google Sign In was successful
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d("TAG", "firebaseAuthWithGoogle:" + account.getId());
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
+                // Google Sign In failed,
                 Log.w("TAG", "Google sign in failed", e);
-                // ...
             }
         }
     }
@@ -192,10 +153,9 @@ public class Login extends Fragment {
                 if (isNewUser) {
                     Bundle bundle = new Bundle();
                     bundle.putBoolean("IsGoogle", true);
-
-                    Navigation.findNavController(mainRoot).navigate(R.id.action_login_to_registration, bundle);
+                    Navigation.findNavController(getView()).navigate(R.id.action_login_to_registration, bundle);
                 } else {
-                    verifyTypeUser(mainRoot,firebaseAuth.getCurrentUser().getUid());
+                    verifyTypeUser(firebaseAuth.getCurrentUser().getUid());
                 }
             } else {
                 // If sign in fails, display a message to the user.
@@ -204,8 +164,7 @@ public class Login extends Fragment {
         });
     }
 
-
-    private void verifyData(View root){
+    private void verifyData(){
         String email = et_EmailAddress.getText().toString().trim();
         String password = et_Password.getText().toString().trim();
         boolean error = false;
@@ -234,27 +193,25 @@ public class Login extends Fragment {
 
         progressBar_Login.setVisibility(View.VISIBLE);
 
-        login(root,email,password);
+        login(email,password);
     }
 
-    private void login(View root, String email, String password) {
+    private void login(String email, String password) {
 
         firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                 if(cb_Remeber.isChecked()){
-                    saveData(email,password);
+                    saveRemeberData(email,password);
                 }
                 else{
-                    saveData("","");
+                    saveRemeberData("","");
                 }
 
                 if(user.isEmailVerified()){
-                    Toast.makeText(getContext(),"Login Successful",Toast.LENGTH_LONG).show();
                     progressBar_Login.setVisibility(View.GONE);
-
-                    verifyTypeUser(root,user.getUid());
+                    verifyTypeUser(user.getUid());
                 }
                 else{
                     user.sendEmailVerification();
@@ -267,25 +224,23 @@ public class Login extends Fragment {
         });
     }
 
-    private void verifyTypeUser(View root, String userId){
-
-        NavController navController = Navigation.findNavController(mainRoot);
+    private void verifyTypeUser(String userId){
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
-        database.child("Users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child("Traveler").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                simpleUser = snapshot.getValue(SimpleUser.class);
-                if(simpleUser != null){
-                    //editor.putBoolean("RegisterType", true); //RegisterType -> True = Normal User || False = Hotel Manager
-                    navController.navigate(R.id.action_login_to_simple_user_home);
+                traveler = snapshot.getValue(Traveler.class);
+                if(traveler != null){
+                    Toast.makeText(getContext(),"Login Successful",Toast.LENGTH_LONG).show();
+                    Navigation.findNavController(getView()).navigate(R.id.action_login_to_traveler_home);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("ERROR", "getUser:onCancelled",error.toException());
+                Log.e("ERROR", "getTraveler:onCancelled",error.toException());
             }
         });
 
@@ -294,20 +249,20 @@ public class Login extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 manager = snapshot.getValue(HotelManager.class);
                 if(manager != null){
-                    //editor.putBoolean("RegisterType", true); //RegisterType -> True = Normal User || False = Hotel Manager
-                    navController.navigate(R.id.action_login_to_hotel_manager_home);
+                    Toast.makeText(getContext(),"Login Successful",Toast.LENGTH_LONG).show();
+                    Navigation.findNavController(getView()).navigate(R.id.action_login_to_hotel_manager_home);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("ERROR", "getUser:onCancelled",error.toException());
+                Log.e("ERROR", "getManager:onCancelled",error.toException());
             }
         });
 
     }
 
-    private void saveData(String email, String password){
+    private void saveRemeberData(String email, String password){
         try {
             InternalStorage.writeObject(getContext(), "Email", email);
             InternalStorage.writeObject(getContext(), "Password", password);
@@ -316,4 +271,26 @@ public class Login extends Fragment {
         }
     }
 
+    private void getRemeberData() {
+        try {
+            String email = (String) InternalStorage.readObject(getContext(), "Email");
+            String password = (String) InternalStorage.readObject(getContext(), "Password");
+
+            if(!email.isEmpty() && !password.isEmpty()){
+                et_EmailAddress.setText(email);
+                et_Password.setText(password);
+
+                cb_Remeber.setChecked(true);
+
+                /*if(autoLogin){
+                    bt_Login.performClick();
+                }*/
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }

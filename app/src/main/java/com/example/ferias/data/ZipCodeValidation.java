@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class ZipCodeValidation {
 
-    private HashMap<String,String> postalformat;
+    private final HashMap<String,String> postalformat;
 
     public ZipCodeValidation() {
         postalformat = new HashMap<>();

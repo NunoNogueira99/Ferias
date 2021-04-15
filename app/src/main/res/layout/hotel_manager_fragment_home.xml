@@ -37,17 +37,17 @@
                 android:id="@+id/ll_ProfileMenu_Manager"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bt_ProfileMenu_Manager">
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@+id/bt_ProfileMenu_Manager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/bt_ProfileMenu_Manager"
+                app:layout_constraintTop_toTopOf="@+id/bt_ProfileMenu_Manager">
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/bt_EditProfile_Manager"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Edit Profile"
+                    android:text="@string/edit_profile"
                     android:textAllCaps="false"
                     app:icon="@drawable/ic_baseline_edit_24"
                     app:iconPadding="8dp"
@@ -57,8 +57,8 @@
                     android:id="@+id/bt_Logout_Manager"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Logout"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/logout"
                     android:textAllCaps="false"
                     app:icon="@drawable/ic_baseline_logout_24"
                     app:iconPadding="8dp"
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="20dp"
-                android:text="Hi, Hotel Manager"
+                android:text="@string/hello_mensage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bt_ProfileMenu_Manager" />
 
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="5dp"
-                android:text="Manage your hotel"
+                android:text="@string/manage_your_hotel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_NameMensage_Manager" />
 
@@ -121,7 +121,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
-                        android:text="Manager your Hotels"
+                        android:text="@string/manage_your_hotel"
                         android:textColor="@color/primary_white"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -137,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="25dp"
-                android:text="about your last clients"
+                android:text="@string/about_your_last_clients"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bt_ManageHotels" />
 
@@ -148,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="5dp"
-                android:text="See your bookings"
+                android:text="@string/see_your_bookings"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -160,8 +160,7 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView14"
-                tools:visibility="gone" />
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
             <TextView
                 android:id="@+id/textView"
@@ -170,10 +169,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="15dp"
-                android:text="@string/see_all_text"
+                android:text="@string/see_all"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/include"
-                tools:visibility="gone" />
+                app:layout_constraintTop_toBottomOf="@+id/include" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

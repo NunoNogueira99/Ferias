@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 public class PageAdapter extends FragmentStatePagerAdapter {
 
-    private ArrayList<String> list_Titles = new ArrayList<>();
-    private ArrayList<Fragment> list_Fragments = new ArrayList<>();
+    private final ArrayList<String> list_Titles = new ArrayList<>();
+    private final ArrayList<Fragment> list_Fragments = new ArrayList<>();
 
     public PageAdapter(FragmentManager  fa) {
         super(fa);

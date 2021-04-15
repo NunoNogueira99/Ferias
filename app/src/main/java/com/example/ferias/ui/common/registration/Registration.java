@@ -5,9 +5,6 @@ This is the version created by me (Martin), that is going to replace Registratio
 package com.example.ferias.ui.common.registration;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -33,7 +30,7 @@ import androidx.navigation.Navigation;
 import com.example.ferias.R;
 import com.example.ferias.data.PasswordStrength;
 import com.example.ferias.data.hotel_manager.HotelManager;
-import com.example.ferias.data.simple_user.SimpleUser;
+import com.example.ferias.data.traveler.Traveler;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -113,7 +110,12 @@ public class Registration extends Fragment {
     }
 
     private void verifyIsGoogle() {
-        googleRegistration = getArguments().getBoolean("IsGoogle",false);
+        if(!getArguments().isEmpty()){
+            googleRegistration = getArguments().getBoolean("IsGoogle",false);
+        }
+        else{
+            googleRegistration = false;
+        }
 
         if(googleRegistration){
             tilEmail_Registration.setVisibility(View.GONE);
@@ -204,6 +206,8 @@ public class Registration extends Fragment {
 
             PasswordStrength passwordStrength = PasswordStrength.calculate(password);
             if(password.isEmpty() || passwordStrength.getStrength() <= 1){
+                et_Password.setError("Password strength error");
+                et_Password.requestFocus();
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                 dialog.setTitle("Password strength error");
                 String mensage = "Your password needs to:" +
@@ -212,12 +216,7 @@ public class Registration extends Fragment {
                         "\n\tBe at least 8 characters long";
 
                 dialog.setMessage(mensage);
-                dialog.setNegativeButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        dialogInterface.dismiss();
-                    }
-                });
+                dialog.setNegativeButton("Confirm", (dialogInterface, which) -> dialogInterface.dismiss());
                 AlertDialog alertDialog = dialog.create();
                 alertDialog.show();
                 error = true;
@@ -266,8 +265,8 @@ public class Registration extends Fragment {
         String path = "";
 
         if(cw_chooseTraveler.isChecked()){
-            newuser = googleRegistration ?  new SimpleUser(name, surname, phone, email,true) : new SimpleUser(name, surname, email, phone, password);
-            path = "Users";
+            newuser = googleRegistration ?  new Traveler(name, surname, phone, email,true) : new Traveler(name, surname, email, phone, password);
+            path = "Traveler";
         }
 
         if(cw_chooseHotelmanager.isChecked()){
@@ -276,8 +275,8 @@ public class Registration extends Fragment {
         }
 
         FirebaseDatabase.getInstance().getReference(path)
-                .child(userID)
-                .setValue(newuser).addOnCompleteListener(task -> {
+        .child(userID)
+        .setValue(newuser).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 Toast.makeText(getContext(),"User has ben registered successfully!", Toast.LENGTH_LONG).show();
                 progressBar_Register.setVisibility(View.GONE);
@@ -295,8 +294,6 @@ public class Registration extends Fragment {
     }
 
     private void calculatePasswordStrength(String str) {
-        // Now, we need to define a PasswordStrength enum
-        // with a calculate static method returning the password strength
         PasswordStrength passwordStrength = PasswordStrength.calculate(str);
 
         progressBar_passwordstrength_registration.setProgressTintList(ColorStateList.valueOf(passwordStrength.getColor()));

@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.firestore.CollectionReference;
+import com.squareup.picasso.Picasso;
 
 public class SearchHotel extends Fragment {
 
@@ -100,8 +101,8 @@ public class SearchHotel extends Fragment {
             protected void onBindViewHolder(@NonNull MyViewHolderClass holder, int position, @NonNull Hotel model) {
                 holder.setName(model.getName());
                 holder.setCity(model.getAddress().getCity());
-                //holder.price.setText((int)model.get_Price());
-                //Picasso.get().load(model.getImageURL()).into(holder.image);
+                holder.setPrice(Float.toString(model.getPrice()));
+                Picasso.get().load(model.getCoverPhoto()).into(holder.image);
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

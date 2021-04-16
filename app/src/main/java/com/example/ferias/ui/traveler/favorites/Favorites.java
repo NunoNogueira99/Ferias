@@ -33,6 +33,7 @@ public class Favorites extends Fragment {
     private final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Hotel");
     private RecyclerView FavList_recyclerView;
     private final ArrayList <Hotel> list = new ArrayList<>();
+
     Dialog d;
     private TextView remove, cancel;
 
@@ -50,6 +51,7 @@ public class Favorites extends Fragment {
 
         remove = d.findViewById(R.id.remove_req);
         cancel = d.findViewById(R.id.cancel_req);
+
 
         clickListener(root);
         getFavsList(root);
@@ -85,6 +87,7 @@ public class Favorites extends Fragment {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     if(keys.contains(ds.getKey())){
                         Hotel hotel = ds.getValue(Hotel.class);
+
                         list.add(hotel);
                     }
                 }
@@ -108,7 +111,7 @@ public class Favorites extends Fragment {
                 // Attach the adapter to the recyclerview to populate items
                 rvHotels.setAdapter(adapter);
                 // Set layout manager to position the items
-                rvHotels.setLayoutManager(new LinearLayoutManager(getContext()));
+                rvHotels.setLayoutManager(new GridLayoutManager(getContext(),2));
             }
 
             @Override
@@ -135,5 +138,4 @@ public class Favorites extends Fragment {
         });
 
     }
-
 }

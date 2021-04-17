@@ -157,5 +157,9 @@
         android:id="@+id/favorites"
         android:name="com.example.ferias.ui.traveler.favorites.Favorites"
         android:label="fragment_favorites"
-        tools:layout="@layout/traveler_fragment_favorites_hotels" />
+        tools:layout="@layout/traveler_fragment_favorites_hotels" >
+        <action
+            android:id="@+id/action_favorites_to_traveler_hotelview"
+            app:destination="@id/traveler_hotelview" />
+    </fragment>
 </navigation>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,13 +28,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Favorites extends Fragment {
 
     private final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Hotel");
     private RecyclerView FavList_recyclerView;
-    private final ArrayList <Hotel> list = new ArrayList<>();
-
     Dialog d;
     private TextView remove, cancel;
 
@@ -84,6 +84,7 @@ public class Favorites extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList list = new ArrayList<>();
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     if(keys.contains(ds.getKey())){
                         Hotel hotel = ds.getValue(Hotel.class);
@@ -96,8 +97,10 @@ public class Favorites extends Fragment {
                 rvHotels.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), rvHotels, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Toast.makeText(getContext(),"CLicc",Toast.LENGTH_SHORT).show();
                         //go-to hotel page
+                        Bundle bundle = new Bundle();
+                        bundle.putString("clickDetails", keys.get(position));
+                        Navigation.findNavController(root).navigate(R.id.action_favorites_to_traveler_hotelview, bundle);
                     }
 
                     @Override

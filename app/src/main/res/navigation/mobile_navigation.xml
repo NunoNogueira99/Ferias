@@ -152,7 +152,11 @@
         android:id="@+id/traveler_hotelview"
         android:name="com.example.ferias.ui.traveler.hotels.HotelViewer"
         android:label="fragment_traveler_hotelview"
-        tools:layout="@layout/traveler_fragment_hotel_view" />
+        tools:layout="@layout/traveler_fragment_hotel_view" >
+        <action
+            android:id="@+id/action_traveler_hotelview_to_traveler_home"
+            app:destination="@id/traveler_home" />
+    </fragment>
     <fragment
         android:id="@+id/favorites"
         android:name="com.example.ferias.ui.traveler.favorites.Favorites"

@@ -4,12 +4,13 @@ import com.example.ferias.data.common.User;
 import com.example.ferias.data.hotel_manager.Hotel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Traveler extends User implements Serializable {
 
     ////////////////     BOOKINGS     ////////////////
-    private List<Booking> bookings;
+    private List<String> bookings;
 
     public Traveler(){
         super();
@@ -17,34 +18,36 @@ public class Traveler extends User implements Serializable {
 
     public Traveler(String name, String surname, String phone, String email, boolean isGoogle) {
         super(name, surname, phone, email, isGoogle);
+        bookings = new ArrayList<>();
     }
 
     public Traveler(String name, String surname, String email, String phone, String password) {
         super(name, surname, email, phone, password);
+        bookings = new ArrayList<>();
     }
 
     //////////////// GETS BEGIN ////////////////
-    public List<Booking> getHotels() {
+    public List<String> getBookings() {
         return bookings;
     }
     //////////////// GETS END ////////////////
 
     //////////////// SETS BEGIN ////////////////
-    public void setHotels(List<Booking> hotels) {
-        this.bookings = hotels;
+    public void setBookings(List<String> bookings) {
+        this.bookings = bookings;
     }
 
-    public void addHotel(Booking hotel) {
-        this.bookings.add(hotel);
+    public void addBooking(String booking) {
+        if(bookings==null){
+            bookings = new ArrayList<>();
+        }
+        this.bookings.add(booking);
     }
 
-    public void removeHotelbyIndex(int index) {
+    public void removeBookingyIndex(int index) {
         this.bookings.remove(index);
     }
 
-    public void removeHotelbyObject(Hotel hotel) {
-        this.bookings.remove(hotel);
-    }
     //////////////// SETS END ////////////////
 
 

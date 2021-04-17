@@ -4,11 +4,11 @@
     <color name="primary_white">#DEFFFFFF</color>
     <color name="secondary_white">#99FFFFFF</color>
     <color name="tertiary_white">#40FFFFFF</color>
-    <color name="background_color">#101234</color>
-    <color name="main_color">#15194A</color>
-    <color name="accent_color">#000EFF</color>
+    <color name="background_color">#173F5F</color>
+    <color name="main_color">#20639B</color>
+    <color name="accent_color">#ED553B</color>
     <color name="transparent">#00FFFFFF</color>
-    <color name="yellow">#C4A838</color>
+    <color name="yellow">#F6D55C</color>
     <!-- this is for overriding the edittext outlined border color when in normal state -->
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/tertiary_white</color>
 </resources>

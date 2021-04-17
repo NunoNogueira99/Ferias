@@ -34,7 +34,7 @@ public class MyViewHolderClassFavs extends RecyclerView.Adapter<MyViewHolderClas
             name = itemView.findViewById(R.id.hotellist_item_name);
             price = itemView.findViewById(R.id.hotellist_item_price);
             photo = itemView.findViewById(R.id.hotellist_item_img);
-            rating = itemView.findViewById(R.id.ratingBarFavorites);
+            rating = itemView.findViewById(R.id.RatingBarFavs);
         }
     }
 
@@ -65,7 +65,7 @@ public class MyViewHolderClassFavs extends RecyclerView.Adapter<MyViewHolderClas
         Hotel hotel = mHotels.get(position);
         holder.name.setText(hotel.getName());
         holder.price.setText(Float.toString(hotel.getPrice()));
-        holder.rating.setRating(hotel.getRate());
+        holder.rating.setRating(hotel.getStars());
         Picasso.get().load(hotel.getCoverPhoto()).into(holder.photo);
 
 

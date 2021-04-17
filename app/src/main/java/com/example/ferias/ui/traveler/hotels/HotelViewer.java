@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +22,6 @@ import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.ferias.R;
 import com.example.ferias.data.hotel_manager.Hotel;
-import com.example.ferias.data.hotel_manager.HotelFeature;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,7 +46,8 @@ public class HotelViewer extends Fragment {
 
     private RecyclerView recyclerViewSimilar;
     private final ArrayList <Hotel> similarHotelKeys = new ArrayList<>();
-    private Hotel hotel;
+
+    private RecyclerView rvFeatures;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,8 +58,7 @@ public class HotelViewer extends Fragment {
         initializeElements(root);
         clickListener(root);
 
-        getSimilarHotels(root);
-        setHotelFeatures(root);
+        getCurrentHotelInfo(root);
 
         return root;
     }
@@ -77,6 +78,7 @@ public class HotelViewer extends Fragment {
         databaseReference= FirebaseDatabase.getInstance().getReference().child("Hotel");
 
         recyclerViewSimilar = root.findViewById(R.id.similarhotels_Rv);
+        rvFeatures = root.findViewById(R.id.features_gridview);
     }
 
     private void clickListener(View root) {
@@ -164,7 +166,7 @@ public class HotelViewer extends Fragment {
         dbUsers.child("Favs").setValue(map);
     }
 
-    private void getSimilarHotels(View root) {
+    private void getCurrentHotelInfo(View root) {
         //---
         //get current hotel details
         //---
@@ -172,13 +174,11 @@ public class HotelViewer extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
-                    double lowerPrice,higherPrice;
-
+                    Hotel hotel;
                     hotel = snapshot.getValue(Hotel.class);
-                    lowerPrice= hotel.getPrice() - (hotel.getPrice() * 0.1);
-                    higherPrice =hotel.getPrice() + (hotel.getPrice() * 0.1);;
 
-                    populateReciclerView(lowerPrice,higherPrice,root);
+                    setHotelFeatures(hotel,root);
+                    populateRecyclerViewOfHotel(hotel,root);
                 }
             }
 
@@ -189,7 +189,12 @@ public class HotelViewer extends Fragment {
         });
     }
 
-    private void populateReciclerView(double lowerPrice, double higherPrice, View root) {
+    private void populateRecyclerViewOfHotel(Hotel hotel, View root) {
+        double lowerPrice,higherPrice;
+
+        lowerPrice= hotel.getPrice() - (hotel.getPrice() * 0.1);
+        higherPrice =hotel.getPrice() + (hotel.getPrice() * 0.1);;
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -217,9 +222,20 @@ public class HotelViewer extends Fragment {
         });
     }
 
-    private void setHotelFeatures(View root) {
+    private void setHotelFeatures(Hotel hotel, View root) {
         Map<String, Boolean> hotelFeature = hotel.getFeature().getFeatures();
+        ArrayList <String> listFeatures = new ArrayList<>();
 
-        //if()
+
+        // using for-each loop for iteration over Map.entrySet()
+        for (Map.Entry<String,Boolean> entry : hotelFeature.entrySet()) {
+            if(entry.getValue() == true)
+                listFeatures.add(entry.getKey());
+        }
+
+        adapterFeatures adapterFeatures= new adapterFeatures(listFeatures);
+        rvFeatures.setAdapter(adapterFeatures);
+        // Set layout manager to position the items
+        rvFeatures.setLayoutManager(new GridLayoutManager(getContext(),2));
     }
 }

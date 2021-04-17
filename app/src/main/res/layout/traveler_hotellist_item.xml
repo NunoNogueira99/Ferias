@@ -50,7 +50,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/hotellist_item_name"
@@ -61,14 +64,13 @@
                     android:textColor="@color/primary_white" />
 
                 <RatingBar
-                    android:id="@+id/ratingBarFavorites"
+                    android:id="@+id/RatingBarFavs"
                     style="@android:style/Widget.Material.RatingBar.Small"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:numStars="5"
                     android:progressTint="@color/yellow"
                     android:rating="3" />
-
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -77,11 +79,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:elevation="10dp"
-            android:src="@drawable/home_cover_mask"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/fadev2" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

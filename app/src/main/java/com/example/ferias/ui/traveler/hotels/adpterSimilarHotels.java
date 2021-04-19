@@ -64,7 +64,8 @@ public class adpterSimilarHotels extends RecyclerView.Adapter<adpterSimilarHotel
         holder.name.setText(hotel.getName());
         holder.city.setText(hotel.getAddress().getCity());
         holder.price.setText(Float.toString(hotel.getPrice()));
-        Picasso.get().load(hotel.getCoverPhoto()).into(holder.photo);
+        if(!(hotel.getCoverPhoto().isEmpty()))
+            Picasso.get().load(hotel.getCoverPhoto()).into(holder.photo);
 
         /*holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

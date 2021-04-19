@@ -96,14 +96,15 @@ public class SearchHotel extends Fragment {
     private void loadData(Query query,View root) {
         options = new FirebaseRecyclerOptions.Builder<Hotel>().setQuery(query, Hotel.class).build();
 
-        adapter= new FirebaseRecyclerAdapter<Hotel, MyViewHolderClass>(options) {
+        adapter = new FirebaseRecyclerAdapter<Hotel, MyViewHolderClass>(options) {
             @Override
             protected void onBindViewHolder(@NonNull MyViewHolderClass holder, int position, @NonNull Hotel model) {
                 holder.setName(model.getName());
                 holder.setCity(model.getAddress().getCity());
                 holder.setPrice(Float.toString(model.getPrice()));
-                Picasso.get().load(model.getCoverPhoto()).into(holder.image);
-
+                if(!(model.getCoverPhoto().isEmpty())){ //if you dont check if there is a cover photo to load it can cause crashes when there is not a cover photo
+                    Picasso.get().load(model.getCoverPhoto()).into(holder.image);
+                }
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

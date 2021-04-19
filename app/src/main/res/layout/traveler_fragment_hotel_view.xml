@@ -132,6 +132,8 @@
                     app:iss_delay="0"
                     app:iss_period="2000" >
 
+                </com.denzcoskun.imageslider.ImageSlider>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -154,8 +156,6 @@
 
                     </androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
-
-                </com.denzcoskun.imageslider.ImageSlider>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

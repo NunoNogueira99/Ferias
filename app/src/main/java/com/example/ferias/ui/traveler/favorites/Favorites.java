@@ -33,7 +33,6 @@ import java.util.List;
 public class Favorites extends Fragment {
 
     private final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Hotel");
-    private RecyclerView FavList_recyclerView;
     Dialog d;
     private TextView remove, cancel;
 

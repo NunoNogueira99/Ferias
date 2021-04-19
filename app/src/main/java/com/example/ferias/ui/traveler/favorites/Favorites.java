@@ -32,8 +32,7 @@ import java.util.List;
 
 public class Favorites extends Fragment {
 
-    private final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Hotel");
-    private RecyclerView FavList_recyclerView;
+    private final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Hotel");
     Dialog d;
     private TextView remove, cancel;
 
@@ -52,6 +51,8 @@ public class Favorites extends Fragment {
         remove = d.findViewById(R.id.remove_req);
         cancel = d.findViewById(R.id.cancel_req);
 
+
+        clickListener(root);
         getFavsList(root);
 
         return root;
@@ -59,7 +60,6 @@ public class Favorites extends Fragment {
 
 
     private void getFavsList(View root) {
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference dbUsers = FirebaseDatabase.getInstance().getReference().child("Traveler/" + user.getUid());
 
@@ -80,7 +80,6 @@ public class Favorites extends Fragment {
     }
 
     private void populateRecyclerView(View root, ArrayList<String> keys) {
-
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -88,6 +87,7 @@ public class Favorites extends Fragment {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     if(keys.contains(ds.getKey())){
                         Hotel hotel = ds.getValue(Hotel.class);
+
                         list.add(hotel);
                     }
                 }
@@ -104,7 +104,7 @@ public class Favorites extends Fragment {
 
                     @Override
                     public void onItemLongClick(View view, int position) {
-                        dialogRemove(root, position);
+                        Toast.makeText(getContext(),"Longgg CLicc",Toast.LENGTH_SHORT).show();
                         d.show();
                     }
                 }));
@@ -113,8 +113,7 @@ public class Favorites extends Fragment {
                 // Attach the adapter to the recyclerview to populate items
                 rvHotels.setAdapter(adapter);
                 // Set layout manager to position the items
-                rvHotels.setLayoutManager(new LinearLayoutManager(getContext()
-                ));
+                rvHotels.setLayoutManager(new GridLayoutManager(getContext(),2));
             }
 
             @Override
@@ -124,17 +123,12 @@ public class Favorites extends Fragment {
         });
     }
 
-    private void dialogRemove(View root, int element) {
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference dbUsers = FirebaseDatabase.getInstance().getReference().child("Traveler/" + user.getUid());
+    private void clickListener(View root) {
 
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // todo
-                Toast.makeText(getContext(), "Removed",Toast.LENGTH_SHORT).show();
-                getFavsList(root);
+                Toast.makeText(getContext(),"Remove",Toast.LENGTH_SHORT).show();
             }
         });
 

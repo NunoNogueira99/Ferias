@@ -45,7 +45,7 @@
     </androidx.cardview.widget.CardView>
 
     <RatingBar
-        android:id="@+id/ratingBar"
+        android:id="@+id/ratingBarSimilar"
         style="@android:style/Widget.Material.RatingBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

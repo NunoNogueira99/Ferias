@@ -8,23 +8,33 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.ferias.R;
 import com.example.ferias.data.hotel_manager.Hotel;
+import com.example.ferias.ui.traveler.favorites.RecyclerItemClickListener;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.firestore.CollectionReference;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SearchHotel extends Fragment {
 
@@ -37,6 +47,22 @@ public class SearchHotel extends Fragment {
     private FirebaseRecyclerOptions <Hotel> options;
     private FirebaseRecyclerAdapter <Hotel,MyViewHolderClass> adapter;
 
+    private FloatingActionButton filterBtn;
+    private EditText minPriceBtn, maxPriceBtn;
+    private boolean fabsOn = false;
+
+    TextView partyMoodBtn;
+    TextView chillMoodBtn;
+    TextView adventureMoodBtn;
+    TextView sportsMoodBtn;
+
+    Map<Hotel,String> searchResults = new HashMap<>();
+    Map<Hotel,String> filteredResults = new HashMap<>();
+
+    //filter vars
+    Float minPrice =null, maxPrice=null;
+    boolean party=false,chill=false,adventure=false, sports=false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,14 +72,13 @@ public class SearchHotel extends Fragment {
         initializeElements(root);
         clickListener(root);
 
-        initialSearch(root);
+        setQuery(root);
         //loadData(getArguments().getString("inputText"),root);
         return root;
     }
 
-    private void initialSearch(View root) {
+    private void setQuery(View root) {
         String modsWanted = getArguments().getString("modsWanted");
-        String inputSearch = getArguments().getString("inputText");
 
         Query query;
         if(modsWanted != null)
@@ -87,33 +112,166 @@ public class SearchHotel extends Fragment {
 
     private void clickListener(View root) {
         mSearchBtn.setOnClickListener(v -> {
-            Query query = databaseReference.orderByChild("address/city").startAt(mSearchField.getText().toString().toUpperCase()).endAt(mSearchField.getText().toString().toLowerCase() + "\uf8ff");
-            mResultInfo.setText(mSearchField.getText().toString());
+            Query query = databaseReference.orderByChild("address/city").startAt(mSearchField.getText().toString().toLowerCase()).endAt(mSearchField.getText().toString().toLowerCase() + "\uf8ff");
+
+            if(mSearchField.getText().toString().isEmpty())
+                mResultInfo.setText("All");
+            else
+                mResultInfo.setText(mSearchField.getText().toString());
             loadData(query,root);
+        });
+
+        filterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!fabsOn)
+                {
+                    minPriceBtn.setVisibility(View.VISIBLE);
+                    maxPriceBtn.setVisibility(View.VISIBLE);
+                    partyMoodBtn.setVisibility(View.VISIBLE);
+                    chillMoodBtn.setVisibility(View.VISIBLE);
+                    adventureMoodBtn.setVisibility(View.VISIBLE);
+                    sportsMoodBtn.setVisibility(View.VISIBLE);
+                    fabsOn=true;
+                }
+                else
+                {
+                    minPriceBtn.setVisibility(View.GONE);
+                    maxPriceBtn.setVisibility(View.GONE);
+                    partyMoodBtn.setVisibility(View.GONE);
+                    chillMoodBtn.setVisibility(View.GONE);
+                    adventureMoodBtn.setVisibility(View.GONE);
+                    sportsMoodBtn.setVisibility(View.GONE);
+                    fabsOn=false;
+                }
+            }
+        });
+
+        mResultList.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), mResultList, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                //go-to hotel page
+                Bundle bundle = new Bundle();
+                List<String>keys=new ArrayList<>();
+
+                if(filteredResults.isEmpty()) {
+                    for(Map.Entry<Hotel,String> entry : searchResults.entrySet())
+                        keys.add(entry.getValue());
+                }
+                else
+                {
+                    for(Map.Entry<Hotel,String> entry : filteredResults.entrySet())
+                        keys.add(entry.getValue());
+                }
+
+                bundle.putString("clickDetails", keys.get(position));
+                Navigation.findNavController(root).navigate(R.id.action_traveler_search_to_traveler_hotelview, bundle);
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+            }
+        }));
+
+        maxPriceBtn.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.	IME_ACTION_DONE) {
+                    if(!maxPriceBtn.getText().toString().isEmpty())
+                        maxPrice= Float.parseFloat(maxPriceBtn.getText().toString());
+                    else
+                        maxPrice=null;
+                    applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+        minPriceBtn.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.	IME_ACTION_DONE) {
+                    if(!minPriceBtn.getText().toString().isEmpty())
+                        minPrice= Float.parseFloat(minPriceBtn.getText().toString());
+                    else
+                        minPrice=null;
+                    applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+        partyMoodBtn.setOnClickListener(v -> {
+            if(!party)
+            {
+                partyMoodBtn.setBackgroundResource(R.drawable.rounded_rectangle_active);
+                party=true;
+            }
+            else
+            {
+                partyMoodBtn.setBackgroundResource(R.drawable.shape_search_1_active);
+                party=false;
+            }
+            applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
+        });
+        chillMoodBtn.setOnClickListener(v -> {
+            if(!chill)
+            {
+                chillMoodBtn.setBackgroundResource(R.drawable.rounded_rectangle_active);
+                chill=true;
+            }
+            else
+            {
+                chillMoodBtn.setBackgroundResource(R.drawable.shape_search_1_active);
+                chill=false;
+            }
+            applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
+        });
+        adventureMoodBtn.setOnClickListener(v -> {
+            if(!adventure)
+            {
+                adventureMoodBtn.setBackgroundResource(R.drawable.rounded_rectangle_active);
+                adventure=true;
+            }
+            else
+            {
+                adventureMoodBtn.setBackgroundResource(R.drawable.shape_search_1_active);
+                adventure=false;
+            }
+            applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
+        });
+        sportsMoodBtn.setOnClickListener(v -> {
+            if(!sports)
+            {
+                sportsMoodBtn.setBackgroundResource(R.drawable.rounded_rectangle_active);
+                sports=true;
+            }
+            else
+            {
+                sportsMoodBtn.setBackgroundResource(R.drawable.shape_search_1_active);
+                sports=false;
+            }
+            applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
         });
     }
 
     private void loadData(Query query,View root) {
+        searchResults = new HashMap<>();
+        filteredResults = new HashMap<>();
+
         options = new FirebaseRecyclerOptions.Builder<Hotel>().setQuery(query, Hotel.class).build();
 
-        adapter = new FirebaseRecyclerAdapter<Hotel, MyViewHolderClass>(options) {
+        adapter= new FirebaseRecyclerAdapter<Hotel, MyViewHolderClass>(options) {
             @Override
             protected void onBindViewHolder(@NonNull MyViewHolderClass holder, int position, @NonNull Hotel model) {
+                searchResults.put(model,getRef(position).getKey());
+
                 holder.setName(model.getName());
                 holder.setCity(model.getAddress().getCity());
                 holder.setPrice(Float.toString(model.getPrice()));
-                if(!(model.getCoverPhoto().isEmpty())){ //if you dont check if there is a cover photo to load it can cause crashes when there is not a cover photo
-                    Picasso.get().load(model.getCoverPhoto()).into(holder.image);
-                }
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("clickDetails", getRef(position).getKey());
-                        Navigation.findNavController(root).navigate(R.id.action_traveler_search_to_traveler_hotelview, bundle);
-
-                    }
-                });
+                Picasso.get().load(model.getCoverPhoto()).into(holder.image);
             }
 
             @NonNull
@@ -135,7 +293,86 @@ public class SearchHotel extends Fragment {
         mResultList.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         mResultInfo = root.findViewById(R.id.searchResultsInfoText);
-        mResultInfo.setText(getArguments().getString("inputText"));
 
+        if(getArguments().getString("inputText").isEmpty())
+            mResultInfo.setText("All");
+        else
+            mResultInfo.setText(getArguments().getString("inputText"));
+
+        filterBtn= root.findViewById(R.id.filter_btn);
+        minPriceBtn = root.findViewById(R.id.min_price);
+        maxPriceBtn = root.findViewById(R.id.max_price);
+        partyMoodBtn = root.findViewById(R.id.searchFilter_party);;
+        chillMoodBtn = root.findViewById(R.id.searchFilter_Chill);;
+        adventureMoodBtn = root.findViewById(R.id.searchFilter_Adventure);;
+        sportsMoodBtn = root.findViewById(R.id.searchFilter_sports);;
+
+        minPriceBtn.setVisibility(View.GONE);
+        maxPriceBtn.setVisibility(View.GONE);
+        partyMoodBtn.setVisibility(View.GONE);
+        chillMoodBtn.setVisibility(View.GONE);
+        adventureMoodBtn.setVisibility(View.GONE);
+        sportsMoodBtn.setVisibility(View.GONE);
+    }
+
+    private void applyFilters(Float minPrice, Float maxPrice, boolean party, boolean chill, boolean adventure, boolean sports)
+    {
+        filteredResults = new HashMap<>(searchResults);
+        if(minPrice != null){
+            for (Map.Entry<Hotel,String> entry : searchResults.entrySet()) {
+                if(entry.getKey().getPrice()<minPrice)
+                {
+                    filteredResults.remove(entry.getKey());
+                }
+            }
+        }
+
+        if(maxPrice != null){
+            for (Map.Entry<Hotel,String> entry : searchResults.entrySet()) {
+                if(entry.getKey().getPrice()> maxPrice)
+                {
+                    filteredResults.remove(entry.getKey());
+                }
+            }
+        }
+        if(party)
+        {
+            for (Map.Entry<Hotel,String> entry : searchResults.entrySet()) {
+                if(entry.getKey().getMoods().getMoods().get("Nightlife, clubs and parties")==false)
+                {
+                    filteredResults.remove(entry.getKey());
+                }
+            }
+        }
+        if(chill)
+        {
+            for (Map.Entry<Hotel,String> entry : searchResults.entrySet()) {
+                if(entry.getKey().getMoods().getMoods().get("Very chill, perfect to relax")==false)
+                {
+                    filteredResults.remove(entry.getKey());
+                }
+            }
+        }
+        if(adventure)
+        {
+            for (Map.Entry<Hotel,String> entry : searchResults.entrySet()) {
+                if(entry.getKey().getMoods().getMoods().get("Ready to be explored! Embark on an adventure")==false)
+                {
+                    filteredResults.remove(entry.getKey());
+                }
+            }
+        }
+        if(sports)
+        {
+            for (Map.Entry<Hotel,String> entry : searchResults.entrySet()) {
+                if(entry.getKey().getMoods().getMoods().get("You can do some sport activities")==false)
+                {
+                    filteredResults.remove(entry.getKey());
+                }
+            }
+        }
+
+        adapterFilteredResults adapterFilteredResults=new adapterFilteredResults(filteredResults.keySet());
+        mResultList.setAdapter(adapterFilteredResults);
     }
 }

@@ -211,7 +211,7 @@ public class Hotel implements Serializable {
         this.bookings.add(booking);
     }
 
-    public void removeBookingyIndex(int index) {
+    public void removeBookingbyIndex(int index) {
         this.bookings.remove(index);
     }
     //////////////// SETS END ////////////////

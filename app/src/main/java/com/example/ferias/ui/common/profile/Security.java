@@ -192,8 +192,7 @@ public class Security extends Fragment {
                     if(task.isSuccessful()){
                         Toast.makeText(getContext(),"Account Deleted", Toast.LENGTH_LONG).show();
 
-                        NavController navController = Navigation.findNavController(root);
-                        navController.navigate(R.id.action_security_to_login);
+                        Navigation.findNavController(root).navigate(R.id.action_security_to_login);
                     }
                 });
             });

@@ -59,8 +59,7 @@ public class ForgotPassword extends Fragment{
         bt_Reset.setOnClickListener(v -> resetPassword(root));
 
         bt_Backhome_reset.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(root);
-            navController.navigate(R.id.action_forgotPassword_to_login);
+            Navigation.findNavController(root).navigate(R.id.action_forgotPassword_to_login);
         });
     }
 
@@ -90,8 +89,7 @@ public class ForgotPassword extends Fragment{
             if(task.isSuccessful()){
                 Toast.makeText(getContext(),"Check your email to reset your password!", Toast.LENGTH_LONG).show();
 
-                final NavController navController = Navigation.findNavController(root);
-                navController.navigate(R.id.action_forgotPassword_to_login);
+                Navigation.findNavController(root).navigate(R.id.action_forgotPassword_to_login);
             }
             else {
                 Toast.makeText(getContext(),"Try again! Something wrong happened", Toast.LENGTH_LONG).show();

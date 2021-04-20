@@ -108,6 +108,7 @@
     <string name="your_hotels">Your hotels</string>
 
     <string name="register_your_hotel">Register your hotel!</string>
+    <string name="edit_your_hotel">Edit your hotel!</string>
     <string name="add_cover_photo">Add cover photo</string>
     <string name="hotel_rating">Hotel Rating</string>
     <string name="total_rooms">Total Rooms</string>
@@ -154,5 +155,9 @@
         <item>ic_mood_relax</item>
         <item>ic_mood_city</item>
     </string-array>
+
+    <string name="type_chart">Type chart</string>
+    <string name="months">Months</string>
+    <string name="seasons">Seasons</string>
 
 </resources>

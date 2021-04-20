@@ -73,9 +73,10 @@ import java.util.Map;
 public class Hotel_Registration extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReferenceHotel, databaseReferenceManager;
     private StorageReference storageReference;
 
+    private HotelManager user;
     private Hotel hotel;
 
     private EditText et_Name,  et_TotalRooms, et_Price;
@@ -114,9 +115,13 @@ public class Hotel_Registration extends Fragment {
 
     private MaterialButton bt_RegisterHotel;
 
+    private ImageButton bt_hotel_registration_back;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
         View root = inflater.inflate(R.layout.hotel_manager_fragment_hotel_registration, container, false);
+
+        getUserDate();
 
         initializeElements(root);
 
@@ -125,10 +130,20 @@ public class Hotel_Registration extends Fragment {
         return root;
     }
 
+    private void getUserDate(){
+        try {
+            user = (HotelManager) InternalStorage.readObject(getContext(), "User");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initializeElements(View root) {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Hotel");
+        databaseReferenceManager = FirebaseDatabase.getInstance().getReference("Hotel Manager").child(firebaseUser.getUid());
         storageReference = FirebaseStorage.getInstance().getReference("Hotel");
 
         et_Name = root.findViewById(R.id.et_Hotel_Name);
@@ -162,12 +177,17 @@ public class Hotel_Registration extends Fragment {
         tv_title_others_photo = root.findViewById(R.id.tv_title_others_photo);
         othersphotos = new ArrayList<>();
 
+        bt_hotel_registration_back = root.findViewById(R.id.bt_hotel_registration_back);
 
         bt_RegisterHotel = root.findViewById(R.id.bt_RegisterHotel);
 
     }
 
     private void clickListeners(final View root) {
+
+        bt_hotel_registration_back.setOnClickListener(v -> {
+            Navigation.findNavController(getView()).navigate(R.id.action_hotel_registration_to_hotel_manage);
+        });
 
         bt_RegisterHotel.setOnClickListener(v -> {
             verifyData();
@@ -180,7 +200,7 @@ public class Hotel_Registration extends Fragment {
         hotel_photos_listern();
     }
 
-    public void hotel_features_listern(){
+    private void hotel_features_listern(){
         hotelFeatures = new HotelFeature(getResources().getStringArray(R.array.Features));
 
         tv_Features_Selected.setText("Features");
@@ -362,14 +382,6 @@ public class Hotel_Registration extends Fragment {
         });
 
         bt_close.setOnClickListener(v -> {
-            switch (requestCode){
-                case PICK_COVER_IMAGE_REQUEST:
-                    coverPhoto = null;
-                    break;
-                case PICK_OTHERS_IMAGE_REQUEST:
-                    othersphotos.clear();
-                    break;
-            }
             slideModelList.clear();
             mainslider.setImageList(slideModelList, ScaleTypes.FIT);
             mainslider.stopSliding();
@@ -728,12 +740,17 @@ public class Hotel_Registration extends Fragment {
 
     private void registerOnFirebase(Hotel hotel){
         String hotelID = GenerateUniqueIds.generateId();
-        databaseReference.child(hotelID).setValue(hotel).addOnCompleteListener(task1 -> {
+        databaseReferenceHotel = FirebaseDatabase.getInstance().getReference("Hotel").child(hotelID);
+
+        databaseReferenceHotel.setValue(hotel).addOnCompleteListener(task1 -> {
             if(task1.isSuccessful()){
                 Toast.makeText(getContext(),"Hotel has ben registered successfully!", Toast.LENGTH_LONG).show();
                 registerPhotosOnFirebase(hotelID);
-                final NavController navController = Navigation.findNavController(getView());
-                navController.navigate(R.id.action_hotel_registration_to_hotel_manager_home);
+
+                user.addHotel(hotelID);
+                databaseReferenceManager.setValue(user);
+
+                Navigation.findNavController(getView()).navigate(R.id.action_hotel_registration_to_hotel_manage);
             }
             else {
                 Toast.makeText(getContext(),"Failed to register! Try again!", Toast.LENGTH_LONG).show();
@@ -755,7 +772,7 @@ public class Hotel_Registration extends Fragment {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            databaseReference = FirebaseDatabase.getInstance().getReference().child("Hotel").child(hotelID);
+            databaseReferenceHotel = FirebaseDatabase.getInstance().getReference().child("Hotel").child(hotelID);
 
             StorageReference fileReference = storageReference.child(hotelID).child("Cover").child(GenerateUniqueIds.generateId() + "." + getFileExtension(coverPhoto));
             StorageTask<UploadTask.TaskSnapshot> mUploadCoverTask = fileReference.putFile(coverPhoto)
@@ -764,6 +781,7 @@ public class Hotel_Registration extends Fragment {
                             // Success, Image uploaded
                             Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_LONG).show();
                             hotel.setCoverPhoto(uri.toString());
+                            databaseReferenceHotel.setValue(hotel);
                             progressDialog.dismiss();
                         });
                     })
@@ -782,10 +800,18 @@ public class Hotel_Registration extends Fragment {
                 StorageReference fileOthers = storageReference.child(hotelID).child("Others").child(GenerateUniqueIds.generateId() + "." + getFileExtension(photo));
                 StorageTask<UploadTask.TaskSnapshot> mUploadOtherTask = fileOthers.putFile(photo)
                         .addOnSuccessListener(taskSnapshot -> {
-                            fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                            fileOthers.getDownloadUrl().addOnSuccessListener(uri -> {
                                 // Success, Image uploaded
                                 listothersphotos.add(uri.toString());
-                                progressDialog.dismiss();
+
+                                if(listothersphotos.size() == othersphotos.size()){
+                                    hotel.setOtherPhotos(listothersphotos);
+                                    databaseReferenceHotel.setValue(hotel);
+                                    progressDialog.dismiss();
+                                }
+
+                            }).addOnFailureListener(e -> {
+                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                             });
                         })
                         .addOnFailureListener(e -> {
@@ -797,9 +823,6 @@ public class Hotel_Registration extends Fragment {
                             progressDialog.setMessage("Uploaded " + (int) progress + "%");
                         });
             }
-            hotel.setOtherPhotos(listothersphotos);
-
-            databaseReference.setValue(hotel);
         } else {
             Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
         }

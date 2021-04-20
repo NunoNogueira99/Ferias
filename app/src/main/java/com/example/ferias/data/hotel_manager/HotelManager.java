@@ -10,7 +10,7 @@ import java.util.List;
 public class HotelManager extends User implements Serializable {
 
     ////////////////     HOTELS     ////////////////
-    private List<Hotel> hotels;
+    private List<String> hotels;
 
     public HotelManager(){
         this.hotels = new ArrayList<>();
@@ -27,17 +27,20 @@ public class HotelManager extends User implements Serializable {
     }
 
     //////////////// GETS BEGIN ////////////////
-    public List<Hotel> getHotels() {
+    public List<String> getHotels() {
         return hotels;
     }
     //////////////// GETS END ////////////////
 
     //////////////// SETS BEGIN ////////////////
-    public void setHotels(List<Hotel> hotels) {
+    public void setHotels(List<String> hotels) {
         this.hotels = hotels;
     }
 
-    public void addHotel(Hotel hotel) {
+    public void addHotel(String hotel) {
+        if(hotels.isEmpty()){
+            hotels = new ArrayList<>();
+        }
         this.hotels.add(hotel);
     }
 
@@ -45,8 +48,15 @@ public class HotelManager extends User implements Serializable {
         this.hotels.remove(index);
     }
 
-    public void removeHotelbyObject(Hotel hotel) {
-        this.hotels.remove(hotel);
+    public void removeHotelbyObject(String hotel) {
+        int index = 0;
+        for(String id: hotels){
+            if(id == hotel){
+                hotels.remove(index);
+                break;
+            }
+            index++;
+        }
     }
     //////////////// SETS END ////////////////
 

@@ -126,8 +126,7 @@ public class Registration extends Fragment {
     private void clickListeners(final View root) {
 
         bt_Backhome_Registration.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(root);
-            navController.navigate(R.id.action_registration_to_login);
+            Navigation.findNavController(root).navigate(R.id.action_registration_to_login);
         });
 
         bt_RegisterUser.setOnClickListener(v -> verifyData());
@@ -283,8 +282,7 @@ public class Registration extends Fragment {
 
                 FirebaseAuth.getInstance().signOut();
 
-                final NavController navController = Navigation.findNavController(getView());
-                navController.navigate(R.id.action_registration_to_login);
+                Navigation.findNavController(getView()).navigate(R.id.action_registration_to_login);
             }
             else {
                 Toast.makeText(getContext(),"Failed to register! Try again!", Toast.LENGTH_LONG).show();

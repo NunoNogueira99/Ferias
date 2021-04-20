@@ -98,24 +98,21 @@ public class PersonalData extends Fragment {
             int year = cldr.get(Calendar.YEAR);
             // date picker dialog
             picker[0] = new DatePickerDialog(getContext(),
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            Calendar currentdate = Calendar.getInstance();
-                            Calendar birthdaydate = Calendar.getInstance();
-                            birthdaydate.set(year, monthOfYear, dayOfMonth);
+                    (view, year1, monthOfYear, dayOfMonth) -> {
+                        Calendar currentdate = Calendar.getInstance();
+                        Calendar birthdaydate = Calendar.getInstance();
+                        birthdaydate.set(year1, monthOfYear, dayOfMonth);
 
-                            int age = currentdate.get(Calendar.YEAR) - birthdaydate.get(Calendar.YEAR);
-                            if (currentdate.get(Calendar.DAY_OF_YEAR) < birthdaydate.get(Calendar.DAY_OF_YEAR)) {
-                                age--;
-                            }
+                        int age = currentdate.get(Calendar.YEAR) - birthdaydate.get(Calendar.YEAR);
+                        if (currentdate.get(Calendar.DAY_OF_YEAR) < birthdaydate.get(Calendar.DAY_OF_YEAR)) {
+                            age--;
+                        }
 
-                            if (age < 18) {
-                                Toast.makeText(getContext(), "Invalid birth date, must be over 18 years old. Please enter a valid date", Toast.LENGTH_LONG).show();
-                                et_Age.setText("");
-                            } else {
-                                et_Age.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                            }
+                        if (age < 18) {
+                            Toast.makeText(getContext(), "Invalid birth date, must be over 18 years old. Please enter a valid date", Toast.LENGTH_LONG).show();
+                            et_Age.setText("");
+                        } else {
+                            et_Age.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1);
                         }
                     }, year, month, day);
             picker[0].show();

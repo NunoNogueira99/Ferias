@@ -144,8 +144,7 @@ public class Home extends Fragment {
                 firebaseAuth.signOut();
             }
 
-            NavController navController = Navigation.findNavController(root);
-            navController.navigate(R.id.action_traveler_home_to_login);
+            Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_login);
         });
 
         search_btn.setOnClickListener(v -> {
@@ -160,8 +159,7 @@ public class Home extends Fragment {
         sportsBtn.setOnClickListener(v -> {SearchByMods(root,"Sports");});
 
         favsBtn.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(root);
-            navController.navigate(R.id.action_traveler_home_to_favorites);
+            Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_favorites);
         });
     }
 
@@ -222,7 +220,7 @@ public class Home extends Fragment {
         if(user != null){
             tv_NameMensage.setText("Hi "+user.getName());
 
-            Glide.with(getActivity())
+            Glide.with(this)
             .load(user.getImage())
             .placeholder(R.drawable.profile_pic_example)
             .fitCenter()

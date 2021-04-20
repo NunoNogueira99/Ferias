@@ -108,8 +108,7 @@ public class Login extends Fragment {
         });
 
         tv_Forgot_Password.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(root);
-            navController.navigate(R.id.action_login_to_forgotPassword);
+            Navigation.findNavController(root).navigate(R.id.action_login_to_forgotPassword);
         });
     }
 
@@ -122,8 +121,6 @@ public class Login extends Fragment {
         .build();
 
         googleSignInClient = GoogleSignIn.getClient(getActivity(),googleSignInOptions);
-
-
 
         Intent intent = googleSignInClient.getSignInIntent();
 

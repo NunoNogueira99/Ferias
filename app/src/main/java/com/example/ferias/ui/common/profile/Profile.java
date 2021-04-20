@@ -104,7 +104,6 @@ public class Profile extends Fragment {
         }
     }
 
-
     private void initializeElements(View root) {
         viewPager = root.findViewById(R.id.pager);
         tabLayout = root.findViewById(R.id.tab_layout);
@@ -166,7 +165,6 @@ public class Profile extends Fragment {
     }
 
     private void saveProfileImage() {
-
         if (profileImageUri != null) {
             if(!user.getImage().isEmpty()){
                 StorageReference imageDeleteRef = FirebaseStorage.getInstance().getReferenceFromUrl(user.getImage());
@@ -189,8 +187,12 @@ public class Profile extends Fragment {
                     Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_LONG).show();
                     user.setImage(uri.toString());
                     databaseReference.setValue(user);
-                    pb_ProfileImage.setVisibility(View.GONE);
+
                     progressDialog.dismiss();
+
+                    bt_ProfileImageSave.setVisibility(View.GONE);
+                    pb_ProfileImage.setVisibility(View.GONE);
+
                 });
             })
             .addOnFailureListener(e -> {

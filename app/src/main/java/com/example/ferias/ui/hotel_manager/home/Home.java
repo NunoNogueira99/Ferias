@@ -110,8 +110,7 @@ public class Home extends Fragment {
         });
 
         bt_ManageHotels.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(root);
-            navController.navigate(R.id.action_hotel_manager_home_to_hotel_registration);
+            Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_hotel_manage);
         });
 
         bt_Logout.setOnClickListener(v -> {
@@ -131,8 +130,7 @@ public class Home extends Fragment {
                 firebaseAuth.signOut();
             }
 
-            NavController navController = Navigation.findNavController(root);
-            navController.navigate(R.id.action_hotel_manager_home_to_login);
+            Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_login);
         });
     }
 
@@ -150,10 +148,8 @@ public class Home extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 user = snapshot.getValue(HotelManager.class);
-                Log.e("User",user.toString());
                 if(user != null){
                     loadDatatoElements();
-
                     try {
                         InternalStorage.writeObject(getContext(), "User", user);
                     } catch (IOException e) {
@@ -168,13 +164,11 @@ public class Home extends Fragment {
             }
         });
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 user = snapshot.getValue(HotelManager.class);
                 if(user != null){
-                    loadDatatoElements();
-
                     try {
                         InternalStorage.writeObject(getContext(), "User", user);
                     } catch (IOException e) {

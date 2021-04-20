@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -11,6 +12,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.ImageSlider;
@@ -40,6 +44,11 @@ public class HotelViewer extends Fragment {
     private ImageView iv_hotel_cover_photo;
     private ImageSlider othersphotosslider;
 
+    private RecyclerView recyclerViewSimilar;
+    private final ArrayList <Hotel> similarHotelKeys = new ArrayList<>();
+
+    private RecyclerView rvFeatures;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,6 +57,8 @@ public class HotelViewer extends Fragment {
 
         initializeElements(root);
         clickListener(root);
+
+        getCurrentHotelInfo(root);
 
         return root;
     }
@@ -65,6 +76,9 @@ public class HotelViewer extends Fragment {
 
         hotelKey = getArguments().getString("clickDetails");
         databaseReference= FirebaseDatabase.getInstance().getReference().child("Hotel");
+
+        recyclerViewSimilar = root.findViewById(R.id.similarhotels_Rv);
+        rvFeatures = root.findViewById(R.id.features_gridview);
     }
 
     private void clickListener(View root) {
@@ -150,5 +164,78 @@ public class HotelViewer extends Fragment {
             favBtn.setImageResource(R.drawable.ic_favorites);
         }
         dbUsers.child("Favs").setValue(map);
+    }
+
+    private void getCurrentHotelInfo(View root) {
+        //---
+        //get current hotel details
+        //---
+        databaseReference.child(hotelKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    Hotel hotel;
+                    hotel = snapshot.getValue(Hotel.class);
+
+                    setHotelFeatures(hotel,root);
+                    populateRecyclerViewOfHotel(hotel,root);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void populateRecyclerViewOfHotel(Hotel hotel, View root) {
+        double lowerPrice,higherPrice;
+
+        lowerPrice= hotel.getPrice() - (hotel.getPrice() * 0.1);
+        higherPrice =hotel.getPrice() + (hotel.getPrice() * 0.1);;
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Hotel hotelSnapshot = ds.getValue(Hotel.class);
+
+                    if (hotelSnapshot.getPrice() > lowerPrice && hotelSnapshot.getPrice() < higherPrice && ds.getKey() != hotelKey)
+                        similarHotelKeys.add(hotelSnapshot);
+
+                }
+                // Lookup the recyclerview in activity layout
+                RecyclerView rvHotels = root.findViewById(R.id.similarhotels_Rv);
+                // Create adapter passing in the sample user data
+                adapterSimilarHotels adapter = new adapterSimilarHotels(similarHotelKeys);
+                // Attach the adapter to the recyclerview to populate items
+                rvHotels.setAdapter(adapter);
+                // Set layout manager to position the items
+                rvHotels.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void setHotelFeatures(Hotel hotel, View root) {
+        Map<String, Boolean> hotelFeature = hotel.getFeature().getFeatures();
+        ArrayList <String> listFeatures = new ArrayList<>();
+
+
+        // using for-each loop for iteration over Map.entrySet()
+        for (Map.Entry<String,Boolean> entry : hotelFeature.entrySet()) {
+            if(entry.getValue() == true)
+                listFeatures.add(entry.getKey());
+        }
+
+        adapterFeatures adapterFeatures= new adapterFeatures(listFeatures);
+        rvFeatures.setAdapter(adapterFeatures);
+        // Set layout manager to position the items
+        rvFeatures.setLayoutManager(new GridLayoutManager(getContext(),2));
     }
 }

@@ -32,6 +32,8 @@ public class Hotel implements Serializable {
     private String coverPhoto;
     private List<String> otherPhotos;
 
+    private List<String> bookings;
+
     public Hotel(){
         ////////////////   DATA    ////////////////
         manager = "";
@@ -56,6 +58,7 @@ public class Hotel implements Serializable {
         //////////////////////////////
         coverPhoto = "";
         otherPhotos = new ArrayList<>();
+        bookings = new ArrayList<>();
     }
 
     public Hotel(String name, String phone, String description, Address address, String manager, float price, float stars, int total_rooms, HotelMoods moods, HotelFeature feature) {
@@ -74,6 +77,7 @@ public class Hotel implements Serializable {
         this.feature = feature;
         this.coverPhoto = "";
         this.otherPhotos = new ArrayList<>();
+        this.bookings = new ArrayList<>();
     }
 
 
@@ -133,6 +137,10 @@ public class Hotel implements Serializable {
     public List<String> getOtherPhotos() {
         return otherPhotos;
     }
+
+    public List<String> getBookings() {
+        return bookings;
+    }
     //////////////// GETS END ////////////////
 
     //////////////// SETS BEGIN ////////////////
@@ -190,6 +198,21 @@ public class Hotel implements Serializable {
 
     public void setOtherPhotos(List<String> otherPhotos) {
         this.otherPhotos = otherPhotos;
+    }
+
+    public void setBookings(List<String> bookings) {
+        this.bookings = bookings;
+    }
+
+    public void addBooking(String booking) {
+        if(bookings==null){
+            bookings = new ArrayList<>();
+        }
+        this.bookings.add(booking);
+    }
+
+    public void removeBookingyIndex(int index) {
+        this.bookings.remove(index);
     }
     //////////////// SETS END ////////////////
 

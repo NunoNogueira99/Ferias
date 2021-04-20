@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,23 +18,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.ferias.R;
 import com.example.ferias.data.hotel_manager.Hotel;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 public class MyViewHolderClassFavs extends RecyclerView.Adapter<MyViewHolderClassFavs.ViewHolder>{
     private final List<Hotel> mHotels;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        Fragment fragment;
-        TextView name, price, rating;
+        TextView name, price;
+        RatingBar rating;
         ImageView photo;
-        Dialog d;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.hotellist_item_name);
             price = itemView.findViewById(R.id.hotellist_item_price);
             photo = itemView.findViewById(R.id.hotellist_item_img);
-            rating = itemView.findViewById(R.id.hotellist_item_rating);
+            rating = itemView.findViewById(R.id.RatingBarFavs);
         }
     }
 
@@ -64,7 +65,10 @@ public class MyViewHolderClassFavs extends RecyclerView.Adapter<MyViewHolderClas
         Hotel hotel = mHotels.get(position);
         holder.name.setText(hotel.getName());
         holder.price.setText(Float.toString(hotel.getPrice()));
-        holder.rating.setText(Integer.toString(hotel.getRate()));
+        holder.rating.setRating(hotel.getStars());
+        Picasso.get().load(hotel.getCoverPhoto()).into(holder.photo);
+
+
 
         /*
         Glide.with(holder.fragment)

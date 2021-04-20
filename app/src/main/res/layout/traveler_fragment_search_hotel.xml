@@ -173,6 +173,7 @@
                     android:src="@drawable/ic_add"/>
 
                 <TextView
+                    android:id="@+id/tv_Adults"
                     style="?attr/textAppearanceSubtitle1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -214,7 +215,7 @@
                     style="?attr/textAppearanceBody1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/chield" />
+                    android:text="@string/children" />
 
                 <TextView
                     style="?attr/textAppearanceCaption"
@@ -242,6 +243,7 @@
                     android:src="@drawable/ic_add" />
 
                 <TextView
+                    android:id="@+id/tv_Children"
                     style="?attr/textAppearanceSubtitle1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

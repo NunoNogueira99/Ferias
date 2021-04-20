@@ -68,7 +68,7 @@ public class HotelViewer extends Fragment {
         hotelPrice = root.findViewById(R.id.traveler_hotelview_hotelPrice);
         hotelInfo =root.findViewById(R.id.traveler_hotelview_hotelinfo);
         favBtn = root.findViewById(R.id.add_to_favorites_hotelfound);
-        rating = root.findViewById(R.id.ratingBar);
+        rating = root.findViewById(R.id.rb_hotel_view_stars);
         numOfRatings = root.findViewById(R.id.number_of_review);
 
         iv_hotel_cover_photo = root.findViewById(R.id.iv_hotel_cover_photo);

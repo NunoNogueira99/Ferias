@@ -8,6 +8,8 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -173,36 +175,51 @@ public class SearchHotel extends Fragment {
             }
         }));
 
-        maxPriceBtn.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        maxPriceBtn.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-                if (actionId == EditorInfo.	IME_ACTION_DONE) {
-                    if(!maxPriceBtn.getText().toString().isEmpty())
-                        maxPrice= Float.parseFloat(maxPriceBtn.getText().toString());
-                    else
-                        maxPrice=null;
-                    applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
-                    handled = true;
-                }
-                return handled;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if(!maxPriceBtn.getText().toString().isEmpty())
+                    maxPrice= Float.parseFloat(maxPriceBtn.getText().toString());
+                else
+                    maxPrice=null;
+                applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
+
             }
         });
-        minPriceBtn.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        minPriceBtn.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-                if (actionId == EditorInfo.	IME_ACTION_DONE) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
                     if(!minPriceBtn.getText().toString().isEmpty())
                         minPrice= Float.parseFloat(minPriceBtn.getText().toString());
                     else
                         minPrice=null;
                     applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
-                    handled = true;
-                }
-                return handled;
+
             }
         });
+
         partyMoodBtn.setOnClickListener(v -> {
             if(!party)
             {
@@ -294,7 +311,7 @@ public class SearchHotel extends Fragment {
 
         mResultInfo = root.findViewById(R.id.searchResultsInfoText);
 
-        if(getArguments().getString("inputText").isEmpty())
+        if(getArguments().getString("inputText")==null)
             mResultInfo.setText("All");
         else
             mResultInfo.setText(getArguments().getString("inputText"));
@@ -317,7 +334,12 @@ public class SearchHotel extends Fragment {
 
     private void applyFilters(Float minPrice, Float maxPrice, boolean party, boolean chill, boolean adventure, boolean sports)
     {
-        filteredResults = new HashMap<>(searchResults);
+
+
+        //filteredResults = new HashMap<>(searchResults);
+        filteredResults = new HashMap<>();
+        for(Map.Entry<Hotel,String> entry : searchResults.entrySet())
+            filteredResults.put(entry.getKey(),entry.getValue());
         if(minPrice != null){
             for (Map.Entry<Hotel,String> entry : searchResults.entrySet()) {
                 if(entry.getKey().getPrice()<minPrice)

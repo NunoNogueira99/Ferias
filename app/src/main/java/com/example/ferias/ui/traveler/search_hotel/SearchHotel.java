@@ -33,6 +33,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,8 +57,8 @@ public class SearchHotel extends Fragment {
     TextView adventureMoodBtn;
     TextView sportsMoodBtn;
 
-    Map<Hotel,String> searchResults = new HashMap<>();
-    Map<Hotel,String> filteredResults = new HashMap<>();
+    LinkedHashMap<Hotel,String> searchResults = new LinkedHashMap<>();
+    LinkedHashMap<Hotel,String> filteredResults = new LinkedHashMap<>();
 
     //filter vars
     Float minPrice =null, maxPrice=null;
@@ -73,7 +74,6 @@ public class SearchHotel extends Fragment {
         clickListener(root);
 
         setQuery(root);
-        //loadData(getArguments().getString("inputText"),root);
         return root;
     }
 
@@ -154,15 +154,12 @@ public class SearchHotel extends Fragment {
                 Bundle bundle = new Bundle();
                 List<String>keys=new ArrayList<>();
 
-                if(filteredResults.isEmpty()) {
+                if(filteredResults.isEmpty())
                     for(Map.Entry<Hotel,String> entry : searchResults.entrySet())
                         keys.add(entry.getValue());
-                }
                 else
-                {
                     for(Map.Entry<Hotel,String> entry : filteredResults.entrySet())
                         keys.add(entry.getValue());
-                }
 
                 bundle.putString("clickDetails", keys.get(position));
                 Navigation.findNavController(root).navigate(R.id.action_traveler_search_to_traveler_hotelview, bundle);
@@ -258,9 +255,8 @@ public class SearchHotel extends Fragment {
     }
 
     private void loadData(Query query,View root) {
-        searchResults = new HashMap<>();
-        filteredResults = new HashMap<>();
-
+        searchResults = new LinkedHashMap<>();
+        filteredResults =new LinkedHashMap<>();
         options = new FirebaseRecyclerOptions.Builder<Hotel>().setQuery(query, Hotel.class).build();
 
         adapter= new FirebaseRecyclerAdapter<Hotel, MyViewHolderClass>(options) {
@@ -294,7 +290,7 @@ public class SearchHotel extends Fragment {
 
         mResultInfo = root.findViewById(R.id.searchResultsInfoText);
 
-        if(getArguments().getString("inputText").isEmpty())
+        if(getArguments().getString("inputText") == null)
             mResultInfo.setText("All");
         else
             mResultInfo.setText(getArguments().getString("inputText"));
@@ -317,7 +313,10 @@ public class SearchHotel extends Fragment {
 
     private void applyFilters(Float minPrice, Float maxPrice, boolean party, boolean chill, boolean adventure, boolean sports)
     {
-        filteredResults = new HashMap<>(searchResults);
+        filteredResults = new LinkedHashMap<>();
+        for(Map.Entry<Hotel,String> entry : searchResults.entrySet())
+            filteredResults.put(entry.getKey(),entry.getValue());
+
         if(minPrice != null){
             for (Map.Entry<Hotel,String> entry : searchResults.entrySet()) {
                 if(entry.getKey().getPrice()<minPrice)

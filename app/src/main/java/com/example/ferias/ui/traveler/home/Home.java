@@ -66,6 +66,8 @@ public class Home extends Fragment {
 
     private FloatingActionButton favsBtn;
 
+    private ExtendedFloatingActionButton bookings_btn;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,6 +108,8 @@ public class Home extends Fragment {
         sportsBtn = root.findViewById(R.id.travelerSport_search);
 
         favsBtn=root.findViewById(R.id.my_favs_btn2);
+
+        bookings_btn=root.findViewById(R.id.my_bookings_btn);
     }
 
     private void clickListener(View root) {
@@ -160,6 +164,10 @@ public class Home extends Fragment {
 
         favsBtn.setOnClickListener(v -> {
             Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_favorites);
+        });
+
+        bookings_btn.setOnClickListener(v -> {
+            Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_bookings);
         });
     }
 

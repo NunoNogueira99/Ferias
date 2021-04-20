@@ -159,5 +159,7 @@
     <string name="type_chart">Type chart</string>
     <string name="months">Months</string>
     <string name="seasons">Seasons</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

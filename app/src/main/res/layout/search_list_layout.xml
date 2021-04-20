@@ -8,7 +8,7 @@
     android:layout_marginBottom="10sp">
 
     <TextView
-        android:id="@+id/search_listName"
+        android:id="@+id/search_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -25,10 +25,10 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/search_listCity"
+        android:id="@+id/search_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/search_listName"
+        android:layout_marginTop="53dp"
         android:fontFamily="@font/archivo_semibold"
         android:text="@string/city"
         android:textAppearance="@style/custom_body2"
@@ -37,7 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.07"
         app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/search_listName"
+        app:layout_constraintTop_toBottomOf="@+id/search_name"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.cardview.widget.CardView
@@ -56,23 +56,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="fitXY" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/admin_backgrounf_pic" />
     </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/search_listPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/search_listName"
-        android:layout_alignBottom="@+id/search_listName"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="16dp"
-        android:layout_toEndOf="@id/search_listName"
         android:drawableRight="@drawable/ic_euro"
         android:textAppearance="@style/custom_subtitle2"
         android:textColor="@color/primary_white"
@@ -80,7 +71,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/search_listName"
         app:layout_constraintVertical_bias="0.904"
         tools:text="xxxxxx" />
 

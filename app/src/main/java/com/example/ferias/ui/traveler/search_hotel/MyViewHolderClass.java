@@ -5,7 +5,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ferias.R;
@@ -19,8 +18,8 @@ public class MyViewHolderClass extends RecyclerView.ViewHolder {
 
     public MyViewHolderClass(@NonNull View itemView) {
         super(itemView);
-        name=itemView.findViewById(R.id.search_listName);
-        city=itemView.findViewById(R.id.search_listCity);
+        name=itemView.findViewById(R.id.search_name);
+        city=itemView.findViewById(R.id.search_city);
         price=itemView.findViewById(R.id.search_listPrice);
         image=itemView.findViewById(R.id.search_listPhoto);
     }

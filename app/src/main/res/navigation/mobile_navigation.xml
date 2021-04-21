@@ -90,6 +90,9 @@
         <action
             android:id="@+id/action_traveler_home_to_favorites"
             app:destination="@id/favorites" />
+        <action
+            android:id="@+id/action_traveler_home_to_bookings"
+            app:destination="@id/bookings" />
     </fragment>
     <fragment
         android:id="@+id/profile"
@@ -189,6 +192,11 @@
             android:id="@+id/action_hotel_view_to_hotel_edit"
             app:destination="@id/hotel_edit" />
     </fragment>
+    <fragment
+        android:id="@+id/bookings"
+        android:name="com.example.ferias.ui.traveler.myBookings.MyBookings"
+        android:label="fragment_bookings"
+        tools:layout="@layout/traveler_fragment_mybookings_hotels" />
 
 
 </navigation>

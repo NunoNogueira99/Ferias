@@ -408,7 +408,6 @@ public class HotelViewer extends Fragment {
         Map<String, Boolean> hotelFeature = hotel.getFeature().getFeatures();
         ArrayList <String> listFeatures = new ArrayList<>();
 
-
         // using for-each loop for iteration over Map.entrySet()
         for (Map.Entry<String,Boolean> entry : hotelFeature.entrySet()) {
             if(entry.getValue() == true)

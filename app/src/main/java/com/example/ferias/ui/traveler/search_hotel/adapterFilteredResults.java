@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,8 +27,8 @@ public class adapterFilteredResults extends RecyclerView.Adapter<adapterFiltered
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            name=itemView.findViewById(R.id.search_listName);
-            city=itemView.findViewById(R.id.search_listCity);
+            name=itemView.findViewById(R.id.search_name);
+            city=itemView.findViewById(R.id.search_city);
             price=itemView.findViewById(R.id.search_listPrice);
             photo=itemView.findViewById(R.id.search_listPhoto);
         }

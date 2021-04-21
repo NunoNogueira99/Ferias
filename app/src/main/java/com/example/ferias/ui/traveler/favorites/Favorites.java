@@ -7,13 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Favorites extends Fragment {
 
@@ -92,7 +89,7 @@ public class Favorites extends Fragment {
                     }
                 }
                 // Lookup the recyclerview in activity layout
-                RecyclerView rvHotels = root.findViewById(R.id.FavList_recyclerView);
+                RecyclerView rvHotels = root.findViewById(R.id.bookingsList_recyclerView);
                 rvHotels.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), rvHotels, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {

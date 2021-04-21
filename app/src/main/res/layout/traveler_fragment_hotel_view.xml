@@ -99,7 +99,7 @@
                     android:id="@+id/traveler_hotelview_hotelinfo"
                     style="@style/custom_body1"
                     android:layout_width="wrap_content"
-                    android:layout_height="138dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:maxLines="5"
                     android:text="@string/hotel_description_example" />
@@ -159,14 +159,14 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32sp">
 
                     <TextView
                         android:id="@+id/textView20"
                         style="@style/custom_headline6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:text="Book now"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

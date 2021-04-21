@@ -13,6 +13,10 @@ public class Booking implements Serializable {
     private int nAdults;
     private int nChildren;
     private float price;
+    private boolean expanded= false;
+
+    public Booking() {
+    }
 
     public Booking(String hotelID, String userID, Date enterDate, Date exitDate, int nAdults, int nChildren, float price){
         this.hotelID = hotelID;
@@ -55,6 +59,10 @@ public class Booking implements Serializable {
         return price;
     }
 
+    public boolean isExpanded() {
+        return expanded;
+    }
+
     ////////// GETS END ////////////////
 
     //////////// SETS BEGIN ///////////
@@ -84,6 +92,10 @@ public class Booking implements Serializable {
     }
 
     public void setPrice(float price) { this.price = price; }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
 
     /////////// SETS END ///////////////
 }

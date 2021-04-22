@@ -5,12 +5,15 @@
 
     <style name="Theme.Ferias" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Colors -->
-        <item name="colorPrimary">@color/main_color</item>
+        <item name="colorPrimary">@color/main_color_dark</item>
         <item name="colorOnPrimary">@color/primary_white</item>
-        <item name="android:statusBarColor" tools:targetApi="l">@color/accent_color</item>
-        <item name="android:colorBackground">@color/background_color</item>
-        <item name="colorAccent">@color/accent_color</item>
-        <item name="colorSecondary">@color/main_color</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/accent_color_dark</item>
+        <item name="android:colorBackground">@color/background_color_dark</item>
+        <item name="colorSurface">@color/surface_color_dark</item>
+        <item name="backgroundColor">@color/background_color_dark</item>
+        <item name="backgroundTint">@color/background_color_dark</item>
+        <item name="colorAccent">@color/accent_color_dark</item>
+        <item name="colorSecondary">@color/main_color_dark</item>
         <item name="colorOnSecondary">@color/primary_white</item>
         <!-- Fonts -->
         <item name="textAppearanceHeadline1">@style/custom_headline1</item>
@@ -114,9 +117,9 @@
 
     <style name="CustomDatePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
         <!-- dont know how to make the header color different from the primary color... to fix -->
-        <item name="colorPrimary">@color/accent_color</item>
+        <item name="colorPrimary">@color/accent_color_dark</item>
         <item name="colorOnPrimary">@color/primary_white</item>
-        <item name="colorSurface">@color/background_color</item>
+        <item name="colorSurface">@color/surface_color_dark</item>
         <item name="elevationOverlayEnabled">false</item>
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent</item>
@@ -142,7 +145,7 @@
     <style name="custom_cardview" parent="Widget.MaterialComponents.CardView">
         <item name="elevation">0dp</item>
         <item name="cardCornerRadius">16dp</item>
-        <item name="cardBackgroundColor">@color/main_color</item>
+        <item name="cardBackgroundColor">@color/surface_color_dark</item>
     </style>
 
     <style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
@@ -155,7 +158,7 @@
         <item name="cornerSize">16dp</item>
     </style>
     <style name="myCustomThemeForExtendedFab" parent="">
-        <item name="colorSecondary">@color/main_color</item>
+        <item name="colorSecondary">@color/main_color_dark</item>
         <item name="colorOnSecondary">@color/primary_white</item>
     </style>
 
@@ -171,14 +174,14 @@
         <item name="cornerSize">16dp</item>
     </style>
     <style name="myCustomThemeForNormalFab" parent="">
-        <item name="colorSecondary">@color/main_color</item>
+        <item name="colorSecondary">@color/main_color_dark</item>
         <item name="colorOnSecondary">@color/primary_white</item>
     </style>
 
     <style name="MyButtonTheme" parent="Widget.MaterialComponents.Button">
         <item name="android:padding">24dp</item>
         <item name="android:stateListAnimator">@null</item>
-        <item name="rippleColor">@color/accent_color</item>
+        <item name="rippleColor">@color/accent_color_dark</item>
         <item name="shapeAppearance">@style/ShapeAppearanceButton</item>
         <item name="iconSize">16dp</item>
     </style>
@@ -189,8 +192,8 @@
 
     <!-- to do: text input style -->
     <style name="myEdittextTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@color/accent_color</item>
-        <item name="hintTextColor">@color/accent_color</item>
+        <item name="boxStrokeColor">@color/accent_color_dark</item>
+        <item name="hintTextColor">@color/accent_color_dark</item>
         <item name="android:textColorHint">@color/secondary_white</item>
     </style>
 

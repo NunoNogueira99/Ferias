@@ -5,8 +5,13 @@
     <color name="secondary_white">#99FFFFFF</color>
     <color name="tertiary_white">#40FFFFFF</color>
     <color name="background_color">#173F5F</color>
+    <color name="surface_color">#1e5787</color>
     <color name="main_color">#20639B</color>
     <color name="accent_color">#ED553B</color>
+    <color name="background_color_dark">#101234</color>
+    <color name="surface_color_dark">#1b1e42</color>
+    <color name="main_color_dark">#15194A</color>
+    <color name="accent_color_dark">#000EFF</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="yellow">#F6D55C</color>
     <!-- this is for overriding the edittext outlined border color when in normal state -->

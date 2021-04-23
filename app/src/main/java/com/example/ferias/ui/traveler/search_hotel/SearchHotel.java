@@ -1,8 +1,12 @@
 package com.example.ferias.ui.traveler.search_hotel;
 
+import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +28,7 @@ import com.example.ferias.ui.traveler.favorites.RecyclerItemClickListener;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -50,10 +55,10 @@ public class SearchHotel extends Fragment {
     private EditText minPriceBtn, maxPriceBtn;
     private boolean fabsOn = false;
 
-    TextView partyMoodBtn;
-    TextView chillMoodBtn;
-    TextView adventureMoodBtn;
-    TextView sportsMoodBtn;
+    private ExtendedFloatingActionButton partyMoodBtn;
+    private ExtendedFloatingActionButton chillMoodBtn;
+    private ExtendedFloatingActionButton adventureMoodBtn;
+    private ExtendedFloatingActionButton sportsMoodBtn;
     MaterialCardView filter_popup_cv;
 
     LinkedHashMap<Hotel,String> searchResults = new LinkedHashMap<>();
@@ -212,12 +217,12 @@ public class SearchHotel extends Fragment {
         partyMoodBtn.setOnClickListener(v -> {
             if(!party)
             {
-                partyMoodBtn.setBackgroundResource(R.drawable.rounded_rectangle_active);
+                partyMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.accent_color));
                 party=true;
             }
             else
             {
-                partyMoodBtn.setBackgroundResource(R.drawable.shape_search_1_active);
+                partyMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.main_color));
                 party=false;
             }
             applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
@@ -225,12 +230,12 @@ public class SearchHotel extends Fragment {
         chillMoodBtn.setOnClickListener(v -> {
             if(!chill)
             {
-                chillMoodBtn.setBackgroundResource(R.drawable.rounded_rectangle_active);
+                chillMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.accent_color));
                 chill=true;
             }
             else
             {
-                chillMoodBtn.setBackgroundResource(R.drawable.shape_search_1_active);
+                chillMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.main_color));
                 chill=false;
             }
             applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
@@ -238,12 +243,12 @@ public class SearchHotel extends Fragment {
         adventureMoodBtn.setOnClickListener(v -> {
             if(!adventure)
             {
-                adventureMoodBtn.setBackgroundResource(R.drawable.rounded_rectangle_active);
+                adventureMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.accent_color));
                 adventure=true;
             }
             else
             {
-                adventureMoodBtn.setBackgroundResource(R.drawable.shape_search_1_active);
+                adventureMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.main_color));
                 adventure=false;
             }
             applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
@@ -251,12 +256,12 @@ public class SearchHotel extends Fragment {
         sportsMoodBtn.setOnClickListener(v -> {
             if(!sports)
             {
-                sportsMoodBtn.setBackgroundResource(R.drawable.rounded_rectangle_active);
+                sportsMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.accent_color));
                 sports=true;
             }
             else
             {
-                sportsMoodBtn.setBackgroundResource(R.drawable.shape_search_1_active);
+                sportsMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.main_color));
                 sports=false;
             }
             applyFilters(minPrice,maxPrice,party,chill,adventure,sports);

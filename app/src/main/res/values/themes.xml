@@ -9,6 +9,9 @@
         <item name="colorOnPrimary">@color/primary_white</item>
         <item name="android:statusBarColor" tools:targetApi="l">@color/accent_color</item>
         <item name="android:colorBackground">@color/background_color</item>
+        <item name="colorSurface">@color/surface_color</item>
+        <item name="backgroundColor">@color/background_color</item>
+        <item name="backgroundTint">@color/background_color</item>
         <item name="colorAccent">@color/accent_color</item>
         <item name="colorSecondary">@color/main_color</item>
         <item name="colorOnSecondary">@color/primary_white</item>
@@ -116,7 +119,7 @@
         <!-- dont know how to make the header color different from the primary color... to fix -->
         <item name="colorPrimary">@color/accent_color</item>
         <item name="colorOnPrimary">@color/primary_white</item>
-        <item name="colorSurface">@color/background_color</item>
+        <item name="colorSurface">@color/surface_color</item>
         <item name="elevationOverlayEnabled">false</item>
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent</item>
@@ -142,7 +145,7 @@
     <style name="custom_cardview" parent="Widget.MaterialComponents.CardView">
         <item name="elevation">0dp</item>
         <item name="cardCornerRadius">15dp</item>
-        <item name="cardBackgroundColor">@color/main_color</item>
+        <item name="cardBackgroundColor">@color/surface_color</item>
     </style>
 
     <style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">

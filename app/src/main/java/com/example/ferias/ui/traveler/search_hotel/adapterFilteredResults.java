@@ -54,7 +54,8 @@ public class adapterFilteredResults extends RecyclerView.Adapter<adapterFiltered
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
-        View FavsView = inflater.inflate(R.layout.search_list_layout, parent, false);
+        // if you dont like mine layout (Martin) i kept the old one in case
+        View FavsView = inflater.inflate(R.layout.search_list_layout_martin, parent, false);
 
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(FavsView);

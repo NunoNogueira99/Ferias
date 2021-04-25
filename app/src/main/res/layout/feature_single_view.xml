@@ -14,17 +14,14 @@
         android:layout_height="wrap_content"
         android:backgroundTintMode="add"
         android:drawableLeft="@drawable/ic_features_24reception"
-        android:drawablePadding="10sp"
-        android:fontFamily="@font/archivo_medium"
+        android:drawablePadding="8dp"
         android:gravity="center"
-        android:lineSpacingExtra="24sp"
+        android:lineSpacingExtra="24dp"
         android:text="FeatureType"
-        android:textAlignment="viewStart"
-        android:textAllCaps="false"
-        android:textAppearance="@style/custom_body2"
-        android:textSize="18sp"
+        style="?attr/textAppearanceBody1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,18 +1,22 @@
 package com.example.ferias.ui.traveler.search_hotel;
 
+import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,6 +27,7 @@ import com.example.ferias.data.hotel_manager.Hotel;
 import com.example.ferias.ui.traveler.favorites.RecyclerItemClickListener;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
@@ -31,8 +36,6 @@ import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,10 +55,11 @@ public class SearchHotel extends Fragment {
     private EditText minPriceBtn, maxPriceBtn;
     private boolean fabsOn = false;
 
-    TextView partyMoodBtn;
-    TextView chillMoodBtn;
-    TextView adventureMoodBtn;
-    TextView sportsMoodBtn;
+    private ExtendedFloatingActionButton partyMoodBtn;
+    private ExtendedFloatingActionButton chillMoodBtn;
+    private ExtendedFloatingActionButton adventureMoodBtn;
+    private ExtendedFloatingActionButton sportsMoodBtn;
+    MaterialCardView filter_popup_cv;
 
     LinkedHashMap<Hotel,String> searchResults = new LinkedHashMap<>();
     LinkedHashMap<Hotel,String> filteredResults = new LinkedHashMap<>();
@@ -126,6 +130,8 @@ public class SearchHotel extends Fragment {
             public void onClick(View v) {
                 if(!fabsOn)
                 {
+                    filter_popup_cv.setVisibility(View.VISIBLE);
+                    filter_popup_cv.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_in));
                     minPriceBtn.setVisibility(View.VISIBLE);
                     maxPriceBtn.setVisibility(View.VISIBLE);
                     partyMoodBtn.setVisibility(View.VISIBLE);
@@ -136,12 +142,20 @@ public class SearchHotel extends Fragment {
                 }
                 else
                 {
+                    filter_popup_cv.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
+                    minPriceBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
                     minPriceBtn.setVisibility(View.GONE);
+                    maxPriceBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
                     maxPriceBtn.setVisibility(View.GONE);
+                    partyMoodBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
                     partyMoodBtn.setVisibility(View.GONE);
+                    chillMoodBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
                     chillMoodBtn.setVisibility(View.GONE);
+                    adventureMoodBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
                     adventureMoodBtn.setVisibility(View.GONE);
+                    sportsMoodBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
                     sportsMoodBtn.setVisibility(View.GONE);
+                    filter_popup_cv.setVisibility(View.GONE);
                     fabsOn=false;
                 }
             }
@@ -203,12 +217,12 @@ public class SearchHotel extends Fragment {
         partyMoodBtn.setOnClickListener(v -> {
             if(!party)
             {
-                partyMoodBtn.setBackgroundResource(R.drawable.rounded_rectangle_active);
+                partyMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.accent_color));
                 party=true;
             }
             else
             {
-                partyMoodBtn.setBackgroundResource(R.drawable.shape_search_1_active);
+                partyMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.main_color));
                 party=false;
             }
             applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
@@ -216,12 +230,12 @@ public class SearchHotel extends Fragment {
         chillMoodBtn.setOnClickListener(v -> {
             if(!chill)
             {
-                chillMoodBtn.setBackgroundResource(R.drawable.rounded_rectangle_active);
+                chillMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.accent_color));
                 chill=true;
             }
             else
             {
-                chillMoodBtn.setBackgroundResource(R.drawable.shape_search_1_active);
+                chillMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.main_color));
                 chill=false;
             }
             applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
@@ -229,12 +243,12 @@ public class SearchHotel extends Fragment {
         adventureMoodBtn.setOnClickListener(v -> {
             if(!adventure)
             {
-                adventureMoodBtn.setBackgroundResource(R.drawable.rounded_rectangle_active);
+                adventureMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.accent_color));
                 adventure=true;
             }
             else
             {
-                adventureMoodBtn.setBackgroundResource(R.drawable.shape_search_1_active);
+                adventureMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.main_color));
                 adventure=false;
             }
             applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
@@ -242,12 +256,12 @@ public class SearchHotel extends Fragment {
         sportsMoodBtn.setOnClickListener(v -> {
             if(!sports)
             {
-                sportsMoodBtn.setBackgroundResource(R.drawable.rounded_rectangle_active);
+                sportsMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.accent_color));
                 sports=true;
             }
             else
             {
-                sportsMoodBtn.setBackgroundResource(R.drawable.shape_search_1_active);
+                sportsMoodBtn.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.main_color));
                 sports=false;
             }
             applyFilters(minPrice,maxPrice,party,chill,adventure,sports);
@@ -273,8 +287,8 @@ public class SearchHotel extends Fragment {
             @NonNull
             @Override
             public MyViewHolderClass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.search_list_layout, parent,false);
-
+                // if you dont like mine layout (Martin) i kept the old one in case
+                View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.search_list_layout_martin, parent,false);
                 return new MyViewHolderClass(v);
             }
         };
@@ -298,11 +312,13 @@ public class SearchHotel extends Fragment {
         filterBtn= root.findViewById(R.id.filter_btn);
         minPriceBtn = root.findViewById(R.id.min_price);
         maxPriceBtn = root.findViewById(R.id.max_price);
-        partyMoodBtn = root.findViewById(R.id.searchFilter_party);;
-        chillMoodBtn = root.findViewById(R.id.searchFilter_Chill);;
-        adventureMoodBtn = root.findViewById(R.id.searchFilter_Adventure);;
-        sportsMoodBtn = root.findViewById(R.id.searchFilter_sports);;
+        partyMoodBtn = root.findViewById(R.id.searchFilter_party);
+        chillMoodBtn = root.findViewById(R.id.searchFilter_Chill);
+        adventureMoodBtn = root.findViewById(R.id.searchFilter_Adventure);
+        sportsMoodBtn = root.findViewById(R.id.searchFilter_sports);
+        filter_popup_cv = root.findViewById(R.id.filter_popup_cv);
 
+        filter_popup_cv.setVisibility(View.GONE);
         minPriceBtn.setVisibility(View.GONE);
         maxPriceBtn.setVisibility(View.GONE);
         partyMoodBtn.setVisibility(View.GONE);

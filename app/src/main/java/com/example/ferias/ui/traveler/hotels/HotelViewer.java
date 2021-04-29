@@ -268,10 +268,16 @@ public class HotelViewer extends Fragment {
     }
 
     private boolean verifyData() {
+        int adults, children;
+        if(tv_adults.getText().toString().isEmpty())
+            adults = 0;
+        else
+            adults = Integer.parseInt(tv_adults.getText().toString().trim());
 
-        int adults = Integer.parseInt(tv_adults.getText().toString().trim());
-
-        int children = Integer.parseInt(tv_children.getText().toString().trim());
+        if(tv_children.getText().toString().isEmpty())
+            children = 0;
+        else
+            children = Integer.parseInt(tv_children.getText().toString().trim());
 
 
         /////////////////

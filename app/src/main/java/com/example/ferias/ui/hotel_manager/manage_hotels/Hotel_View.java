@@ -1,6 +1,5 @@
 package com.example.ferias.ui.hotel_manager.manage_hotels;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,22 +10,17 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.ferias.R;
 import com.example.ferias.data.InternalStorage;
 import com.example.ferias.data.hotel_manager.Hotel;
 import com.example.ferias.data.hotel_manager.HotelManager;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.example.ferias.ui.common.profile.PageAdapter;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +29,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Hotel_View extends Fragment {
 
@@ -54,15 +47,19 @@ public class Hotel_View extends Fragment {
     private RatingBar rb_hotel_view_stars;
     private ImageButton bt_hotel_view_edit, bt_hotel_view_delete, bt_hotel_view_back;
 
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private PageAdapter pageAdapter;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.hotel_manager_fragment_hotel_view, container, false);
 
+        hotelId = getArguments().getString("Hotel Id");
         initializeElements(root);
 
         getUserDate();
-
         loadDatatoElements(root);
 
         clickListeners(root);
@@ -70,6 +67,7 @@ public class Hotel_View extends Fragment {
         return root;
 
     }
+
     private void initializeElements(View root) {
         iv_hotel_view_photo = root.findViewById(R.id.iv_hotel_view_photo);
         tv_hotel_view_name = root.findViewById(R.id.tv_hotel_view_name);
@@ -83,6 +81,18 @@ public class Hotel_View extends Fragment {
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReferenceUser = FirebaseDatabase.getInstance().getReference().child("Hotel Manager").child(firebaseUser.getUid());
         databaseReferenceHotel = FirebaseDatabase.getInstance().getReference().child("Hotel");
+
+        tabLayout= root.findViewById(R.id.manager_hotelViewer_tab_layout);
+        viewPager= root.findViewById(R.id.manager_hotelViewer_pager);
+
+        pageAdapter = new PageAdapter(getParentFragmentManager());
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("hotelKey", hotelId);
+        pageAdapter.addFragment(new BookingsViewer(bundle), "Last bookings");
+        pageAdapter.addFragment(new Statistics(bundle),"Statistics");
+        viewPager.setAdapter(pageAdapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     private void getUserDate(){
@@ -97,8 +107,6 @@ public class Hotel_View extends Fragment {
 
     private void loadDatatoElements(View root) {
         if(!getArguments().isEmpty()) {
-            hotelId = getArguments().getString("Hotel Id");
-
             hotel = (Hotel) getArguments().getSerializable("Hotel");
             if (hotel != null) {
                 tv_hotel_view_name.setText(hotel.getName());

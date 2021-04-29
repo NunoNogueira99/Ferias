@@ -109,7 +109,7 @@ public class SearchHotel extends Fragment {
         }
         else
         {
-            query= databaseReference.orderByChild("address/city").startAt(mSearchField.getText().toString().toUpperCase()).endAt(mSearchField.getText().toString().toLowerCase() + "\uf8ff");
+            query= databaseReference.orderByChild("address/city").startAt(getArguments().getString("inputText").toUpperCase()).endAt(getArguments().getString("inputText").toLowerCase() + "\uf8ff");
             loadData(query,root);
         }
     }

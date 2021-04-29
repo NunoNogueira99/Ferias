@@ -68,25 +68,6 @@ public class MyViewHolderClassFavs extends RecyclerView.Adapter<MyViewHolderClas
         holder.rating.setRating(hotel.getStars());
         Picasso.get().load(hotel.getCoverPhoto()).into(holder.photo);
 
-
-
-        /*
-        Glide.with(holder.fragment)
-        .load(hotel.getCoverPhoto())
-        .placeholder(R.drawable.admin_backgrounf_pic)
-        .fitCenter()
-        .into(holder.photo);
-        */
-        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("clickDetails", getRef(position).getKey());
-                Navigation.findNavController(root).navigate(R.id.action_traveler_search_to_traveler_hotelview, bundle);
-
-            }
-        });*/
-
     }
 
     @Override

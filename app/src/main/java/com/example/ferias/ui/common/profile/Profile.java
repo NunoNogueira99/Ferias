@@ -36,8 +36,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 
-import java.util.UUID;
-
 public class Profile extends Fragment {
 
     private FirebaseAuth firebaseAuth;

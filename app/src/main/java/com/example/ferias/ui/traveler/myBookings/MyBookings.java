@@ -67,6 +67,7 @@ public class MyBookings extends Fragment{
                 if(snapshot.exists()) {
                     keys = (ArrayList<String>)snapshot.getValue();
                 }
+                else keys = new ArrayList<>();
             }
 
             @Override
@@ -79,10 +80,10 @@ public class MyBookings extends Fragment{
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    if(keys.contains(ds.getKey()))
-                        bookings.add(ds.getValue(Booking.class));
-                }
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if(keys.contains(ds.getKey()))
+                            bookings.add(ds.getValue(Booking.class));
+                    }
             }
 
             @Override

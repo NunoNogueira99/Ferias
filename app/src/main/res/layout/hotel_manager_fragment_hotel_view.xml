@@ -47,7 +47,8 @@
                 android:id="@+id/bt_hotel_view_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/rounded_rectangle_for_buttons"
                 android:padding="10dp"
                 android:src="@drawable/ic_arrow_back"
@@ -56,9 +57,10 @@
 
             <ImageButton
                 android:id="@+id/bt_hotel_view_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="68dp"
                 android:background="@drawable/rounded_rectangle_for_buttons"
                 android:padding="15dp"
                 android:src="@drawable/ic_baseline_edit_24"
@@ -67,15 +69,17 @@
 
             <ImageButton
                 android:id="@+id/bt_hotel_view_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="15dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/rounded_rectangle_for_buttons"
                 android:padding="15dp"
                 android:src="@drawable/ic_delete_data"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bt_hotel_view_edit" />
+                app:layout_constraintHorizontal_bias="0.483"
+                app:layout_constraintStart_toEndOf="@+id/bt_hotel_view_edit"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -87,10 +91,11 @@
 
                 <TextView
                     android:id="@+id/tv_hotel_view_name"
-                    style="?attr/textAppearanceSubtitle1"
+                    style="@style/Widget.AppCompat.TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/hotel_name"
+                    android:textAppearance="@style/custom_headline4"
                     android:textColor="@color/primary_white" />
 
                 <LinearLayout
@@ -126,87 +131,35 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout4"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
-        <TextView
-            android:id="@+id/totalProfitsByHotel"
-            style="?attr/textAppearanceHeadline4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-
-            android:layout_marginTop="15dp"
-            android:text="@string/total_profits"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/hotelProfits"
-            style="?attr/textAppearanceHeadline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/profits"
-            app:layout_constraintBottom_toBottomOf="@+id/totalProfitsByHotel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/totalProfitsByHotel"
-            app:layout_constraintTop_toTopOf="@+id/totalProfitsByHotel" />
-
-        <TextView
-            android:id="@+id/seasonsProfits"
-            style="?attr/textAppearanceSubtitle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="@string/season_profits"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/toggleButton"
-            tools:layout_editor_absoluteY="105dp" />
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="336dp"
-            android:layout_height="2dp"
-            android:layout_marginTop="40dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/totalProfitsByHotel" />
-
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/activity_admin_pieChart"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/manager_hotelViewer_tab_layout"
             android:layout_width="0dp"
-            android:layout_height="277dp"
-            android:layout_marginTop="40dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/seasonsProfits" >
-
-        </com.github.mikephil.charting.charts.PieChart>
-
-        <ToggleButton
-            android:id="@+id/toggleButton"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="35dp"
-            android:text="@string/type_chart"
-            android:textColor="#FFFFFF"
-            android:textOff="@string/months"
-            android:textOn="@string/seasons"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/activity_admin_pieChart"
+            android:background="@color/background_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider2" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:tabIndicatorColor="#FFFFFF"
+            app:tabSelectedTextColor="#FFFFFF"
+            app:tabTextColor="#FFFFFF" />
 
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/manager_hotelViewer_pager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manager_hotelViewer_tab_layout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

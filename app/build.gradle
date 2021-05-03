@@ -69,6 +69,7 @@ dependencies {
 
     //Plugin Charts
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
 
     //Plugin Country to choose countries
     implementation 'com.hbb20:ccp:2.4.5'

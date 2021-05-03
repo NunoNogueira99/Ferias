@@ -166,6 +166,7 @@ public class Home extends Fragment {
             Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_favorites);
         });
 
+        /*test bookings*/
         bookings_btn.setOnClickListener(v -> {
             Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_bookings);
         });

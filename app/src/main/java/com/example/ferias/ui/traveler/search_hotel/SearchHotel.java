@@ -115,8 +115,9 @@ public class SearchHotel extends Fragment {
     }
 
     private void clickListener(View root) {
+
         mSearchBtn.setOnClickListener(v -> {
-            Query query = databaseReference.orderByChild("address/city").startAt(mSearchField.getText().toString().toLowerCase()).endAt(mSearchField.getText().toString().toLowerCase() + "\uf8ff");
+            Query query = databaseReference.orderByChild("address/city").startAt(mSearchField.getText().toString().toUpperCase()).endAt(mSearchField.getText().toString().toLowerCase() + "\uf8ff");
 
             if(mSearchField.getText().toString().isEmpty())
                 mResultInfo.setText("All");

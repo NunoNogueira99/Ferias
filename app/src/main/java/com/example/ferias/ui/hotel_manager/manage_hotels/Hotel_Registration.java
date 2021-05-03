@@ -664,7 +664,7 @@ public class Hotel_Registration extends Fragment {
 
 
         if(!price.isEmpty()){
-            price_room = Integer.parseInt(et_TotalRooms.getText().toString().trim());
+            price_room = Integer.parseInt(et_Price.getText().toString().trim());
             if(price_room <= 1){
                 et_Price.setError("Price the rooms is required and greater than 1");
                 et_Price.requestFocus();

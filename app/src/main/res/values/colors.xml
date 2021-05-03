@@ -8,6 +8,7 @@
     <color name="surface_color">#1e5787</color>
     <color name="main_color">#20639B</color>
     <color name="accent_color">#ED553B</color>
+    <color name="accent_colorTranparent">#48E89789</color>
     <color name="background_color_dark">#101234</color>
     <color name="surface_color_dark">#1b1e42</color>
     <color name="main_color_dark">#15194A</color>

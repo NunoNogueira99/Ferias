@@ -1,9 +1,11 @@
 package com.example.ferias.ui.hotel_manager.home;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -13,13 +15,40 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Cartesian;
+import com.anychart.core.cartesian.series.Column;
+import com.anychart.enums.Anchor;
+import com.anychart.enums.HoverMode;
+import com.anychart.enums.Position;
+import com.anychart.enums.TooltipPositionMode;
 import com.bumptech.glide.Glide;
 import com.example.ferias.R;
 import com.example.ferias.data.InternalStorage;
 import com.example.ferias.data.hotel_manager.HotelManager;
+import com.example.ferias.data.traveler.Booking;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.DefaultValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -33,9 +62,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class Home extends Fragment {
 
@@ -46,13 +81,14 @@ public class Home extends Fragment {
 
     private ConstraintLayout cl_HomeManager;
 
-    private ShapeableImageView bt_ProfileMenu;
+    private ImageView bt_ProfileMenu;
     private MaterialCardView bt_ManageHotels;
 
     private LinearLayout profileMenu;
     private Button bt_EditProfile, bt_Logout;
 
     private TextView tv_NameMensage;
+    private AnyChartView chart;
 
 
     @Override
@@ -68,6 +104,8 @@ public class Home extends Fragment {
         clickListener(root);
 
         loadDatatoElements();
+
+        getHotels();
 
         return root;
     }
@@ -87,6 +125,8 @@ public class Home extends Fragment {
         tv_NameMensage = root.findViewById(R.id.tv_NameMensage_Manager);
 
         bt_ManageHotels = root.findViewById(R.id.bt_ManageHotels);
+
+        chart = root.findViewById(R.id.BarChart);
     }
 
     private void clickListener(View root) {
@@ -114,7 +154,6 @@ public class Home extends Fragment {
         });
 
         bt_Logout.setOnClickListener(v -> {
-
             if(user.isGoogle()){
                 googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -195,4 +234,138 @@ public class Home extends Fragment {
             .into(bt_ProfileMenu);
         }
     }
+
+    private void getHotels() {
+        HashMap<String, Float> hotels = new HashMap<>();
+        DatabaseReference databaseReferenceHotelKey = FirebaseDatabase.getInstance().getReference().child("Hotel Manager/" + firebaseAuth.getUid() +"/hotels");
+
+        databaseReferenceHotelKey.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    hotels.put(ds.getValue().toString(), Float.valueOf(0));
+                }
+                getHotelRevenues(hotels);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void getHotelRevenues(HashMap<String, Float> hotels ) {
+        DatabaseReference databaseReferenceHotelKey = FirebaseDatabase.getInstance().getReference().child("Booking");
+        databaseReferenceHotelKey.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    String key = ds.child("hotelID").getValue().toString();
+                    String price =ds.child("price").getValue().toString();
+                    if(hotels.containsKey(ds.child("hotelID").getValue().toString()))
+                    {
+                        Float newValue= hotels.get(key) + Float.parseFloat(price);
+                        hotels.put(key ,newValue);
+                    }
+                }
+                changeKeyName(hotels);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void changeKeyName(HashMap<String, Float> hotels) {
+        HashMap<String, Float> updatekeyNames = new HashMap<>();
+        DatabaseReference databaseReferenceHotelKey = FirebaseDatabase.getInstance().getReference().child("Hotel");
+        databaseReferenceHotelKey.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    String key = ds.getKey();
+                    String name =ds.child("name").getValue().toString();
+                    if(hotels.containsKey(key))
+                    {
+                        updatekeyNames.put(name, hotels.get(key));
+                    }
+                }
+                buildChat(updatekeyNames);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void buildChat(HashMap<String, Float> updatekeyNames) {
+        String color;
+        Cartesian cartesian = AnyChart.column();
+
+        List<DataEntry> data = new ArrayList<>();
+        for (LinkedHashMap.Entry<String,Float> entry : updatekeyNames.entrySet()) {
+            data.add(new ValueDataEntry(entry.getKey() ,entry.getValue()));
+        }
+
+        Column column = cartesian.column(data);
+        column.rendering().point("function() {\n" +
+                "    // if missing (not correct data), then skipping this point drawing\n" +
+                "    if (this.missing) {\n" +
+                "return;\n" +
+                "    }\n" +
+                "\n" +
+                "    // get shapes group\n" +
+                "    var shapes = this.shapes || this.getShapesGroup(this.pointState);\n" +
+                "    // calculate the left value of the x-axis\n" +
+                "    var leftX = this.x - this.pointWidth / 2;\n" +
+                "    // calculate the right value of the x-axis\n" +
+                "    var rightX = leftX + this.pointWidth;\n" +
+                "    // calculate the half of point width\n" +
+                "    var rx = this.pointWidth / 2;\n" +
+                "\n" +
+                "    shapes['path']\n" +
+                "    // resets all 'line' operations\n" +
+                "    .clear()\n" +
+                "    // draw column with rounded edges\n" +
+                "    .moveTo(leftX, this.zero)\n" +
+                "    .lineTo(leftX, this.value + rx)\n" +
+                "    .circularArc(leftX + rx, this.value + rx, rx, rx, 180, 180)\n" +
+                "    .lineTo(rightX, this.zero)\n" +
+                "    // close by connecting the last point with the first straight line\n" +
+                "    .close();\n" +
+                "}");
+        column.tooltip()
+                .titleFormat("{%X}")
+                .position(Position.CENTER_BOTTOM)
+                .anchor(Anchor.CENTER_BOTTOM)
+                .offsetX(0d)
+                .offsetY(5d)
+                .format("€{%Value}{groupsSeparator: }");
+        color= String.format("#%06X", (0xFFFFFF & ContextCompat.getColor(getContext(),R.color.accent_color)));
+        column.color(color);
+
+
+
+        cartesian.animation(true);
+        cartesian.yAxis(0).labels().format("€{%Value}{groupsSeparator: }");
+
+        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+        cartesian.interactivity().hoverMode(HoverMode.BY_X);
+
+        cartesian.xAxis(0).title("Hotels");
+        cartesian.yAxis(0).title("Revenue");
+
+        color= String.format("#%06X", (0xFFFFFF & ContextCompat.getColor(getContext(),R.color.background_color)));
+        cartesian.background().fill(color);
+        cartesian.labels().width(200);
+        cartesian.labels().height(200);
+        chart.setChart(cartesian);
+
+    }
+
 }

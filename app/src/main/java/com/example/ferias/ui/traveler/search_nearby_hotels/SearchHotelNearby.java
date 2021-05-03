@@ -1,10 +1,13 @@
 package com.example.ferias.ui.traveler.search_nearby_hotels;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,7 +24,14 @@ import android.widget.TextView;
 
 import com.example.ferias.R;
 import com.example.ferias.data.hotel_manager.Hotel;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.CancellationToken;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnTokenCanceledListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -69,6 +79,8 @@ public class SearchHotelNearby extends Fragment{
     Map<Hotel,String> searchResults;
     Map<Hotel,String> filteredResults;
 
+    private FusedLocationProviderClient fusedLocationProviderClient;
+
     //filter vars
     Float minPrice =null, maxPrice=null;
     boolean party=false,chill=false,adventure=false, sports=false;
@@ -79,13 +91,53 @@ public class SearchHotelNearby extends Fragment{
 
         View root = inflater.inflate(R.layout.traveler_fragment_hotel_search_nearby, container, false);
 
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
         initializeElements(root);
+
+        getLocation();
 
         clickListener(root);
 
-        getListHotel();
+
 
         return root;
+    }
+
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 40);
+        }
+
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setInterval(1);
+        locationRequest.setFastestInterval(1);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        fusedLocationProviderClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, new CancellationToken() {
+            @Override
+            public boolean isCancellationRequested() {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
+                return null;
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                //Inicialize location
+                Location location = task.getResult();
+                if(location != null){
+                    latLng = new LatLng(location.getLatitude(),location.getLongitude());
+                    //Log.e("Location:"+"'"+location.getLatitude()+"'"+";"+"'"+location.getLongitude()+"'","SEARCH_HOTEL_NEARBY");
+                    getListHotel();
+                }
+            }
+        });
+
     }
 
     private void initializeElements(View root) {
@@ -124,8 +176,8 @@ public class SearchHotelNearby extends Fragment{
 
         nearbyDistance =  getArguments().getFloat("SearchRadius"); //User select distance
 
-        String[] gps = getArguments().getString("GPS").split(",");
-        latLng = new LatLng(Double.parseDouble(gps[0]),Double.parseDouble(gps[1]));
+        //String[] gps = getArguments().getString("GPS").split(",");
+        //latLng = new LatLng(Double.parseDouble(gps[0]),Double.parseDouble(gps[1]));
 
     }
 
@@ -151,6 +203,7 @@ public class SearchHotelNearby extends Fragment{
                 sportsMoodBtn.setVisibility(View.GONE);
                 fabsOn=false;
             }
+
         });
 
         maxPriceBtn.setOnEditorActionListener((v, actionId, event) -> {
@@ -295,8 +348,10 @@ public class SearchHotelNearby extends Fragment{
     }
 
     private void getListHotel(){
+
         mHotelList = new ArrayList<>();
         searchResults = new LinkedHashMap<>();
+
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -311,6 +366,7 @@ public class SearchHotelNearby extends Fragment{
                 }
                 mHotelList.clear();
                 mHotelList.addAll(searchResults.keySet());
+                //Log.e("Enter getListHotel","get");
                 buildRecyclerView(mHotelList);
             }
 
@@ -322,6 +378,8 @@ public class SearchHotelNearby extends Fragment{
     }
 
     private void buildRecyclerView(List<Hotel> hotelList) {
+
+        //Log.e("'"+hotelList.get(0).getName()+"'","Hotel Name Search Nearby");
 
         if(hotelList.isEmpty()){
             tv_searchNearbyResults.setVisibility(View.VISIBLE);

@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.ferias.R;
@@ -29,10 +30,14 @@ import com.example.ferias.data.traveler.Traveler;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.CancellationToken;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnTokenCanceledListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -90,11 +95,11 @@ public class Home extends Fragment {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-        getLocation();
-
         readUserData();
 
         initializeElements(root);
+
+        //getLocation();
 
         clickListener(root);
 
@@ -103,23 +108,41 @@ public class Home extends Fragment {
         return root;
     }
 
+    /*
     private void getLocation() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 40);
         }
 
-        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setInterval(1);
+        locationRequest.setFastestInterval(1);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        fusedLocationProviderClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, new CancellationToken() {
+            @Override
+            public boolean isCancellationRequested() {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
+                return null;
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
                 //Inicialize location
                 Location location = task.getResult();
                 if(location != null){
                     latLng = new LatLng(location.getLatitude(),location.getLongitude());
+                    Log.e("Location:"+"'"+location.getLatitude()+"'"+";"+"'"+location.getLongitude()+"'","HOME");
                 }
             }
         });
     }
-
+    */
     private void initializeElements(View root) {
         bt_ProfileMenu = root.findViewById(R.id.bt_ProfileMenu);
 
@@ -194,10 +217,10 @@ public class Home extends Fragment {
         });
 
         bt_search_nearby.setOnClickListener(v -> {
-            getLocation();
+            //getLocation();
             Bundle bundle = new Bundle();
-            String gps = latLng.latitude + "," + latLng.longitude;
-            bundle.putString("GPS", gps);
+            //String gps = latLng.latitude + "," + latLng.longitude;
+            //bundle.putString("GPS", gps);
             float distance =  user.getSearchRadius() != 0 ?  user.getSearchRadius() : 500;
             bundle.putFloat("SearchRadius", distance);
             Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_traveler_search_nearby,bundle);

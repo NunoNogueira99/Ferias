@@ -38,6 +38,11 @@ dependencies {
 
     //Pugin Glide to display images
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     //Plugin ImageSlideshow to display images

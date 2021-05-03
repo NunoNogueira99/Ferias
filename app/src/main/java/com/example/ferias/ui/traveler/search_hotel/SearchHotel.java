@@ -1,8 +1,5 @@
 package com.example.ferias.ui.traveler.search_hotel;
 
-import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -72,7 +69,7 @@ public class SearchHotel extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.traveler_fragment_hotel_search, container, false);
+        View root = inflater.inflate(R.layout.traveler_fragment_search_hotel, container, false);
 
         initializeElements(root);
         clickListener(root);
@@ -177,7 +174,7 @@ public class SearchHotel extends Fragment {
                         keys.add(entry.getValue());
 
                 bundle.putString("clickDetails", keys.get(position));
-                Navigation.findNavController(root).navigate(R.id.action_traveler_search_to_traveler_hotelview, bundle);
+                Navigation.findNavController(root).navigate(R.id.action_search_hotel_to_traveler_hotelview, bundle);
             }
 
             @Override
@@ -391,4 +388,8 @@ public class SearchHotel extends Fragment {
         adapterFilteredResults adapterFilteredResults=new adapterFilteredResults(filteredResults.keySet());
         mResultList.setAdapter(adapterFilteredResults);
     }
+
+    //SEARCH NEARBY HOTELS
+
+
 }

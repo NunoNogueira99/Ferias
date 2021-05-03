@@ -43,7 +43,6 @@
                     android:foreground="@drawable/shape_search_1"
                     android:imeOptions="actionDone"
                     android:inputType="text"
-                    android:paddingStart="10sp"
                     android:textColor="@color/primary_white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/search_btn"

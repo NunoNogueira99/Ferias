@@ -175,9 +175,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout12">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:layout_marginBottom="8dp"
+                    android:layout_height="wrap_content"
                     android:hint="Where you want to go?">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -187,15 +186,27 @@
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:textColor="@color/primary_white" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/home_search_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="10dp"
                     android:text="See results"
+                    app:icon="@drawable/ic_arrow_forward"
+                    app:iconGravity="textEnd"
+                    app:iconSize="16dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/bt_search_nearby"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:maxLines="1"
+                    android:text="Nearby hotels"
                     app:icon="@drawable/ic_arrow_forward"
                     app:iconGravity="textEnd"
                     app:iconSize="16dp" />

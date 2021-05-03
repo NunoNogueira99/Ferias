@@ -1,7 +1,6 @@
 package com.example.ferias.data.traveler;
 
 import com.example.ferias.data.common.User;
-import com.example.ferias.data.hotel_manager.Hotel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,6 +10,7 @@ public class Traveler extends User implements Serializable {
 
     ////////////////     BOOKINGS     ////////////////
     private List<String> bookings;
+    private float searchRadius;
 
     public Traveler(){
         super();
@@ -19,17 +19,24 @@ public class Traveler extends User implements Serializable {
     public Traveler(String name, String surname, String phone, String email, boolean isGoogle) {
         super(name, surname, phone, email, isGoogle);
         bookings = new ArrayList<>();
+        searchRadius = 0f;
     }
 
     public Traveler(String name, String surname, String email, String phone, String password) {
         super(name, surname, email, phone, password);
         bookings = new ArrayList<>();
+        searchRadius = 0f;
     }
 
     //////////////// GETS BEGIN ////////////////
     public List<String> getBookings() {
         return bookings;
     }
+
+    public float getSearchRadius() {
+        return searchRadius;
+    }
+
     //////////////// GETS END ////////////////
 
     //////////////// SETS BEGIN ////////////////
@@ -46,6 +53,10 @@ public class Traveler extends User implements Serializable {
 
     public void removeBookingyIndex(int index) {
         this.bookings.remove(index);
+    }
+
+    public void setSearchRadius(float searchRadius) {
+        this.searchRadius = searchRadius;
     }
 
     //////////////// SETS END ////////////////

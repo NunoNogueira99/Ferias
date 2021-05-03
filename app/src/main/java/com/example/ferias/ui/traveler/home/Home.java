@@ -1,9 +1,15 @@
 package com.example.ferias.ui.traveler.home;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -23,6 +29,9 @@ import com.example.ferias.data.traveler.Traveler;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -38,6 +47,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 
 public class Home extends Fragment {
@@ -48,6 +59,8 @@ public class Home extends Fragment {
     private Traveler user;
 
     private GoogleSignInClient googleSignInClient;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private LatLng latLng;
 
     private ConstraintLayout cl_HomeUser;
 
@@ -59,20 +72,25 @@ public class Home extends Fragment {
     private MaterialButton search_btn;
     private TextView textinput_location;
 
+    private MaterialButton bt_search_nearby;
+
     private ExtendedFloatingActionButton partyBtn;
     private ExtendedFloatingActionButton chillBtn;
     private ExtendedFloatingActionButton adventureBtn;
     private ExtendedFloatingActionButton sportsBtn;
+    private ExtendedFloatingActionButton bookings_btn;
 
     private FloatingActionButton favsBtn;
-
-    private ExtendedFloatingActionButton bookings_btn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.traveler_fragment_home, container, false);
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+        getLocation();
 
         readUserData();
 
@@ -83,6 +101,23 @@ public class Home extends Fragment {
         loadDatatoElements();
 
         return root;
+    }
+
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 40);
+        }
+
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                //Inicialize location
+                Location location = task.getResult();
+                if(location != null){
+                    latLng = new LatLng(location.getLatitude(),location.getLongitude());
+                }
+            }
+        });
     }
 
     private void initializeElements(View root) {
@@ -106,10 +141,11 @@ public class Home extends Fragment {
         chillBtn = root.findViewById(R.id.travelerChill_search);
         adventureBtn = root.findViewById(R.id.travelerAdventure_search);
         sportsBtn = root.findViewById(R.id.travelerSport_search);
+        bookings_btn = root.findViewById(R.id.my_bookings_btn);
 
         favsBtn=root.findViewById(R.id.my_favs_btn2);
 
-        bookings_btn=root.findViewById(R.id.my_bookings_btn);
+        bt_search_nearby = root.findViewById(R.id.bt_search_nearby);
     }
 
     private void clickListener(View root) {
@@ -155,6 +191,16 @@ public class Home extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString("inputText", textinput_location.getText().toString());
             Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_traveler_search, bundle);
+        });
+
+        bt_search_nearby.setOnClickListener(v -> {
+            getLocation();
+            Bundle bundle = new Bundle();
+            String gps = latLng.latitude + "," + latLng.longitude;
+            bundle.putString("GPS", gps);
+            float distance =  user.getSearchRadius() != 0 ?  user.getSearchRadius() : 500;
+            bundle.putFloat("SearchRadius", distance);
+            Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_traveler_search_nearby,bundle);
         });
 
         partyBtn.setOnClickListener(v -> {SearchByMods(root,"Party");});

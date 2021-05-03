@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="5sp"
+    android:padding="32dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_search_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/search_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_rectangle_for_buttons"
+            android:padding="10dp"
+            android:src="@drawable/ic_arrow_forward"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_input_location"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="15dp"
+            android:background="@color/transparent"
+            android:foreground="@drawable/shape_search_1"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:textColor="@color/primary_white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/search_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_search_location_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_search_bar">
+
+        <TextView
+            android:id="@+id/textView20"
+            style="@style/custom_headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="168dp"
+            android:text="@string/hotels_found_at"
+            android:textColor="@color/secondary_white"
+            app:layout_constraintBottom_toTopOf="@+id/searchResultsInfoText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/searchResultsInfoText"
+            style="?attr/textAppearanceHeadline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/place_name_found"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_SearchNearby"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_searchNearbyTitle"
+            style="?attr/textAppearanceHeadline4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hotels find nearby"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/tv_searchNearbyResults"
+            style="?attr/textAppearanceHeadline4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="No hotels found"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_search_location_bar"
+        app:layout_constraintVertical_bias="0.04000002">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/searchResults"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="18dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/filter_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_rectangle_for_buttons"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_filterlist"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/filter_btn"
+        app:layout_constraintEnd_toEndOf="@+id/filter_btn">
+
+        <TextView
+            android:id="@+id/searchFilter_party"
+            android:layout_width="150dp"
+            android:layout_height="40sp"
+            android:layout_gravity="right"
+            android:layout_marginBottom="10sp"
+            android:background="@drawable/shape_search_1_active"
+            android:gravity="center|left"
+            android:paddingStart="15sp"
+            android:text="🎉 Party mood"
+            android:textAllCaps="false"
+            android:textColor="@color/primary_white" />
+
+        <TextView
+            android:id="@+id/searchFilter_Chill"
+            android:layout_width="150dp"
+            android:layout_height="40sp"
+            android:layout_gravity="right"
+            android:layout_marginBottom="10sp"
+            android:background="@drawable/shape_search_1_active"
+            android:gravity="center|left"
+            android:paddingStart="15sp"
+            android:text="⛱️ Chill mood"
+            android:textAllCaps="false"
+            android:textColor="@color/primary_white" />
+
+        <TextView
+            android:id="@+id/searchFilter_Adventure"
+            android:layout_width="150dp"
+            android:layout_height="40sp"
+            android:layout_gravity="right"
+            android:layout_marginBottom="10sp"
+            android:background="@drawable/shape_search_1_active"
+            android:gravity="center|left"
+            android:paddingStart="15sp"
+            android:text="⛰ Adventure mood"
+            android:textAllCaps="false"
+            android:textColor="@color/primary_white" />
+
+        <TextView
+            android:id="@+id/searchFilter_sports"
+            android:layout_width="150dp"
+            android:layout_height="40sp"
+            android:layout_gravity="right"
+            android:layout_marginBottom="10sp"
+            android:background="@drawable/shape_search_1_active"
+            android:gravity="center|left"
+            android:paddingStart="15sp"
+            android:text="⛷️ Sports mood"
+            android:textAllCaps="false"
+            android:textColor="@color/primary_white" />
+
+        <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10sp"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:id="@+id/min_price"
+                android:layout_width="117dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="10sp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_search_1_active"
+                android:drawableRight="@drawable/ic_euro"
+                android:ems="10"
+                android:hint="Min Price"
+                android:inputType="number"
+                android:paddingStart="16sp"
+                android:paddingEnd="10sp"
+                android:textAppearance="@style/custom_subtitle2"
+                android:textColor="@color/primary_white"
+                android:textColorHint="@color/tertiary_white" />
+
+            <EditText
+                android:id="@+id/max_price"
+                android:layout_width="117dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_search_1_active"
+                android:drawableEnd="@drawable/ic_euro"
+                android:ems="10"
+                android:hint="Max price"
+                android:inputType="number"
+                android:paddingStart="16sp"
+                android:paddingEnd="10sp"
+                android:textAppearance="@style/custom_subtitle2"
+                android:textColor="@color/primary_white"
+                android:textColorHint="@color/tertiary_white" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

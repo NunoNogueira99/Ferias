@@ -82,17 +82,17 @@
             android:id="@+id/action_traveler_home_to_profile"
             app:destination="@id/profile" />
         <action
-            android:id="@+id/action_traveler_home_to_searchHotel"
-            app:destination="@id/search_hotel" />
-        <action
             android:id="@+id/action_traveler_home_to_traveler_search"
-            app:destination="@id/traveler_search" />
+            app:destination="@id/search_hotel" />
         <action
             android:id="@+id/action_traveler_home_to_favorites"
             app:destination="@id/favorites" />
         <action
             android:id="@+id/action_traveler_home_to_bookings"
             app:destination="@id/bookings" />
+        <action
+            android:id="@+id/action_traveler_home_to_traveler_search_nearby"
+            app:destination="@id/traveler_search_nearby" />
     </fragment>
     <fragment
         android:id="@+id/profile"
@@ -141,15 +141,24 @@
         <action
             android:id="@+id/action_searchHotel_to_traveler_home"
             app:destination="@id/traveler_home" />
+        <action
+            android:id="@+id/action_search_hotel_to_traveler_hotelview"
+            app:destination="@id/traveler_hotelview" />
     </fragment>
     <fragment
-        android:id="@+id/traveler_search"
-        android:name="com.example.ferias.ui.traveler.search_hotel.SearchHotel"
+        android:id="@+id/traveler_search_nearby"
+        android:name="com.example.ferias.ui.traveler.search_nearby_hotels.SearchHotelNearby"
         android:label="fragment_traveler_search"
-        tools:layout="@layout/traveler_fragment_hotel_search" >
+        tools:layout="@layout/traveler_fragment_hotel_search_nearby" >
         <action
             android:id="@+id/action_traveler_search_to_traveler_hotelview"
             app:destination="@id/traveler_hotelview" />
+        <action
+            android:id="@+id/action_traveler_search_nearby_to_traveler_hotelview"
+            app:destination="@id/traveler_hotelview" />
+        <action
+            android:id="@+id/action_traveler_search_nearby_to_traveler_home"
+            app:destination="@id/traveler_home" />
     </fragment>
     <fragment
         android:id="@+id/traveler_hotelview"

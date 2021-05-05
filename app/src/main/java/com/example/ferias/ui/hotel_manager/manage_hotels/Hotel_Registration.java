@@ -1,13 +1,17 @@
 package com.example.ferias.ui.hotel_manager.manage_hotels;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,15 +30,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
@@ -49,24 +54,36 @@ import com.example.ferias.data.hotel_manager.Hotel;
 import com.example.ferias.data.hotel_manager.HotelFeature;
 import com.example.ferias.data.hotel_manager.HotelManager;
 import com.example.ferias.data.hotel_manager.HotelMoods;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.hbb20.CountryCodePicker;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -79,9 +96,9 @@ public class Hotel_Registration extends Fragment {
     private HotelManager user;
     private Hotel hotel;
 
-    private EditText et_Name,  et_TotalRooms, et_Price;
+    private EditText et_Name, et_TotalRooms, et_Price;
 
-    private TextView tv_Hotel_Stars ;
+    private TextView tv_Hotel_Stars;
     private RatingBar rb_Stars;
 
     private CountryCodePicker ccp_PhoneCode;
@@ -117,7 +134,13 @@ public class Hotel_Registration extends Fragment {
 
     private ImageButton bt_hotel_registration_back;
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    private LinearLayout ll_Hotel_GPS_Address;
+    private GoogleMap map;
+    private MapView mMapView;
+    private SearchView searchView;
+    private LatLng coordinates;
+
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.hotel_manager_fragment_hotel_registration, container, false);
 
@@ -130,7 +153,7 @@ public class Hotel_Registration extends Fragment {
         return root;
     }
 
-    private void getUserDate(){
+    private void getUserDate() {
         try {
             user = (HotelManager) InternalStorage.readObject(getContext(), "User");
         } catch (IOException e) {
@@ -152,12 +175,13 @@ public class Hotel_Registration extends Fragment {
         rb_Stars = root.findViewById(R.id.rb_Hotel_Stars);
 
         ccp_PhoneCode = root.findViewById(R.id.ccp_PhoneCode_Hotel);
-        et_Phone=root.findViewById(R.id.et_Phone_Hotel);
+        et_Phone = root.findViewById(R.id.et_Phone_Hotel);
         ccp_PhoneCode.registerCarrierNumberEditText(et_Phone);
 
         et_TotalRooms = root.findViewById(R.id.et_Hotel_Total_Rooms);
         et_Price = root.findViewById(R.id.et_Hotel_Price_Rooms);
 
+        ll_Hotel_GPS_Address = root.findViewById(R.id.ll_Hotel_GPS_Address);
         ccp_country = root.findViewById(R.id.ccp_Hotel_Country);
         et_City = root.findViewById(R.id.et_Hotel_City);
         et_Address = root.findViewById(R.id.et_Hotel_Address);
@@ -193,6 +217,8 @@ public class Hotel_Registration extends Fragment {
             verifyData();
         });
 
+        ll_Hotel_GPS_Address.setOnClickListener(v -> openMapDialog());
+
         hotel_features_listern();
 
         hotel_moods_listern();
@@ -200,7 +226,7 @@ public class Hotel_Registration extends Fragment {
         hotel_photos_listern();
     }
 
-    private void hotel_features_listern(){
+    private void hotel_features_listern() {
         hotelFeatures = new HotelFeature(getResources().getStringArray(R.array.Features));
 
         tv_Features_Selected.setText("Features");
@@ -210,7 +236,7 @@ public class Hotel_Registration extends Fragment {
         ArrayList<Integer> featuresSelected = new ArrayList<>();
 
         int index = 0;
-        for (Map.Entry<String, Boolean> entry : hotelFeatures.getFeatures().entrySet()){
+        for (Map.Entry<String, Boolean> entry : hotelFeatures.getFeatures().entrySet()) {
             featuresKeys[index] = entry.getKey();
             featuresValues[index] = entry.getValue();
             index++;
@@ -220,11 +246,11 @@ public class Hotel_Registration extends Fragment {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
             mBuilder.setTitle("Selected features of hotel");
             mBuilder.setMultiChoiceItems(featuresKeys, featuresValues, (dialogInterface, position, isChecked) -> {
-                if(isChecked){
+                if (isChecked) {
                     featuresSelected.add(position);
-                    hotelFeatures.setFeatures_Value(featuresKeys[position],true);
-                }else{
-                    hotelFeatures.setFeatures_Value(featuresKeys[position],false);
+                    hotelFeatures.setFeatures_Value(featuresKeys[position], true);
+                } else {
+                    hotelFeatures.setFeatures_Value(featuresKeys[position], false);
                     featuresSelected.remove(position);
                 }
             });
@@ -262,7 +288,7 @@ public class Hotel_Registration extends Fragment {
         ExtendedFloatingActionButton moods;
         hotelMoods = new HotelMoods(getResources().getStringArray(R.array.Moods), getResources().getStringArray(R.array.MoodsIcons));
 
-        for (Map.Entry<String, Boolean> entry : hotelMoods.getMoods().entrySet()){
+        for (Map.Entry<String, Boolean> entry : hotelMoods.getMoods().entrySet()) {
             moods = new ExtendedFloatingActionButton(getContext());
 
             moods.setId(entry.getKey().hashCode());
@@ -285,15 +311,14 @@ public class Hotel_Registration extends Fragment {
 
             ExtendedFloatingActionButton finalbutton = moods;
             finalbutton.setOnClickListener(v -> {
-                if(finalbutton.isChecked()){
+                if (finalbutton.isChecked()) {
                     finalbutton.setChecked(true);
                     finalbutton.setBackgroundColor(Color.parseColor("#FF3F51B5"));
-                    hotelMoods.setMoods_Value(entry.getKey(),true);
-                }
-                else{
+                    hotelMoods.setMoods_Value(entry.getKey(), true);
+                } else {
                     finalbutton.setChecked(false);
                     finalbutton.setBackgroundColor(Color.parseColor("#15194A"));
-                    hotelMoods.setMoods_Value(entry.getKey(),false);
+                    hotelMoods.setMoods_Value(entry.getKey(), false);
                 }
                 Log.e("Moods", hotelMoods.toString());
             });
@@ -314,9 +339,9 @@ public class Hotel_Registration extends Fragment {
     }
 
     private void openUploadDialog(int requestCode) {
-        slideModelList  =new ArrayList<>();
+        slideModelList = new ArrayList<>();
 
-        if(othersphotos == null){
+        if (othersphotos == null) {
             othersphotos = new ArrayList<>();
         }
 
@@ -330,7 +355,7 @@ public class Hotel_Registration extends Fragment {
 
         dialog.create();
 
-        mainslider= dialog.findViewById(R.id.hotel_slider_upload);
+        mainslider = dialog.findViewById(R.id.hotel_slider_upload);
         mainslider.bringToFront();
 
         tv_popupMenu = dialog.findViewById(R.id.tv_popupMenu);
@@ -341,19 +366,19 @@ public class Hotel_Registration extends Fragment {
 
         ImageButton bt_close = dialog.findViewById(R.id.bt_close_upload_photo);
 
-        switch (requestCode){
+        switch (requestCode) {
             case PICK_COVER_IMAGE_REQUEST:
-                if(coverPhoto != null){
-                    slideModelList.add(new SlideModel(String.valueOf(coverPhoto),"", ScaleTypes.FIT));
+                if (coverPhoto != null) {
+                    slideModelList.add(new SlideModel(String.valueOf(coverPhoto), "", ScaleTypes.FIT));
                 }
-            break;
+                break;
             case PICK_OTHERS_IMAGE_REQUEST:
-                if(!othersphotos.isEmpty()){
-                    for(Uri photo : othersphotos){
-                        slideModelList.add(new SlideModel(String.valueOf(photo),"", ScaleTypes.FIT));
+                if (!othersphotos.isEmpty()) {
+                    for (Uri photo : othersphotos) {
+                        slideModelList.add(new SlideModel(String.valueOf(photo), "", ScaleTypes.FIT));
                     }
                 }
-            break;
+                break;
         }
         mainslider.setImageList(slideModelList, ScaleTypes.FIT);
         mainslider.stopSliding();
@@ -367,13 +392,13 @@ public class Hotel_Registration extends Fragment {
         });
 
         bt_reset.setOnClickListener(v -> {
-            switch (requestCode){
+            switch (requestCode) {
                 case PICK_COVER_IMAGE_REQUEST:
                     coverPhoto = null;
-                break;
+                    break;
                 case PICK_OTHERS_IMAGE_REQUEST:
                     othersphotos.clear();
-                break;
+                    break;
             }
             slideModelList.clear();
             mainslider.setImageList(slideModelList, ScaleTypes.FIT);
@@ -396,10 +421,10 @@ public class Hotel_Registration extends Fragment {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        switch (requestCode){
+        switch (requestCode) {
             case PICK_OTHERS_IMAGE_REQUEST:
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            break;
+                break;
         }
         startActivityForResult(intent, requestCode);
     }
@@ -409,24 +434,23 @@ public class Hotel_Registration extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         Uri photoUri;
 
-        if(resultCode == getActivity().RESULT_OK){
+        if (resultCode == getActivity().RESULT_OK) {
             if (requestCode == PICK_OTHERS_IMAGE_REQUEST) {
                 if (data.getClipData() != null) {
                     //Multiple
                     int total_items = data.getClipData().getItemCount();
-                    for(int i=0; i < total_items; i++){
+                    for (int i = 0; i < total_items; i++) {
                         photoUri = data.getClipData().getItemAt(i).getUri();
                         othersphotos.add(photoUri);
-                        slideModelList.add(new SlideModel(String.valueOf(photoUri),"",ScaleTypes.FIT));
+                        slideModelList.add(new SlideModel(String.valueOf(photoUri), "", ScaleTypes.FIT));
                     }
                     mainslider.setImageList(slideModelList, ScaleTypes.FIT);
                     mainslider.stopSliding();
-                }
-                else if (data.getData() != null) {
+                } else if (data.getData() != null) {
                     //Single
                     photoUri = data.getData();
                     othersphotos.add(photoUri);
-                    slideModelList.add(new SlideModel(String.valueOf(photoUri),"",ScaleTypes.FIT));
+                    slideModelList.add(new SlideModel(String.valueOf(photoUri), "", ScaleTypes.FIT));
                     mainslider.setImageList(slideModelList, ScaleTypes.FIT);
                     mainslider.stopSliding();
                 }
@@ -437,20 +461,19 @@ public class Hotel_Registration extends Fragment {
                 //Single
                 slideModelList.clear();
                 coverPhoto = data.getData();
-                slideModelList.add(new SlideModel(String.valueOf(coverPhoto),"",ScaleTypes.FIT));
+                slideModelList.add(new SlideModel(String.valueOf(coverPhoto), "", ScaleTypes.FIT));
                 mainslider.setImageList(slideModelList, ScaleTypes.FIT);
                 mainslider.stopSliding();
 
                 sliderClick(PICK_COVER_IMAGE_REQUEST);
             }
-
         }
     }
 
     private void sliderClick(int requestCode) {
         mainslider.setItemClickListener(e -> {
             Context wrapper = new ContextThemeWrapper(getContext(), R.style.popupMenuStyle);
-            PopupMenu popupMenu = new PopupMenu(wrapper, tv_popupMenu,Gravity.CENTER,0,0);
+            PopupMenu popupMenu = new PopupMenu(wrapper, tv_popupMenu, Gravity.CENTER, 0, 0);
 
             //parm 2 is menu id, param 3 is position of this menu item in menu items list, param 4 is title of the menu
             popupMenu.getMenu().add(Menu.NONE, 0, 0, "View Full");
@@ -466,26 +489,26 @@ public class Hotel_Registration extends Fragment {
             popupMenu.setOnMenuItemClickListener(item -> {
                 ImageView iv_photo_full = dialog.findViewById(R.id.iv_photo_full);
 
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case 0:
                         ConstraintLayout cl_upload_photo_home = dialog.findViewById(R.id.cl_upload_photo_home);
                         cl_upload_photo_home.getLayoutParams().height = ConstraintLayout.LayoutParams.MATCH_PARENT; // LayoutParams: android.view.ViewGroup.LayoutParams
                         cl_upload_photo_home.requestLayout();//It is necesary to refresh the screen
 
-                        switch (requestCode){
+                        switch (requestCode) {
                             case PICK_COVER_IMAGE_REQUEST:
                                 Glide.with(this)
-                                .load(coverPhoto)
-                                .centerInside()
-                                .into(iv_photo_full);
-                            break;
+                                        .load(coverPhoto)
+                                        .centerInside()
+                                        .into(iv_photo_full);
+                                break;
 
                             case PICK_OTHERS_IMAGE_REQUEST:
                                 Glide.with(this)
-                                .load(othersphotos.get(e))
-                                .centerInside()
-                                .into(iv_photo_full);
-                            break;
+                                        .load(othersphotos.get(e))
+                                        .centerInside()
+                                        .into(iv_photo_full);
+                                break;
                         }
 
 
@@ -510,12 +533,12 @@ public class Hotel_Registration extends Fragment {
 
                         bt_rotate_right.setOnClickListener(v -> {
                             rotate[0] += 90;
-                            if(rotate[0] >= 360){
+                            if (rotate[0] >= 360) {
                                 rotate[0] = 0;
                             }
 
                             iv_photo_full.setRotation(rotate[0]);
-                            switch (requestCode){
+                            switch (requestCode) {
                                 case PICK_COVER_IMAGE_REQUEST:
                                     Glide.with(this)
                                             .load(coverPhoto)
@@ -535,12 +558,12 @@ public class Hotel_Registration extends Fragment {
 
                         bt_rotate_left.setOnClickListener(v -> {
                             rotate[0] -= 90;
-                            if(rotate[0] <= -360){
+                            if (rotate[0] <= -360) {
                                 rotate[0] = 0;
                             }
 
                             iv_photo_full.setRotation(rotate[0]);
-                            switch (requestCode){
+                            switch (requestCode) {
                                 case PICK_COVER_IMAGE_REQUEST:
                                     Glide.with(this)
                                             .load(coverPhoto)
@@ -560,7 +583,7 @@ public class Hotel_Registration extends Fragment {
 
                         bt_rotate_right.performClick();
                         bt_rotate_left.performClick();
-                    break;
+                        break;
 
                     case 1:
                         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
@@ -570,16 +593,16 @@ public class Hotel_Registration extends Fragment {
 
                         dialog.setPositiveButton("Yes", (dialog1, id) -> {
                             Toast.makeText(getContext(), "Item deleted", Toast.LENGTH_SHORT).show();
-                            switch (requestCode){
+                            switch (requestCode) {
                                 case PICK_COVER_IMAGE_REQUEST:
                                     coverPhoto = null;
                                     slideModelList.clear();
-                                break;
+                                    break;
 
                                 case PICK_OTHERS_IMAGE_REQUEST:
                                     othersphotos.remove(e);
                                     slideModelList.remove(e);
-                                break;
+                                    break;
                             }
 
                             mainslider.setImageList(slideModelList, ScaleTypes.FIT);
@@ -592,7 +615,7 @@ public class Hotel_Registration extends Fragment {
 
                         AlertDialog alert = dialog.create();
                         alert.show();
-                    break;
+                        break;
                 }
 
                 return true;
@@ -602,7 +625,7 @@ public class Hotel_Registration extends Fragment {
         });
     }
 
-    private void verifyData(){
+    private void verifyData() {
 
         boolean error = false;
         ////////////// PERSONAL DATA /////////////////
@@ -625,112 +648,110 @@ public class Hotel_Registration extends Fragment {
         String description = et_Description.getText().toString().trim();
 
 
-        if(name.isEmpty()){
+        if (name.isEmpty()) {
             et_Name.setError("Hotel name is required");
             et_Name.requestFocus();
             error = true;
         }
 
-        if(starts == 0){
+        if (starts == 0) {
             tv_Hotel_Stars.setError("Hotel stars is required");
             tv_Hotel_Stars.requestFocus();
             error = true;
         }
 
 
-        if(ccp_PhoneCode.isValidFullNumber()){
+        if (ccp_PhoneCode.isValidFullNumber()) {
             phone = ccp_PhoneCode.getFormattedFullNumber();
         }
-        if(phone.isEmpty() || !ccp_PhoneCode.isValidFullNumber()){
+        if (phone.isEmpty() || !ccp_PhoneCode.isValidFullNumber()) {
             et_Phone.setError("Phone is required or is not valid");
             et_Phone.requestFocus();
             error = true;
         }
 
 
-        if(!rooms.isEmpty()){
+        if (!rooms.isEmpty()) {
             total_rooms = Integer.parseInt(et_TotalRooms.getText().toString().trim());
-            if(total_rooms <= 1){
+            if (total_rooms <= 1) {
                 et_TotalRooms.setError("Total rooms is required and greater than 1");
                 et_TotalRooms.requestFocus();
                 error = true;
             }
-        }
-        else {
+        } else {
             et_TotalRooms.setError("Total rooms is required and greater than 1");
             et_TotalRooms.requestFocus();
             error = true;
         }
 
 
-        if(!price.isEmpty()){
+        if (!price.isEmpty()) {
             price_room = Integer.parseInt(et_Price.getText().toString().trim());
-            if(price_room <= 1){
+            if (price_room <= 1) {
                 et_Price.setError("Price the rooms is required and greater than 1");
                 et_Price.requestFocus();
                 error = true;
             }
-        }
-        else {
+        } else {
             et_Price.setError("Price the rooms is required and greater than 1");
             et_Price.requestFocus();
             error = true;
         }
 
-        if(city.isEmpty()){
+        if (city.isEmpty()) {
             Toast.makeText(getContext(), "You did not enter a city", Toast.LENGTH_LONG).show();
             et_City.setError("City name is required");
             et_City.requestFocus();
             error = true;
         }
 
-        if(address_string.isEmpty()){
+        if (address_string.isEmpty()) {
             et_Address.setError("Address name is required");
             et_Address.requestFocus();
             error = true;
         }
 
-        if(zip_code.isEmpty()){
+        if (zip_code.isEmpty()) {
             et_ZipCode.setError("Zip-Code is required");
             et_ZipCode.requestFocus();
             error = true;
         }
 
-        if(tv_Features_Selected.getText().toString().trim().isEmpty()){
+        if (tv_Features_Selected.getText().toString().trim().isEmpty()) {
             tv_Features_Selected.setError("Select at least one feature");
             tv_Features_Selected.requestFocus();
             error = true;
         }
 
-        if(description.isEmpty() || description.length() < 20){
+        if (description.isEmpty() || description.length() < 20) {
             et_Description.setError("Description is required");
             et_Description.requestFocus();
             error = true;
         }
 
-        if(!hotelMoods.getMoods_Verification()){
+        if (!hotelMoods.getMoods_Verification()) {
             tv_Hotel_Moods_Title.setError("Select at least one mood");
             tv_Hotel_Moods_Title.requestFocus();
             error = true;
         }
 
-        if(coverPhoto == null){
+        if (coverPhoto == null) {
             tv_title_cover_photo.setError("Select cover photo");
             tv_title_cover_photo.requestFocus();
             error = true;
         }
 
-        if(othersphotos.isEmpty()){
+        if (othersphotos.isEmpty()) {
             tv_title_others_photo.setError("Select others photos");
             tv_title_others_photo.requestFocus();
             error = true;
         }
 
-        if(error){
+        if (error) {
             return;
         }
 
-        Address address = new Address(country, city, address_string, zip_code);
+        Address address = new Address(country, city, address_string, zip_code,coordinates.latitude,coordinates.longitude);
 
         hotel = new Hotel(name, phone, description, address, firebaseUser.getUid(), price_room, starts, total_rooms, hotelMoods, hotelFeatures);
 
@@ -738,22 +759,21 @@ public class Hotel_Registration extends Fragment {
 
     }
 
-    private void registerOnFirebase(Hotel hotel){
+    private void registerOnFirebase(Hotel hotel) {
         String hotelID = GenerateUniqueIds.generateId();
         databaseReferenceHotel = FirebaseDatabase.getInstance().getReference("Hotel").child(hotelID);
 
         databaseReferenceHotel.setValue(hotel).addOnCompleteListener(task1 -> {
-            if(task1.isSuccessful()){
-                Toast.makeText(getContext(),"Hotel has ben registered successfully!", Toast.LENGTH_LONG).show();
+            if (task1.isSuccessful()) {
+                Toast.makeText(getContext(), "Hotel has ben registered successfully!", Toast.LENGTH_LONG).show();
                 registerPhotosOnFirebase(hotelID);
 
                 user.addHotel(hotelID);
                 databaseReferenceManager.setValue(user);
 
                 Navigation.findNavController(getView()).navigate(R.id.action_hotel_registration_to_hotel_manage);
-            }
-            else {
-                Toast.makeText(getContext(),"Failed to register! Try again!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getContext(), "Failed to register! Try again!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -796,7 +816,7 @@ public class Hotel_Registration extends Fragment {
 
             List<String> listothersphotos = new ArrayList<>();
 
-            for(Uri photo : othersphotos){
+            for (Uri photo : othersphotos) {
                 StorageReference fileOthers = storageReference.child(hotelID).child("Others").child(GenerateUniqueIds.generateId() + "." + getFileExtension(photo));
                 StorageTask<UploadTask.TaskSnapshot> mUploadOtherTask = fileOthers.putFile(photo)
                         .addOnSuccessListener(taskSnapshot -> {
@@ -804,7 +824,7 @@ public class Hotel_Registration extends Fragment {
                                 // Success, Image uploaded
                                 listothersphotos.add(uri.toString());
 
-                                if(listothersphotos.size() == othersphotos.size()){
+                                if (listothersphotos.size() == othersphotos.size()) {
                                     hotel.setOtherPhotos(listothersphotos);
                                     databaseReferenceHotel.setValue(hotel);
                                     progressDialog.dismiss();
@@ -827,4 +847,213 @@ public class Hotel_Registration extends Fragment {
             Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void openMapDialog() {
+
+        dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.fragment_dialog_maps);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        dialog.setCancelable(false);
+
+        dialog.create();
+
+        ImageButton bt_close = dialog.findViewById(R.id.bt_close_map_dialog);
+
+        searchView = dialog.findViewById(R.id.sv_location);
+
+        TextView textView = searchView.findViewById(searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null));
+        textView.setTextColor(Color.WHITE);
+        textView.setHintTextColor(Color.WHITE);
+
+        ImageView searchClose = searchView.findViewById(searchView.getContext().getResources().getIdentifier("android:id/search_close_btn", null, null));
+        searchClose.setColorFilter(Color.WHITE);
+
+        ImageView searchMag = searchView.findViewById(searchView.getContext().getResources().getIdentifier("android:id/search_mag_icon", null, null));
+        searchMag.setColorFilter(Color.WHITE);
+
+        mMapView = dialog.findViewById(R.id.google_map);
+        MapsInitializer.initialize(getActivity());
+
+        mMapView.onCreate(dialog.onSaveInstanceState());
+        mMapView.onResume();
+
+        mMapView.getMapAsync(googleMap -> {
+            map = googleMap;
+
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, 40);
+                return;
+            }
+
+            googleMap.setMyLocationEnabled(true);
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            googleMap.getUiSettings().setMapToolbarEnabled(false);
+
+            if(coordinates != null){
+                map.clear();
+                map.addMarker(new MarkerOptions().position(coordinates).title("My hotel"));
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinates,17));
+            }
+
+            map.setOnMapClickListener(latLng -> {
+                map.clear();
+                map.addMarker(new MarkerOptions().position(latLng).title("My hotel"));
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,17));
+
+                List<android.location.Address> addressList;
+                Address address = new Address();
+
+                Geocoder geocoder = new Geocoder(getContext(),Locale.getDefault());
+                try {
+                    addressList =  geocoder.getFromLocation(latLng.latitude, latLng.longitude, 5);
+                    coordinates = latLng;
+
+                    List<String> list_Address = new ArrayList<>();
+
+                    if(addressList != null && !addressList.isEmpty()){
+                        for(int i = 0; i < addressList.size(); i++){
+                            String text = "";
+                            if(addressList.get(i).getThoroughfare() != null){
+                                text = addressList.get(i).getThoroughfare();
+                                if(addressList.get(i).getLocality() != null){
+                                    text += ", " + addressList.get(i).getLocality();
+                                }
+                                if(!list_Address.contains(text) && !text.isEmpty()){
+                                    list_Address.add(text);
+                                }
+                            }
+                        }
+
+                        String countryCode = addressList.get(0).getCountryCode();
+
+                        final String[] locality = {""};
+                        final String[] zipCode = {addressList.get(0).getPostalCode()};
+                        final String[] fullAddress = {""};
+
+                        address.setCountry(countryCode);
+                        address.setCity(addressList.get(0).getAdminArea());
+
+                        if(list_Address.size() == 1 ){
+                            fullAddress[0] = list_Address.get(list_Address.size()-1) + locality[0];
+                            address.setAddress(fullAddress[0]);
+                        }
+                        else if(list_Address.size() > 1 ){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setTitle("Select Address");
+
+                            builder.setItems(list_Address.toArray(new String[0]), (address_dialog, which) -> {
+                                int id = which;
+                                (new Thread(() -> {
+                                    try {
+                                        String where = URLEncoder.encode("{" +
+                                                "    \"postalCode\": {" +
+                                                "        \"$regex\": \""+ zipCode[0] +"\"" +
+                                                "    }" +
+                                                "}", "utf-8");
+                                        URL url = new URL("https://parseapi.back4app.com/classes/Worldzipcode_" + countryCode + "?limit=1000&excludeKeys=accuracy,adminCode1,adminCode2&where=" + where);
+                                        HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+                                        urlConnection.setRequestProperty("X-Parse-Application-Id", "02O9dt2WcZk6zsN0oznH2fu27l2nRBt7PFnaowGm"); // This is your app's application id
+                                        urlConnection.setRequestProperty("X-Parse-REST-API-Key", "QRFhbtw4gnptSnBk2upE5vIiSj2f9jmKGQJJcAyF"); // This is your app's REST API key
+                                        try {
+                                            BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                                            StringBuilder stringBuilder = new StringBuilder();
+                                            String line;
+                                            while ((line = reader.readLine()) != null) {
+                                                stringBuilder.append(line);
+                                            }
+                                            JSONObject data = new JSONObject(stringBuilder.toString()); // Here you have the data that you need
+                                            JSONArray test = data.getJSONArray("results");
+
+                                            for(int i=0; i < test.length(); i++){
+                                                JSONObject testdata = test.getJSONObject(i);
+
+                                                JSONObject coordinates = (JSONObject) testdata.get("geoPosition");
+
+                                                float[] distance = new float[2];
+                                                Location.distanceBetween( latLng.latitude, latLng.longitude, coordinates.getDouble("latitude"), coordinates.getDouble("longitude"), distance);
+
+                                                if( distance[0] < 1000  ){
+                                                    zipCode[0] = testdata.getString("postalCode");
+
+                                                    locality[0] = " , " + testdata.getString("placeName") + " , " + testdata.getString("adminName3") + " , " + testdata.getString("adminName2");
+                                                }
+                                            }
+
+                                        } finally {
+                                            urlConnection.disconnect();
+                                            fullAddress[0] = list_Address.get(which) + locality[0];
+                                            address.setAddress(fullAddress[0]);
+                                            address.setZipcode(zipCode[0]);
+                                            address.setCoordinates(latLng.latitude, latLng.longitude);
+
+                                            getActivity().runOnUiThread(() -> {
+                                                et_City.setText(address.getCity());
+                                                et_Address.setText(address.getAddress());
+                                                et_ZipCode.setText(address.getZipcode());
+
+                                                ccp_country.setDefaultCountryUsingNameCode(address.getCountry());
+                                                ccp_country.resetToDefaultCountry();
+
+                                                dialog.dismiss();
+                                            });
+                                        }
+                                    } catch (Exception e) {
+                                        Log.e("MainActivity", e.toString());
+                                    }
+                                })).start();
+                            });
+                            // create and show the alert dialog
+                            AlertDialog address_dialog = builder.create();
+                            address_dialog.setCanceledOnTouchOutside(false);
+                            address_dialog.show();
+                        }
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String location = searchView.getQuery().toString().trim();
+                List<android.location.Address> addresses = null;
+
+                if(location != null || !location.isEmpty()){
+                    Geocoder geocoder = new Geocoder(getContext());
+                    try {
+                        addresses =  geocoder.getFromLocationName(location,1);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if(!addresses.isEmpty()){
+                        android.location.Address address = addresses.get(0);
+                        LatLng latLng = new LatLng(address.getLatitude(),address.getLongitude());
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,13));
+
+                    }
+                }
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        bt_close.setOnClickListener(v -> {
+            dialog.cancel();
+        });
+
+        dialog.show();
+    }
+
 }

@@ -2,11 +2,12 @@ package com.example.ferias.ui.hotel_manager.manage_hotels;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,7 +21,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,11 +34,18 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Statistics extends Fragment {
-    private PieChart pieChart;
+    private PieChart chart_total_profits;
+    private TextView total_profits;
+
+    private PieChart chart_total_bookings;
+    private TextView total_bookings;
+
+    private ToggleButton bt_typeChart;
+
     private String hotelKey;
 
-    private Float total = Float.valueOf(0);
-    private TextView total_tv;
+    private List<Booking> bookingList;
+
     public Statistics(Bundle bundle) {
         hotelKey = bundle.getString("hotelKey");
     }
@@ -51,17 +58,65 @@ public class Statistics extends Fragment {
 
 
         initializeElements(root);
+
         getChartValues();
+
         clickListeners();
 
         return root;
+    }
+
+    private void initializeElements(View root) {
+        chart_total_profits = root.findViewById(R.id.chart_total_profits);
+        total_profits = root.findViewById(R.id.hotelProfits);
+        setupChartProfits();
+
+        chart_total_bookings = root.findViewById(R.id.chart_total_bookings);
+        total_bookings = root.findViewById(R.id.hotelBookings);
+        setupChartBookings();
+
+        bt_typeChart = root.findViewById(R.id.bt_typeChart);
+    }
+
+    private void clickListeners() {
+        bt_typeChart.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            ArrangeByMonth(bookingList);
+        });
+    }
+
+    private void setupChartProfits() {
+        chart_total_profits.setDrawHoleEnabled(true);
+        chart_total_profits.setEntryLabelTextSize(12);
+        chart_total_profits.setEntryLabelColor(Color.WHITE);
+        chart_total_profits.setCenterText("Earning by month");
+        chart_total_profits.setCenterTextSize(20);
+        chart_total_profits.getDescription().setEnabled(false);
+
+        chart_total_profits.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        chart_total_profits.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        chart_total_profits.getLegend().setOrientation(Legend.LegendOrientation.VERTICAL);
+
+    }
+
+    private void setupChartBookings() {
+        chart_total_bookings.setDrawHoleEnabled(true);
+        chart_total_bookings.setEntryLabelTextSize(12);
+        chart_total_bookings.setEntryLabelColor(Color.WHITE);
+        chart_total_bookings.setCenterText("Bookings by month");
+        chart_total_bookings.setCenterTextSize(20);
+        chart_total_bookings.getDescription().setEnabled(false);
+
+        chart_total_bookings.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        chart_total_bookings.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        chart_total_bookings.getLegend().setOrientation(Legend.LegendOrientation.VERTICAL);
+
     }
 
     private void getChartValues() {
         List<String> bookingKeys = new ArrayList<>();
         DatabaseReference databaseReferenceHotelKey = FirebaseDatabase.getInstance().getReference().child("Hotel/" + hotelKey +"/bookings");
 
-        databaseReferenceHotelKey.addValueEventListener(new ValueEventListener()
+        databaseReferenceHotelKey.addListenerForSingleValueEvent(new ValueEventListener()
         {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -79,7 +134,7 @@ public class Statistics extends Fragment {
     }
 
     private void getBookingValues(List<String> bookingKeys) {
-        List<Booking> bookingList = new ArrayList<>();
+        bookingList = new ArrayList<>();
         DatabaseReference databaseReferenceHotelKey = FirebaseDatabase.getInstance().getReference().child("Booking/");
 
         databaseReferenceHotelKey.addValueEventListener(new ValueEventListener()
@@ -100,54 +155,82 @@ public class Statistics extends Fragment {
     }
 
     private void ArrangeByMonth(List<Booking> bookingList) {
-        LinkedHashMap<String,Float> valuesByMonth = new LinkedHashMap<>();
-        List<String>months = Arrays.asList("January", " February", "March", " April", "May", "June", "July", "August", "September", "October", "November", "December");
+        LinkedHashMap<String,Float> valuesProfitsByMonth = new LinkedHashMap<>();
+        LinkedHashMap<String, Float> valuesBookingsByMonth = new LinkedHashMap<>();
+        List<String>months = Arrays.asList(getResources().getStringArray(R.array.months));
 
         for(int i = 0; i<12; i++ )
         {
-            valuesByMonth.put(months.get(i),Float.valueOf(0));
+            valuesProfitsByMonth.put(months.get(i),Float.valueOf(0));
             for(int j=0 ;j <bookingList.size();j++)
             {
                 if(bookingList.get(j).getEnterDate().getMonth() == i)
                 {
-                    Float value = valuesByMonth.get(months.get(i)) + bookingList.get(j).getPrice();
-                    valuesByMonth.put(months.get(i),value);
+                    Float value = valuesProfitsByMonth.get(months.get(i)) + bookingList.get(j).getPrice();
+                    valuesProfitsByMonth.put(months.get(i),value);
                 }
             }
         }
 
-        LoadPieChart(valuesByMonth);
+        for(int i = 0; i<12; i++ )
+        {
+            valuesBookingsByMonth.put(months.get(i),Float.valueOf(0));
+            for(int j=0 ;j <bookingList.size();j++)
+            {
+
+                if(bookingList.get(j).getEnterDate().getMonth() == i)
+                {
+                    float value =  valuesBookingsByMonth.get(months.get(i)) + 1;
+                    valuesBookingsByMonth.put(months.get(i),value);
+                }
+            }
+        }
+
+        if(bt_typeChart.isChecked()){
+            LinkedHashMap<String,Float> valuesProfitsBySeasons = new LinkedHashMap<>();
+            LinkedHashMap<String, Float> valuesBookingsBySeasons = new LinkedHashMap<>();
+
+            List<String>seasons = Arrays.asList(getResources().getStringArray(R.array.seasons));
+            List<String>seasons_moths = Arrays.asList(getResources().getStringArray(R.array.seasons_moths));
+
+            for(int i=0; i < 4; i++){
+                valuesProfitsBySeasons.put(seasons.get(i),Float.valueOf(0));
+                valuesBookingsBySeasons.put(seasons.get(i),Float.valueOf(0));
+            }
+
+            for(int i=0; i < 4; i++){
+                List<String> months_list = new ArrayList<>();
+                months_list.addAll(Arrays.asList(seasons_moths.get(i).split(",")));
+
+                for(String month : months_list){
+                    float value_profit = valuesProfitsBySeasons.get(seasons.get(i)) + valuesProfitsByMonth.get(month);
+                    float value_booking =  valuesBookingsBySeasons.get(seasons.get(i)) + valuesBookingsByMonth.get(month);
+                    valuesProfitsBySeasons.put(seasons.get(i),value_profit);
+                    valuesBookingsBySeasons.put(seasons.get(i),value_booking);
+                }
+            }
+            chart_total_profits.setCenterText("Earning by season");
+            chart_total_bookings.setCenterText("Bookings by season");
+
+            loadDatatoChart("profits",valuesProfitsBySeasons);
+
+            loadDatatoChart("bookings",valuesBookingsBySeasons);
+        }
+        else{
+            chart_total_profits.setCenterText("Earning by month");
+            chart_total_bookings.setCenterText("Bookings by month");
+
+            loadDatatoChart("profits",valuesProfitsByMonth);
+
+            loadDatatoChart("bookings",valuesBookingsByMonth);
+        }
     }
 
-
-    private void clickListeners() {
-    }
-
-    private void initializeElements(View root) {
-        pieChart = root.findViewById(R.id.PieChart);
-        setupPieChart();
-
-        total_tv = root.findViewById(R.id.hotelProfits);
-        total_tv.setText(String.valueOf(total));
-    }
-
-    private void setupPieChart() {
-        pieChart.setDrawHoleEnabled(true);
-        pieChart.setEntryLabelTextSize(12);
-        pieChart.setEntryLabelColor(Color.WHITE);
-        pieChart.setCenterText("Earning by month");
-        pieChart.setCenterTextSize(20);
-        pieChart.getDescription().setEnabled(false);
-
-        pieChart.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        pieChart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        pieChart.getLegend().setOrientation(Legend.LegendOrientation.VERTICAL);
-
-    }
-    private void LoadPieChart(LinkedHashMap<String, Float> valuesByMonth) {
+    private void loadDatatoChart(String type, LinkedHashMap<String, Float> values) {
         ArrayList<PieEntry> entries = new ArrayList<>();
+        float total = 0;
 
-        for (LinkedHashMap.Entry<String,Float> entry : valuesByMonth.entrySet()) {
+        for (LinkedHashMap.Entry<String,Float> entry : values.entrySet()) {
             total += entry.getValue();
             if(entry.getValue() != 0)
                 entries.add(new PieEntry(entry.getValue(),entry.getKey()));
@@ -171,11 +254,24 @@ public class Statistics extends Fragment {
         data.setValueTextSize(12f);
         data.setValueTextColor(Color.WHITE);
 
-        pieChart.setData(data);
-        pieChart.invalidate();
+        switch (type){
+            case "profits":
+                chart_total_profits.setData(data);
+                chart_total_profits.invalidate();
 
-        pieChart.animateY(1400, Easing.EaseInOutQuad);
+                chart_total_profits.animateY(1400, Easing.EaseInOutQuad);
 
-        total_tv.setText(String.valueOf(total));
+                total_profits.setText(String.valueOf(total));
+            break;
+            case "bookings":
+                chart_total_bookings.setData(data);
+                chart_total_bookings.invalidate();
+
+                chart_total_bookings.animateY(1400, Easing.EaseInOutQuad);
+
+                total_bookings.setText(String.valueOf(total));
+            break;
+        }
+
     }
 }

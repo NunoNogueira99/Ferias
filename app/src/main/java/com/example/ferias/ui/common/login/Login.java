@@ -1,9 +1,13 @@
 package com.example.ferias.ui.common.login;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -43,6 +47,8 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Login extends Fragment {
 
@@ -64,8 +70,18 @@ public class Login extends Fragment {
 
     private final boolean autoLogin = true;
 
+    String[] permissions = new String[]{
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.MANAGE_EXTERNAL_STORAGE,
+            Manifest.permission.INTERNET
+    };
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_login, container, false);
+
+        checkPermissions();
 
         initializeElements(root);
 
@@ -290,6 +306,43 @@ public class Login extends Fragment {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    private boolean checkPermissions() {
+        int result;
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        for (String p : permissions) {
+            result = ContextCompat.checkSelfPermission(getContext(), p);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(p);
+            }
+        }
+
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(getActivity(), listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), 124);
+            return false;
+        }
+        return true;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 124: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {  // permissions granted.
+                    Log.e("Permissions Garated", "All"); // Now you call here what ever you want :)
+                } else {
+                    String perStr = "";
+                    for (String per : permissions) {
+                        perStr += "\n" + per;
+                    }   // permissions list of don't granted permission
+                    Log.e("Permissions Denied", perStr);
+                }
+                return;
+            }
         }
     }
 }

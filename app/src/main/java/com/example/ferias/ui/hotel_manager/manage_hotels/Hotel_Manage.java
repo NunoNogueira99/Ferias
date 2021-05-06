@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,6 +19,7 @@ import com.example.ferias.R;
 import com.example.ferias.data.InternalStorage;
 import com.example.ferias.data.hotel_manager.Hotel;
 import com.example.ferias.data.hotel_manager.HotelManager;
+import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;

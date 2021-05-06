@@ -91,17 +91,21 @@ public class MyBookings extends Fragment{
 
             }
         });
-        hotels = new ArrayList<>();
+
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Hotel");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Hotel hotels[] = new Hotel[bookings.size()];
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     for (int i = 0; i < bookings.size(); i++){
-                        if (ds.getKey().equalsIgnoreCase(bookings.get(i).getHotelID()))
-                            hotels.add(ds.getValue(Hotel.class));
+                        if(bookings.get(i).getHotelID().matches(ds.getKey()))
+                        {
+                            hotels[i] = ds.getValue(Hotel.class);
+                        }
                     }
                 }
+                Log.e("List:" , String.valueOf(bookings.size()));
                 adapterMyBookings adapterMyBookings = new adapterMyBookings(bookings, hotels);
                 recyclerView.setAdapter(adapterMyBookings);
                 // Set layout manager to position the items

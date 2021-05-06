@@ -26,7 +26,7 @@ import java.util.Map;
 
 public class adapterMyBookings extends RecyclerView.Adapter<adapterMyBookings.ViewHolder> {
     List<Booking>bookings;
-    List<Hotel>hotels;
+    Hotel[]hotels;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView hotelName, hotelCity, nAdults,nKids, total,startDate, endDate;;
@@ -58,7 +58,7 @@ public class adapterMyBookings extends RecyclerView.Adapter<adapterMyBookings.Vi
         }
     }
 
-    public adapterMyBookings(List<Booking>bookings,List<Hotel>hotels) {
+    public adapterMyBookings(List<Booking>bookings,Hotel[]hotels) {
         this.bookings=bookings;
         this.hotels=hotels;
     }
@@ -78,13 +78,13 @@ public class adapterMyBookings extends RecyclerView.Adapter<adapterMyBookings.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.hotelName.setText(hotels.get(position).getName());
-        holder.hotelCity.setText(hotels.get(position).getAddress().getCity());
-        holder.hotelRating.setRating(hotels.get(position).getStars());
+        holder.hotelName.setText(hotels[position].getName());
+        holder.hotelCity.setText(hotels[position].getAddress().getCity());
+        holder.hotelRating.setRating(hotels[position].getStars());
         holder.nAdults.setText(String.valueOf(bookings.get(position).getnAdults()));
         holder.nKids.setText(String.valueOf(bookings.get(position).getnChildren()));
         holder.total.setText(Float.toString(bookings.get(position).getPrice()));
-        Picasso.get().load(hotels.get(position).getCoverPhoto()).into(holder.hotelImg);
+        Picasso.get().load(hotels[position].getCoverPhoto()).into(holder.hotelImg);
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
         holder.startDate.setText(formatter.format(bookings.get(position).getEnterDate()));

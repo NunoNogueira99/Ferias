@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.common.registration.Registration">
+    tools:context=".ui.common.registration.Registration"
+    android:id="@+id/Fragment_registration">
 
     <ScrollView
         android:layout_width="0dp"

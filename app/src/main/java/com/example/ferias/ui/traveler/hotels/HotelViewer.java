@@ -49,7 +49,7 @@ import java.util.List;
 import java.util.Map;
 
 public class HotelViewer extends Fragment {
-    private ImageButton favBtn;
+    private ImageButton favBtn, backBtn;
     private TextView hotelName, hotelPrice, hotelInfo, numOfRatings;
     private RatingBar rating;
     private String hotelKey;
@@ -109,10 +109,10 @@ public class HotelViewer extends Fragment {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Hotel");
         recyclerViewSimilar = root.findViewById(R.id.similarhotels_Rv);
 
-
-
         rvFeatures = root.findViewById(R.id.features_gridview);
 
+        backBtn= root.findViewById(R.id.bt_traveler_hotel_view_back);
+        backBtn.bringToFront();
         ////////////////////////////////
 
 
@@ -190,6 +190,7 @@ public class HotelViewer extends Fragment {
         });
 
 
+        backBtn.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_traveler_hotelview_to_traveler_home));
         /////////////////////////////////////
 
         final String[] string_date = new String[1];
@@ -383,20 +384,31 @@ public class HotelViewer extends Fragment {
         lowerPrice= hotel.getPrice() - (hotel.getPrice() * 0.1);
         higherPrice =hotel.getPrice() + (hotel.getPrice() * 0.1);;
 
+        List <String>keys = new ArrayList<>();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Hotel hotelSnapshot = ds.getValue(Hotel.class);
 
-                    if (hotelSnapshot.getPrice() > lowerPrice && hotelSnapshot.getPrice() < higherPrice && ds.getKey() != hotelKey)
+                    if (hotelSnapshot.getPrice() > lowerPrice && hotelSnapshot.getPrice() < higherPrice && ds.getKey() != hotelKey) {
                         similarHotelKeys.add(hotelSnapshot);
+                        keys.add(ds.getKey());
+                    }
 
                 }
                 // Lookup the recyclerview in activity layout
                 RecyclerView rvHotels = root.findViewById(R.id.similarhotels_Rv);
                 // Create adapter passing in the sample user data
                 adapterSimilarHotels adapter = new adapterSimilarHotels(similarHotelKeys);
+                adapter.setOnItemClickListener(new adapterSimilarHotels.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("clickDetails", keys.get(position));
+                        Navigation.findNavController(root).navigate(R.id.action_traveler_hotelview_self, bundle);
+                    }
+                });
                 // Attach the adapter to the recyclerview to populate items
                 rvHotels.setAdapter(adapter);
                 // Set layout manager to position the items

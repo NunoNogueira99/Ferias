@@ -165,6 +165,7 @@
                 android:layout_width="0dp"
                 android:layout_height="288dp"
                 android:layout_marginTop="16dp"
+                android:background="@color/background_color"
                 android:paddingBottom="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

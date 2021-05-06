@@ -168,6 +168,9 @@
         <action
             android:id="@+id/action_traveler_hotelview_to_traveler_home"
             app:destination="@id/traveler_home" />
+        <action
+            android:id="@+id/action_traveler_hotelview_self"
+            app:destination="@id/traveler_hotelview" />
     </fragment>
     <fragment
         android:id="@+id/favorites"

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.common.login.Login">
+    tools:context=".ui.common.login.Login"
+    android:id="@+id/fragment_container_LogIn"
+    android:tag="Login">
 
     <ScrollView
         android:layout_width="match_parent"

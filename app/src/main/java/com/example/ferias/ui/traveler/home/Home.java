@@ -74,7 +74,7 @@ public class Home extends Fragment {
     private Button bt_EditProfile, bt_Logout;
 
     private TextView tv_NameMensage;
-    private MaterialButton search_btn;
+    private FloatingActionButton search_btn;
     private TextView textinput_location;
 
     private MaterialButton bt_search_nearby;

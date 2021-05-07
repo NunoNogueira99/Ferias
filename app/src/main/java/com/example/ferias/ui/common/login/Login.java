@@ -215,6 +215,8 @@ public class Login extends Fragment {
 
         firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
+                bt_Login.setEnabled(false);
+
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                 if(cb_Remeber.isChecked()){
@@ -231,10 +233,12 @@ public class Login extends Fragment {
                 else{
                     user.sendEmailVerification();
                     Toast.makeText(getContext(),"Check your email to verify your account!", Toast.LENGTH_LONG).show();
+                    bt_Login.setEnabled(true);
                 }
             }
             else {
                 Toast.makeText(getContext(),"Failed to login! Please check your credentials",Toast.LENGTH_LONG).show();
+                bt_Login.setEnabled(true);
             }
         });
     }

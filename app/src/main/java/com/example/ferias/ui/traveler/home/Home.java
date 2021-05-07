@@ -272,7 +272,7 @@ public class Home extends Fragment {
             }
         });
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        /*databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 user = snapshot.getValue(Traveler.class);
@@ -291,7 +291,7 @@ public class Home extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("ERROR", "getUser:onCancelled",error.toException());
             }
-        });
+        });*/
     }
 
     private void loadDatatoElements(){

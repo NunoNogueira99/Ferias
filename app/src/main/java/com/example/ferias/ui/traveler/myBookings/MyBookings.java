@@ -93,7 +93,7 @@ public class MyBookings extends Fragment{
         });
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Hotel");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Hotel hotels[] = new Hotel[bookings.size()];

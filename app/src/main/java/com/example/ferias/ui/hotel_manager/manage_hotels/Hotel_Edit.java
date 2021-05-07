@@ -710,7 +710,7 @@ public class Hotel_Edit extends Fragment {
         int total_rooms = 0;
 
         String price = et_Price.getText().toString().trim();
-        int price_room = 0;
+        float price_room = 0;
         ////////////// ADDRESS /////////////////
         String country = ccp_country.getSelectedCountryNameCode();
         String city = et_City.getText().toString().trim();
@@ -760,7 +760,7 @@ public class Hotel_Edit extends Fragment {
 
 
         if(!price.isEmpty()){
-            price_room = Integer.parseInt(et_Price.getText().toString().trim());
+            price_room = Float.parseFloat(et_Price.getText().toString().trim());
             if(price_room <= 1){
                 et_Price.setError("Price the rooms is required and greater than 1");
                 et_Price.requestFocus();

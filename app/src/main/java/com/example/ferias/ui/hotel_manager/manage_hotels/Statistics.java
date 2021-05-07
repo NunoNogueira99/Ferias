@@ -237,13 +237,23 @@ public class Statistics extends Fragment {
         }
 
         ArrayList<Integer> colors = new ArrayList<>();
-        for (int color: ColorTemplate.PASTEL_COLORS) {
-            colors.add(color);
+        switch(type)
+        {
+            case "profits":
+                for (int color: ColorTemplate.PASTEL_COLORS) {
+                    colors.add(color);
+                }
+                break;
+            case "bookings":
+                for (int color: ColorTemplate.COLORFUL_COLORS) {
+                    colors.add(color);
+                }
+                break;
         }
 
-        for (int color: ColorTemplate.VORDIPLOM_COLORS) {
+        /*for (int color: ColorTemplate.VORDIPLOM_COLORS) {
             colors.add(color);
-        }
+        }*/
 
         PieDataSet dataSet = new PieDataSet(entries, "Months");
         dataSet.setColors(colors);

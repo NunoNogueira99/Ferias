@@ -146,106 +146,104 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:orientation="vertical"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/filter_popup_cv"
         app:layout_constraintBottom_toTopOf="@+id/filter_btn"
-        app:layout_constraintEnd_toEndOf="@+id/filter_btn">
-
-        <TextView
-            android:id="@+id/searchFilter_party"
-            android:layout_width="150dp"
-            android:layout_height="40sp"
-            android:layout_gravity="right"
-            android:layout_marginBottom="10sp"
-            android:background="@drawable/shape_search_1_active"
-            android:gravity="center|left"
-            android:paddingStart="15sp"
-            android:text="🎉 Party mood"
-            android:textAllCaps="false"
-            android:textColor="@color/primary_white" />
-
-        <TextView
-            android:id="@+id/searchFilter_Chill"
-            android:layout_width="150dp"
-            android:layout_height="40sp"
-            android:layout_gravity="right"
-            android:layout_marginBottom="10sp"
-            android:background="@drawable/shape_search_1_active"
-            android:gravity="center|left"
-            android:paddingStart="15sp"
-            android:text="⛱️ Chill mood"
-            android:textAllCaps="false"
-            android:textColor="@color/primary_white" />
-
-        <TextView
-            android:id="@+id/searchFilter_Adventure"
-            android:layout_width="150dp"
-            android:layout_height="40sp"
-            android:layout_gravity="right"
-            android:layout_marginBottom="10sp"
-            android:background="@drawable/shape_search_1_active"
-            android:gravity="center|left"
-            android:paddingStart="15sp"
-            android:text="⛰ Adventure mood"
-            android:textAllCaps="false"
-            android:textColor="@color/primary_white" />
-
-        <TextView
-            android:id="@+id/searchFilter_sports"
-            android:layout_width="150dp"
-            android:layout_height="40sp"
-            android:layout_gravity="right"
-            android:layout_marginBottom="10sp"
-            android:background="@drawable/shape_search_1_active"
-            android:gravity="center|left"
-            android:paddingStart="15sp"
-            android:text="⛷️ Sports mood"
-            android:textAllCaps="false"
-            android:textColor="@color/primary_white" />
+        app:layout_constraintEnd_toEndOf="@+id/filter_btn"
+        android:layout_marginBottom="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10sp"
-            android:orientation="horizontal">
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/searchFilter_party"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginBottom="8dp"
+                android:gravity="center|left"
+                android:text="🎉 Party mood"
+                android:textAllCaps="false" />
 
-            <EditText
-                android:id="@+id/min_price"
-                android:layout_width="117dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="10sp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_search_1_active"
-                android:drawableRight="@drawable/ic_euro"
-                android:ems="10"
-                android:hint="Min Price"
-                android:inputType="number"
-                android:paddingStart="16sp"
-                android:paddingEnd="10sp"
-                android:textAppearance="@style/custom_subtitle2"
-                android:textColor="@color/primary_white"
-                android:textColorHint="@color/tertiary_white" />
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/searchFilter_Chill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginBottom="8dp"
+                android:gravity="center|left"
+                android:text="⛱️ Chill mood"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_white" />
 
-            <EditText
-                android:id="@+id/max_price"
-                android:layout_width="117dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_search_1_active"
-                android:drawableEnd="@drawable/ic_euro"
-                android:ems="10"
-                android:hint="Max price"
-                android:inputType="number"
-                android:paddingStart="16sp"
-                android:paddingEnd="10sp"
-                android:textAppearance="@style/custom_subtitle2"
-                android:textColor="@color/primary_white"
-                android:textColorHint="@color/tertiary_white" />
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/searchFilter_Adventure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginBottom="8dp"
+                android:gravity="center|left"
+                android:text="⛰ Adventure mood"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_white" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/searchFilter_sports"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginBottom="8dp"
+                android:gravity="center|left"
+                android:text="⛷️ Sports mood"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_white" />
+
+            <LinearLayout
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/min_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_search_1_active"
+                    android:drawableRight="@drawable/ic_euro"
+                    android:ems="10"
+                    android:hint="Min Price"
+                    android:inputType="number"
+                    android:padding="16dp"
+                    android:textAppearance="@style/custom_subtitle2"
+                    android:textColor="@color/primary_white"
+                    android:textColorHint="@color/tertiary_white" />
+
+                <EditText
+                    android:id="@+id/max_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_search_1_active"
+                    android:drawableEnd="@drawable/ic_euro"
+                    android:ems="10"
+                    android:hint="Max price"
+                    android:inputType="number"
+                    android:padding="16dp"
+                    android:textAppearance="@style/custom_subtitle2"
+                    android:textColor="@color/primary_white"
+                    android:textColorHint="@color/tertiary_white" />
+
+            </LinearLayout>
+
         </LinearLayout>
-    </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

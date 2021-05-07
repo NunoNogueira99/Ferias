@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -32,6 +33,7 @@ import com.google.android.gms.tasks.CancellationToken;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnTokenCanceledListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -75,6 +77,7 @@ public class SearchHotelNearby extends Fragment{
     TextView chillMoodBtn;
     TextView adventureMoodBtn;
     TextView sportsMoodBtn;
+    MaterialCardView filter_popup_cv;
 
     Map<Hotel,String> searchResults;
     Map<Hotel,String> filteredResults;
@@ -164,6 +167,7 @@ public class SearchHotelNearby extends Fragment{
         chillMoodBtn = root.findViewById(R.id.searchFilter_Chill);;
         adventureMoodBtn = root.findViewById(R.id.searchFilter_Adventure);;
         sportsMoodBtn = root.findViewById(R.id.searchFilter_sports);;
+        filter_popup_cv = root.findViewById(R.id.filter_popup_cv);
 
         minPriceBtn.setVisibility(View.GONE);
         maxPriceBtn.setVisibility(View.GONE);
@@ -171,6 +175,7 @@ public class SearchHotelNearby extends Fragment{
         chillMoodBtn.setVisibility(View.GONE);
         adventureMoodBtn.setVisibility(View.GONE);
         sportsMoodBtn.setVisibility(View.GONE);
+        filter_popup_cv.setVisibility(View.GONE);
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Hotel");
 
@@ -182,28 +187,40 @@ public class SearchHotelNearby extends Fragment{
     }
 
     private void clickListener(View root) {
-        filterBtn.setOnClickListener(v -> {
-            if(!fabsOn)
-            {
-                minPriceBtn.setVisibility(View.VISIBLE);
-                maxPriceBtn.setVisibility(View.VISIBLE);
-                partyMoodBtn.setVisibility(View.VISIBLE);
-                chillMoodBtn.setVisibility(View.VISIBLE);
-                adventureMoodBtn.setVisibility(View.VISIBLE);
-                sportsMoodBtn.setVisibility(View.VISIBLE);
-                fabsOn=true;
+        filterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!fabsOn)
+                {
+                    filter_popup_cv.setVisibility(View.VISIBLE);
+                    filter_popup_cv.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_in));
+                    minPriceBtn.setVisibility(View.VISIBLE);
+                    maxPriceBtn.setVisibility(View.VISIBLE);
+                    partyMoodBtn.setVisibility(View.VISIBLE);
+                    chillMoodBtn.setVisibility(View.VISIBLE);
+                    adventureMoodBtn.setVisibility(View.VISIBLE);
+                    sportsMoodBtn.setVisibility(View.VISIBLE);
+                    fabsOn=true;
+                }
+                else
+                {
+                    filter_popup_cv.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
+                    minPriceBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
+                    minPriceBtn.setVisibility(View.GONE);
+                    maxPriceBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
+                    maxPriceBtn.setVisibility(View.GONE);
+                    partyMoodBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
+                    partyMoodBtn.setVisibility(View.GONE);
+                    chillMoodBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
+                    chillMoodBtn.setVisibility(View.GONE);
+                    adventureMoodBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
+                    adventureMoodBtn.setVisibility(View.GONE);
+                    sportsMoodBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
+                    sportsMoodBtn.setVisibility(View.GONE);
+                    filter_popup_cv.setVisibility(View.GONE);
+                    fabsOn=false;
+                }
             }
-            else
-            {
-                minPriceBtn.setVisibility(View.GONE);
-                maxPriceBtn.setVisibility(View.GONE);
-                partyMoodBtn.setVisibility(View.GONE);
-                chillMoodBtn.setVisibility(View.GONE);
-                adventureMoodBtn.setVisibility(View.GONE);
-                sportsMoodBtn.setVisibility(View.GONE);
-                fabsOn=false;
-            }
-
         });
 
         maxPriceBtn.setOnEditorActionListener((v, actionId, event) -> {
@@ -359,9 +376,10 @@ public class SearchHotelNearby extends Fragment{
                 for(DataSnapshot snap : snapshot.getChildren()){
                     Hotel hotel = snap.getValue(Hotel.class);
                     if(hotel!=null){
-                        if(verifyNearbyHotel(hotel.getAddress().getCoordinates())){
-                            searchResults.put(hotel,snap.getKey());
-                        }
+                        if(hotel.getAddress().getCoordinates() != null)
+                            if(verifyNearbyHotel(hotel.getAddress().getCoordinates())){
+                                searchResults.put(hotel,snap.getKey());
+                            }
                     }
                 }
                 mHotelList.clear();

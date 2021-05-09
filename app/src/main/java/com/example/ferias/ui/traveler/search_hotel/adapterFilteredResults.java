@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,13 +25,15 @@ public class adapterFilteredResults extends RecyclerView.Adapter<adapterFiltered
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView name, city, price;
         ImageView photo;
+        RatingBar rating;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            name=itemView.findViewById(R.id.search_name);
-            city=itemView.findViewById(R.id.search_city);
+            name=itemView.findViewById(R.id.search_listName);
+            city=itemView.findViewById(R.id.search_listCity);
             price=itemView.findViewById(R.id.search_listPrice);
             photo=itemView.findViewById(R.id.search_listPhoto);
+            rating=itemView.findViewById(R.id.search_listRating);
         }
 
         @Override
@@ -55,7 +58,7 @@ public class adapterFilteredResults extends RecyclerView.Adapter<adapterFiltered
 
         // Inflate the custom layout
         // if you dont like mine layout (Martin) i kept the old one in case
-        View FavsView = inflater.inflate(R.layout.search_list_layout_martin, parent, false);
+        View FavsView = inflater.inflate(R.layout.traveler_search_list_item_layout, parent, false);
 
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(FavsView);
@@ -69,6 +72,7 @@ public class adapterFilteredResults extends RecyclerView.Adapter<adapterFiltered
         holder.city.setText(hotel.getAddress().getCity());
         holder.price.setText(Float.toString(hotel.getPrice()));
         Picasso.get().load(hotel.getCoverPhoto()).into(holder.photo);
+        holder.rating.setRating(hotel.getStars());
     }
 
     @Override

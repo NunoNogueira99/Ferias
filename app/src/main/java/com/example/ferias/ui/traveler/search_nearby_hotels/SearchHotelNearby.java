@@ -4,15 +4,6 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +13,14 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ferias.R;
 import com.example.ferias.data.hotel_manager.Hotel;
@@ -34,6 +33,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnTokenCanceledListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,25 +42,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SearchHotelNearby extends Fragment{
 
-    private ConstraintLayout cl_search_bar, cl_search_location_bar;
-
-
     private DatabaseReference databaseReference;
-
-    private List<Hotel> mHotelList;
-    private List<String> mHotelKeysList;
 
     private RecyclerView mRecyclerView;
     private HotelViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
 
     private LatLng latLng;
     private Float nearbyDistance;
@@ -73,26 +65,26 @@ public class SearchHotelNearby extends Fragment{
     private EditText minPriceBtn, maxPriceBtn;
     private boolean fabsOn = false;
 
-    TextView partyMoodBtn;
-    TextView chillMoodBtn;
-    TextView adventureMoodBtn;
-    TextView sportsMoodBtn;
-    MaterialCardView filter_popup_cv;
+    private ExtendedFloatingActionButton partyMoodBtn;
+    private ExtendedFloatingActionButton chillMoodBtn;
+    private ExtendedFloatingActionButton adventureMoodBtn;
+    private ExtendedFloatingActionButton sportsMoodBtn;
+    private MaterialCardView filter_popup_cv;
 
-    Map<Hotel,String> searchResults;
-    Map<Hotel,String> filteredResults;
-
-    private FusedLocationProviderClient fusedLocationProviderClient;
+    private LinkedHashMap<Hotel,String> searchResults = new LinkedHashMap<>();
+    private LinkedHashMap<Hotel,String> filteredResults = new LinkedHashMap<>();
 
     //filter vars
-    Float minPrice =null, maxPrice=null;
-    boolean party=false,chill=false,adventure=false, sports=false;
+    private Float minPrice =null, maxPrice=null;
+    private boolean party=false,chill=false,adventure=false, sports=false;
+
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.traveler_fragment_hotel_search_nearby, container, false);
+        View root = inflater.inflate(R.layout.traveler_fragment_search_hotel, container, false);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
@@ -101,8 +93,6 @@ public class SearchHotelNearby extends Fragment{
         getLocation();
 
         clickListener(root);
-
-
 
         return root;
     }
@@ -152,10 +142,8 @@ public class SearchHotelNearby extends Fragment{
         tv_searchNearbyResults = root.findViewById(R.id.tv_searchNearbyResults);
         tv_searchNearbyResults.setVisibility(View.GONE);
 
-        cl_search_bar = root.findViewById(R.id.cl_search_bar);
-        cl_search_bar.setVisibility(View.GONE);
-        cl_search_location_bar = root.findViewById(R.id.cl_search_location_bar);
-        cl_search_location_bar.setVisibility(View.GONE);
+        LinearLayout ll_Search = root.findViewById(R.id.ll_Search);
+        ll_Search.setVisibility(View.GONE);
 
         mRecyclerView = root.findViewById(R.id.searchResults);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -163,10 +151,10 @@ public class SearchHotelNearby extends Fragment{
         filterBtn= root.findViewById(R.id.filter_btn);
         minPriceBtn = root.findViewById(R.id.min_price);
         maxPriceBtn = root.findViewById(R.id.max_price);
-        partyMoodBtn = root.findViewById(R.id.searchFilter_party);;
-        chillMoodBtn = root.findViewById(R.id.searchFilter_Chill);;
-        adventureMoodBtn = root.findViewById(R.id.searchFilter_Adventure);;
-        sportsMoodBtn = root.findViewById(R.id.searchFilter_sports);;
+        partyMoodBtn = root.findViewById(R.id.searchFilter_party);
+        chillMoodBtn = root.findViewById(R.id.searchFilter_Chill);
+        adventureMoodBtn = root.findViewById(R.id.searchFilter_Adventure);
+        sportsMoodBtn = root.findViewById(R.id.searchFilter_sports);
         filter_popup_cv = root.findViewById(R.id.filter_popup_cv);
 
         minPriceBtn.setVisibility(View.GONE);
@@ -304,7 +292,9 @@ public class SearchHotelNearby extends Fragment{
 
     private void applyFilters(Float minPrice, Float maxPrice, boolean party, boolean chill, boolean adventure, boolean sports)
     {
-        filteredResults = new HashMap<>(searchResults);
+        filteredResults = new LinkedHashMap<>();
+        filteredResults.putAll(searchResults);
+
         if(minPrice != null){
             for (Map.Entry<Hotel,String> entry : searchResults.entrySet()) {
                 if(entry.getKey().getPrice()<minPrice)
@@ -359,14 +349,14 @@ public class SearchHotelNearby extends Fragment{
             }
         }
 
-        mHotelList.clear();
+        List<Hotel> mHotelList = new ArrayList<>();
         mHotelList.addAll(filteredResults.keySet());
         buildRecyclerView(mHotelList);
     }
 
     private void getListHotel(){
 
-        mHotelList = new ArrayList<>();
+        List<Hotel> mHotelList = new ArrayList<>();
         searchResults = new LinkedHashMap<>();
 
 

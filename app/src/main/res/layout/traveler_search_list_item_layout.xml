@@ -45,7 +45,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/search_name"
+                    android:id="@+id/search_listName"
                     style="?attr/textAppearanceSubtitle1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -53,12 +53,21 @@
                     android:textColor="@color/primary_white" />
 
                 <TextView
-                    android:id="@+id/search_city"
+                    android:id="@+id/search_listCity"
                     style="?attr/textAppearanceBody2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hotelname item"
                     android:textColor="@color/primary_white" />
+
+                <RatingBar
+                    android:id="@+id/search_listRating"
+                    style="@android:style/Widget.Material.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:progressTint="@color/yellow"
+                    android:rating="3" />
 
             </LinearLayout>
 

@@ -18,8 +18,8 @@ public class MyViewHolderClass extends RecyclerView.ViewHolder {
 
     public MyViewHolderClass(@NonNull View itemView) {
         super(itemView);
-        name=itemView.findViewById(R.id.search_name);
-        city=itemView.findViewById(R.id.search_city);
+        name=itemView.findViewById(R.id.search_listName);
+        city=itemView.findViewById(R.id.search_listCity);
         price=itemView.findViewById(R.id.search_listPrice);
         image=itemView.findViewById(R.id.search_listPhoto);
     }
@@ -47,8 +47,6 @@ public class MyViewHolderClass extends RecyclerView.ViewHolder {
     public void setPrice(String price) {
         this.price.setText(price);
     }
-
-
 
     @Override
     public String toString() {

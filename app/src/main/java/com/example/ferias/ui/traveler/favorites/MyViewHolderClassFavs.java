@@ -1,6 +1,5 @@
 package com.example.ferias.ui.traveler.favorites;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,14 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.ferias.R;
 import com.example.ferias.data.hotel_manager.Hotel;
 import com.squareup.picasso.Picasso;
@@ -50,7 +45,7 @@ public class MyViewHolderClassFavs extends RecyclerView.Adapter<MyViewHolderClas
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
-        View favoriteView = inflater.inflate(R.layout.traveler_hotellist_item, parent, false);
+        View favoriteView = inflater.inflate(R.layout.traveler_favorites_hotel_list_item, parent, false);
         favoriteView.setFocusable(true);
         favoriteView.setClickable(true);
         // Return a new holder instance

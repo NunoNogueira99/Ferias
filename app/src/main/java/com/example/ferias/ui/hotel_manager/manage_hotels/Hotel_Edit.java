@@ -726,6 +726,9 @@ public class Hotel_Edit extends Fragment {
             et_Name.requestFocus();
             error = true;
         }
+        else{
+            name = name.substring(0, 1).toUpperCase() + name.substring(1);
+        }
 
         if(starts == 0){
             tv_Hotel_Stars.setError("Hotel stars is required");

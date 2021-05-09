@@ -93,6 +93,9 @@
         <action
             android:id="@+id/action_traveler_home_to_traveler_search_nearby"
             app:destination="@id/traveler_search_nearby" />
+        <action
+            android:id="@+id/action_traveler_home_to_traveler_hotel_on_map"
+            app:destination="@id/traveler_hotel_on_map" />
     </fragment>
     <fragment
         android:id="@+id/profile"
@@ -149,7 +152,7 @@
         android:id="@+id/traveler_search_nearby"
         android:name="com.example.ferias.ui.traveler.search_nearby_hotels.SearchHotelNearby"
         android:label="fragment_traveler_search"
-        tools:layout="@layout/traveler_fragment_hotel_search_nearby" >
+        tools:layout="@layout/traveler_fragment_hotel_search" >
         <action
             android:id="@+id/action_traveler_search_to_traveler_hotelview"
             app:destination="@id/traveler_hotelview" />
@@ -209,6 +212,15 @@
         android:name="com.example.ferias.ui.traveler.myBookings.MyBookings"
         android:label="fragment_bookings"
         tools:layout="@layout/traveler_fragment_mybookings_hotels" />
+    <fragment
+        android:id="@+id/traveler_hotel_on_map"
+        android:name="com.example.ferias.ui.traveler.search_hotel_on_map.HotelOnMap"
+        android:label="traveler_fragment_hotel_on_map"
+        tools:layout="@layout/traveler_fragment_hotel_on_map" >
+        <action
+            android:id="@+id/action_traveler_hotel_on_map_to_traveler_hotelview"
+            app:destination="@id/traveler_hotelview" />
+    </fragment>
 
 
 </navigation>

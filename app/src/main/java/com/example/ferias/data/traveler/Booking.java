@@ -15,8 +15,7 @@ public class Booking implements Serializable {
     private float price;
     private boolean expanded= false;
 
-    public Booking() {
-    }
+    public Booking(){ }
 
     public Booking(String hotelID, String userID, Date enterDate, Date exitDate, int nAdults, int nChildren, float price){
         this.hotelID = hotelID;

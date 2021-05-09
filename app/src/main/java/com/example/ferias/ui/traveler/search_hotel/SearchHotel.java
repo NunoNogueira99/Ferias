@@ -1,5 +1,6 @@
 package com.example.ferias.ui.traveler.search_hotel;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,8 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.ferias.R;
@@ -44,7 +47,7 @@ public class SearchHotel extends Fragment {
     private RecyclerView mResultList;
     private TextView mResultInfo;
 
-    private DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference().child("Hotel");
+    private DatabaseReference databaseReference;
     private FirebaseRecyclerOptions <Hotel> options;
     private FirebaseRecyclerAdapter <Hotel,MyViewHolderClass> adapter;
 
@@ -56,14 +59,14 @@ public class SearchHotel extends Fragment {
     private ExtendedFloatingActionButton chillMoodBtn;
     private ExtendedFloatingActionButton adventureMoodBtn;
     private ExtendedFloatingActionButton sportsMoodBtn;
-    MaterialCardView filter_popup_cv;
+    private MaterialCardView filter_popup_cv;
 
-    LinkedHashMap<Hotel,String> searchResults = new LinkedHashMap<>();
-    LinkedHashMap<Hotel,String> filteredResults = new LinkedHashMap<>();
+    private LinkedHashMap<Hotel,String> searchResults = new LinkedHashMap<>();
+    private LinkedHashMap<Hotel,String> filteredResults = new LinkedHashMap<>();
 
     //filter vars
-    Float minPrice =null, maxPrice=null;
-    boolean party=false,chill=false,adventure=false, sports=false;
+    private Float minPrice =null, maxPrice=null;
+    private boolean party=false,chill=false,adventure=false, sports=false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,6 +117,12 @@ public class SearchHotel extends Fragment {
     private void clickListener(View root) {
 
         mSearchBtn.setOnClickListener(v -> {
+            View view = getActivity().getCurrentFocus();
+            if (view != null) {
+                InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+
             Query query = databaseReference.orderByChild("address/city").startAt(mSearchField.getText().toString().toUpperCase()).endAt(mSearchField.getText().toString().toLowerCase() + "\uf8ff");
 
             if(mSearchField.getText().toString().isEmpty())
@@ -286,7 +295,7 @@ public class SearchHotel extends Fragment {
             @Override
             public MyViewHolderClass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 // if you dont like mine layout (Martin) i kept the old one in case
-                View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.search_list_layout_martin, parent,false);
+                View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.traveler_search_list_item_layout, parent,false);
                 return new MyViewHolderClass(v);
             }
         };
@@ -295,6 +304,11 @@ public class SearchHotel extends Fragment {
     }
 
     private void initializeElements(View root) {
+        databaseReference=FirebaseDatabase.getInstance().getReference().child("Hotel");
+
+        LinearLayout ll_SearchNearby = root.findViewById(R.id.ll_SearchNearby);
+        ll_SearchNearby.setVisibility(View.GONE);
+
         mSearchField = root.findViewById(R.id.search_input_location);
         mSearchBtn = root.findViewById(R.id.search_btn);
         mResultList = root.findViewById(R.id.searchResults);
@@ -302,10 +316,16 @@ public class SearchHotel extends Fragment {
 
         mResultInfo = root.findViewById(R.id.searchResultsInfoText);
 
-        if(getArguments().getString("inputText") == null)
-            mResultInfo.setText("All");
-        else
-            mResultInfo.setText(getArguments().getString("inputText"));
+        if(getArguments().getString("inputText") != null){
+            String local = getArguments().getString("inputText");
+            if(local.isEmpty()){
+                mResultInfo.setText("All");
+            }
+            else{
+                mResultInfo.setText(local);
+            }
+        }
+
 
         filterBtn= root.findViewById(R.id.filter_btn);
         minPriceBtn = root.findViewById(R.id.min_price);
@@ -328,8 +348,9 @@ public class SearchHotel extends Fragment {
     private void applyFilters(Float minPrice, Float maxPrice, boolean party, boolean chill, boolean adventure, boolean sports)
     {
         filteredResults = new LinkedHashMap<>();
-        for(Map.Entry<Hotel,String> entry : searchResults.entrySet())
-            filteredResults.put(entry.getKey(),entry.getValue());
+        filteredResults.putAll(searchResults);
+        /*for(Map.Entry<Hotel,String> entry : searchResults.entrySet())
+            filteredResults.put(entry.getKey(),entry.getValue());*/
 
         if(minPrice != null){
             for (Map.Entry<Hotel,String> entry : searchResults.entrySet()) {

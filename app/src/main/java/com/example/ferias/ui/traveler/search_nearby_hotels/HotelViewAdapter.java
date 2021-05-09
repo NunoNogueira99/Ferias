@@ -3,6 +3,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
@@ -29,17 +30,19 @@ public class HotelViewAdapter extends RecyclerView.Adapter<HotelViewAdapter.Hote
     }
 
     public static class HotelViewHolder extends RecyclerView.ViewHolder {
-        public ImageView hotel_item_Photo;
-        public TextView hotel_item_Name, hotel_item_City, hotel_item_Price;
-
+        ImageView hotel_item_Photo;
+        TextView hotel_item_Name, hotel_item_City, hotel_item_Price;
+        RatingBar hotel_item_Rating;
 
         public HotelViewHolder(View itemView, final HotelViewAdapter.OnItemClickListener listener) {
             super(itemView);
             hotel_item_Photo = itemView.findViewById(R.id.search_listPhoto);
 
-            hotel_item_Name = itemView.findViewById(R.id.search_name);
-            hotel_item_City = itemView.findViewById(R.id.search_city);
+            hotel_item_Name = itemView.findViewById(R.id.search_listName);
+            hotel_item_City = itemView.findViewById(R.id.search_listCity);
             hotel_item_Price = itemView.findViewById(R.id.search_listPrice);
+
+            hotel_item_Rating = itemView.findViewById(R.id.search_listRating);
 
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
@@ -59,7 +62,7 @@ public class HotelViewAdapter extends RecyclerView.Adapter<HotelViewAdapter.Hote
 
     @Override
     public HotelViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_list_layout, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.traveler_search_list_item_layout, parent, false);
         HotelViewAdapter.HotelViewHolder hlvh = new HotelViewAdapter.HotelViewHolder(v, mListener);
         return hlvh;
     }
@@ -76,6 +79,7 @@ public class HotelViewAdapter extends RecyclerView.Adapter<HotelViewAdapter.Hote
         holder.hotel_item_Name.setText(currentItem.getName());
         holder.hotel_item_City.setText(currentItem.getAddress().getCity());
         holder.hotel_item_Price.setText(Float.toString(currentItem.getPrice()));
+        holder.hotel_item_Rating.setRating(currentItem.getStars());
 
     }
     @Override

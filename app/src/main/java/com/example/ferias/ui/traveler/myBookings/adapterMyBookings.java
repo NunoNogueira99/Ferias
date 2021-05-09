@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -20,9 +19,7 @@ import com.example.ferias.data.traveler.Booking;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class adapterMyBookings extends RecyclerView.Adapter<adapterMyBookings.ViewHolder> {
     List<Booking>bookings;
@@ -70,7 +67,7 @@ public class adapterMyBookings extends RecyclerView.Adapter<adapterMyBookings.Vi
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
-        View featureView = inflater.inflate(R.layout.my_bookings_listitem, parent, false);// inflate the layout
+        View featureView = inflater.inflate(R.layout.traveler_bookings_list_item, parent, false);// inflate the layout
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(featureView);
         return viewHolder;

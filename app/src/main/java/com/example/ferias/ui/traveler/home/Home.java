@@ -77,7 +77,7 @@ public class Home extends Fragment {
     private FloatingActionButton search_btn;
     private TextView textinput_location;
 
-    private MaterialButton bt_search_nearby;
+    private MaterialButton bt_search_nearby, bt_search_onMap;
 
     private ExtendedFloatingActionButton partyBtn;
     private ExtendedFloatingActionButton chillBtn;
@@ -169,6 +169,7 @@ public class Home extends Fragment {
         favsBtn=root.findViewById(R.id.my_favs_btn2);
 
         bt_search_nearby = root.findViewById(R.id.bt_search_nearby);
+        bt_search_onMap = root.findViewById(R.id.bt_search_onMap);
     }
 
     private void clickListener(View root) {
@@ -224,6 +225,10 @@ public class Home extends Fragment {
             float distance =  user.getSearchRadius() != 0 ?  user.getSearchRadius() : 500;
             bundle.putFloat("SearchRadius", distance);
             Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_traveler_search_nearby,bundle);
+        });
+
+        bt_search_onMap.setOnClickListener(v -> {
+            Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_traveler_hotel_on_map);
         });
 
         partyBtn.setOnClickListener(v -> {SearchByMods(root,"Party");});

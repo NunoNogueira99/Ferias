@@ -161,6 +161,7 @@
             style="?attr/textAppearanceBody1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:drawableEnd="@drawable/ic_euro"
             tools:text="00€" />
     </LinearLayout>

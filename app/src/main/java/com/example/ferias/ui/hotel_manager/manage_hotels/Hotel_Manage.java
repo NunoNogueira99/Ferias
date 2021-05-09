@@ -73,6 +73,11 @@ public class Hotel_Manage extends Fragment {
 
         bt_hotel_manage_back = root.findViewById(R.id.bt_hotel_manage_back);
 
+        mRecyclerView = root.findViewById(R.id.rc_hotel_list);
+        //mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(getContext());
+
     }
 
     private void clickListeners() {
@@ -120,11 +125,6 @@ public class Hotel_Manage extends Fragment {
     }
 
     private void buildRecyclerView(View root) {
-        mRecyclerView = root.findViewById(R.id.rc_hotel_list);
-        mRecyclerView.setHasFixedSize(true);
-
-        mLayoutManager = new LinearLayoutManager(getContext());
-
         mAdapter = new HotelListAdapter(mHotelList, getActivity());
 
         mRecyclerView.setLayoutManager(mLayoutManager);

@@ -1,5 +1,6 @@
 package com.example.ferias.ui.hotel_manager.manage_hotels;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,5 +128,15 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
     @Override
     public int getItemCount() {
         return mHotelList.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 }

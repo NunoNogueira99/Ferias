@@ -250,7 +250,10 @@ public class Hotel_Edit extends Fragment {
 
     private void clickListeners() {
         bt_hotel_edit_back.setOnClickListener(v -> {
-            Navigation.findNavController(getView()).navigate(R.id.action_hotel_edit_to_hotel_manage);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("Hotel", hotel);
+            bundle.putString("Hotel Id",hotelID);
+            Navigation.findNavController(getView()).navigate(R.id.action_hotel_edit_to_hotel_view, bundle);
         });
 
         bt_RegisterHotel.setOnClickListener(v -> {
@@ -850,11 +853,9 @@ public class Hotel_Edit extends Fragment {
             if(task1.isSuccessful()){
                 Toast.makeText(getContext(),"Hotel has ben registered successfully!", Toast.LENGTH_LONG).show();
                 changePhotosOnFirebase();
-
-                Navigation.findNavController(getView()).navigate(R.id.action_hotel_edit_to_hotel_manage);
             }
             else {
-                Toast.makeText(getContext(),"Failed to register! Try again!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"Failed to register changes! Try again!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -869,67 +870,114 @@ public class Hotel_Edit extends Fragment {
     private void changePhotosOnFirebase() {
         if (othersphotos != null && coverPhoto != null) {
             // Code for showing progressDialog while uploading
-            ProgressDialog progressDialog = new ProgressDialog(getContext());
-            progressDialog.setTitle("Uploading...");
+            boolean upadatel_cover = false;
+            boolean upadatel_others = false;
+            if (!String.valueOf(coverPhoto).toLowerCase().startsWith("https://")) {
+                upadatel_cover = true;
+            }
+            for(Uri photo : othersphotos) {
+                if (!String.valueOf(photo).toLowerCase().startsWith("https://")) {
+                    upadatel_others = true;
+                }
+            }
+            if(upadatel_cover && upadatel_others){
+                uploadCoverPhoto(true);
+            }
+            if(upadatel_cover && !upadatel_others){
+                uploadCoverPhoto(false);
+            }
+            if(!upadatel_cover && upadatel_others){
+                uploadOthersPhotos();
+            }
+            if(!upadatel_cover && !upadatel_others){
+                bt_hotel_edit_back.performClick();
+            }
+
+
+        } else {
+            Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void uploadCoverPhoto(boolean value){
+        ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("Uploading...");
+
+        if (!String.valueOf(coverPhoto).toLowerCase().startsWith("https://")) {
             progressDialog.show();
 
+            if(!hotel.getCoverPhoto().isEmpty()){
+                StorageReference imageDeleteRef = FirebaseStorage.getInstance().getReferenceFromUrl(hotel.getCoverPhoto());
+                imageDeleteRef.delete();
+            }
             StorageReference fileReference = storageReference.child("Cover").child(GenerateUniqueIds.generateId() + "." + getFileExtension(coverPhoto));
             StorageTask<UploadTask.TaskSnapshot> mUploadCoverTask = fileReference.putFile(coverPhoto)
                     .addOnSuccessListener(taskSnapshot -> {
                         fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
                             // Success, Image uploaded
-                            if(!hotel.getCoverPhoto().isEmpty()){
-                                StorageReference imageDeleteRef = FirebaseStorage.getInstance().getReferenceFromUrl(hotel.getCoverPhoto());
-                                imageDeleteRef.delete();
-                            }
-
                             hotel.setCoverPhoto(uri.toString());
                             databaseReference.setValue(hotel);
 
                             progressDialog.dismiss();
-                        });
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
-                    })
-                    .addOnProgressListener(taskSnapshot -> {
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                        progressDialog.setMessage("Uploaded " + (int) progress + "%");
-                    });
 
-            List<String> listothersphotos = new ArrayList<>();
-
-            for(Uri photo : othersphotos){
-
-                String url = String.valueOf(photo).toLowerCase();
-                if (!url.startsWith("https://")) {
-                    StorageReference fileOthers = storageReference.child("Others").child(GenerateUniqueIds.generateId() + "." + getFileExtension(photo));
-                    StorageTask<UploadTask.TaskSnapshot> mUploadOtherTask = fileOthers.putFile(photo)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        fileOthers.getDownloadUrl().addOnSuccessListener(uri -> {
-                            // Success, Image uploaded
-                            listothersphotos.add(uri.toString());
-
-                            if(listothersphotos.size() == othersphotos.size()){
-                                hotel.setOtherPhotos(listothersphotos);
-                                databaseReference.setValue(hotel);
-                                progressDialog.dismiss();
+                            if(value){
+                                uploadOthersPhotos();
+                            }
+                            else{
+                                bt_hotel_edit_back.performClick();
                             }
                         });
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e("Error", e.getMessage());
                         progressDialog.dismiss();
                     })
                     .addOnProgressListener(taskSnapshot -> {
                         double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
                         progressDialog.setMessage("Uploaded " + (int) progress + "%");
                     });
-                }
+        }
+    }
+
+    private void uploadOthersPhotos(){
+        ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("Uploading...");
+
+        List<String> listothersphotos = new ArrayList<>();
+
+        for(Uri photo : othersphotos){
+            if (!String.valueOf(photo).toLowerCase().startsWith("https://")) {
+                progressDialog.show();
+
+                StorageReference fileOthers = storageReference.child("Others").child(GenerateUniqueIds.generateId() + "." + getFileExtension(photo));
+                StorageTask<UploadTask.TaskSnapshot> mUploadOtherTask = fileOthers.putFile(photo)
+                        .addOnSuccessListener(taskSnapshot -> {
+                            fileOthers.getDownloadUrl().addOnSuccessListener(uri -> {
+                                // Success, Image uploaded
+                                listothersphotos.add(uri.toString());
+
+                                if(listothersphotos.size() == othersphotos.size()){
+                                    hotel.setOtherPhotos(listothersphotos);
+                                    databaseReference.setValue(hotel);
+                                    progressDialog.dismiss();
+
+                                    bt_hotel_edit_back.performClick();
+                                }
+                            });
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("Error", e.getMessage());
+                            //Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                        })
+                        .addOnProgressListener(taskSnapshot -> {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                        });
             }
-        } else {
-            Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
+            else{
+                listothersphotos.add(photo.toString());
+            }
         }
     }
 

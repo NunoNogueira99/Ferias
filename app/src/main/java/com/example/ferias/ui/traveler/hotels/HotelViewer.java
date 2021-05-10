@@ -1,7 +1,9 @@
 package com.example.ferias.ui.traveler.hotels;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.service.autofill.SaveInfo;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -35,6 +38,10 @@ import com.example.ferias.data.InternalStorage;
 import com.example.ferias.data.hotel_manager.Hotel;
 import com.example.ferias.data.traveler.Booking;
 import com.example.ferias.data.traveler.Traveler;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointForward;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -51,6 +58,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class HotelViewer extends Fragment {
     private ImageButton favBtn, backBtn;
@@ -61,9 +69,8 @@ public class HotelViewer extends Fragment {
     private ImageView iv_hotel_cover_photo;
     private ImageSlider othersphotosslider;
 
-    private RecyclerView rvFeatures, recyclerViewSimilar;
+    private RecyclerView rvFeatures, rvHotels;
     private final ArrayList<Hotel> similarHotelKeys = new ArrayList<>();
-    private Hotel hotel;
     String userID;
 
     ////////////////////////////////
@@ -142,15 +149,18 @@ public class HotelViewer extends Fragment {
         View root = inflater.inflate(R.layout.traveler_fragment_hotel_view, container, false);
 
         initializeElements(root);
-        clickListener(root);
 
-        getCurrentHotelInfo(root);
-        //setHotelFeatures(root);
+        loadDatatoElements();
+
+        clickListener(root);
 
         return root;
     }
 
     private void initializeElements(View root) {
+        backBtn= root.findViewById(R.id.bt_traveler_hotel_view_back);
+        backBtn.bringToFront();
+
         hotelName = root.findViewById(R.id.traveler_hotelview_hotelName);
         hotelPrice = root.findViewById(R.id.traveler_hotelview_hotelPrice);
         hotelInfo = root.findViewById(R.id.traveler_hotelview_hotelinfo);
@@ -163,15 +173,11 @@ public class HotelViewer extends Fragment {
 
         hotelKey = getArguments().getString("clickDetails");
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Hotel");
-        recyclerViewSimilar = root.findViewById(R.id.similarhotels_Rv);
+        //recyclerViewSimilar = root.findViewById(R.id.similarhotels_Rv);
 
         rvFeatures = root.findViewById(R.id.features_gridview);
 
-        backBtn= root.findViewById(R.id.bt_traveler_hotel_view_back);
-        backBtn.bringToFront();
         ////////////////////////////////
-
-
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         hotelID = getArguments().getString("clickDetails");
@@ -181,9 +187,12 @@ public class HotelViewer extends Fragment {
         tv_date_end = root.findViewById(R.id.ti_choosen_end_date);
         tv_adults = root.findViewById(R.id.booking_btn_choosen_adults);
         tv_children = root.findViewById(R.id.booking_btn_choosen_children);
+
+        // Lookup the recyclerview in activity layout
+        rvHotels = root.findViewById(R.id.similarhotels_Rv);
     }
 
-    private void clickListener(View root) {
+    private void loadDatatoElements() {
         databaseReference.child(hotelKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -208,6 +217,9 @@ public class HotelViewer extends Fragment {
                         slideModelList.add(new SlideModel(String.valueOf(photo),"", ScaleTypes.FIT));
                     }
                     othersphotosslider.setImageList(slideModelList, ScaleTypes.FIT);
+
+                    setHotelFeatures(hotel);
+                    populateRecyclerViewOfHotel(hotel);
                 }
             }
 
@@ -216,6 +228,10 @@ public class HotelViewer extends Fragment {
 
             }
         });
+    }
+
+    private void clickListener(View root) {
+        backBtn.setOnClickListener(v -> getActivity().onBackPressed());
 
         favBtn.setOnClickListener(v ->
         {
@@ -245,56 +261,47 @@ public class HotelViewer extends Fragment {
             favBtn.setImageResource(R.drawable.ic_favorite_full);
         });
 
-
-        backBtn.setOnClickListener(v -> getActivity().onBackPressed());
-        /////////////////////////////////////
-
-        final String[] string_date = new String[1];
-
         tv_date_start.setOnClickListener(v -> {
-            final DatePickerDialog[] picker = new DatePickerDialog[1];
-            final Calendar cldr = Calendar.getInstance();
-            int day = cldr.get(Calendar.DAY_OF_MONTH);
-            int month = cldr.get(Calendar.MONTH);
-            int year = cldr.get(Calendar.YEAR);
-            // date picker dialog
-            picker[0] = new DatePickerDialog(getContext(),
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            Calendar date = Calendar.getInstance();
-                            date.set(year, monthOfYear, dayOfMonth);
-                            start_date = date.getTime();
-                            string_date[0] = dayOfMonth + "/" + monthOfYear + "/" + year;
-                            tv_date_start.setText(string_date[0]);
-                        }
-                    }, year, month, day);
-            picker[0].show();
+            Calendar mcurrentDate = Calendar.getInstance();
+            int mYear = mcurrentDate.get(Calendar.YEAR);
+            int mMonth = mcurrentDate.get(Calendar.MONTH);
+            int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog mDatePicker;
+            mDatePicker = new DatePickerDialog(getContext(), R.style.date_dialog_theme, (datepicker, selectedyear, selectedmonth, selectedday) -> {
+                Calendar date = Calendar.getInstance();
+                date.set(selectedyear, selectedmonth, selectedday);
+                start_date = date.getTime();
+
+                tv_date_start.setText(selectedday + "/" + selectedmonth + "/" + selectedyear);
+                tv_date_start.setError(null);
+            }, mYear, mMonth, mDay);
+            mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            if(end_date != null){
+                mDatePicker.getDatePicker().setMaxDate(end_date.getTime());
+            }
+            mDatePicker.show();
 
         });
 
-
         tv_date_end.setOnClickListener(v -> {
-            final DatePickerDialog[] picker = new DatePickerDialog[1];
-            final Calendar cldr = Calendar.getInstance();
-            int day = cldr.get(Calendar.DAY_OF_MONTH);
-            int month = cldr.get(Calendar.MONTH);
-            int year = cldr.get(Calendar.YEAR);
-            // date picker dialog
-            picker[0] = new DatePickerDialog(getContext(),
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            Calendar date = Calendar.getInstance();
-                            date.set(year, monthOfYear, dayOfMonth);
-                            end_date = date.getTime();
-                            string_date[0] = dayOfMonth + "/" + monthOfYear + "/" + year;
-                            tv_date_end.setText(string_date[0]);
-                        }
-                    }, year, month, day);
+            Calendar mcurrentDate = Calendar.getInstance();
+            int mYear = mcurrentDate.get(Calendar.YEAR);
+            int mMonth = mcurrentDate.get(Calendar.MONTH);
+            int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-            picker[0].show();
+            DatePickerDialog mDatePicker;
 
+            mDatePicker = new DatePickerDialog(getContext(), R.style.date_dialog_theme, (datepicker, selectedyear, selectedmonth, selectedday) -> {
+                Calendar date = Calendar.getInstance();
+                date.set(selectedyear, selectedmonth, selectedday);
+                end_date = date.getTime();
+
+                tv_date_end.setText(selectedday + "/" + selectedmonth + "/" + selectedyear);
+                tv_date_end.setError(null);
+            }, mYear, mMonth, mDay);
+            mDatePicker.getDatePicker().setMinDate(start_date.getTime());
+            mDatePicker.show();
         });
 
 
@@ -325,6 +332,21 @@ public class HotelViewer extends Fragment {
     }
 
     private boolean verifyData() {
+
+        boolean error = false;
+
+        if(tv_date_start.getText().toString().trim().isEmpty()){
+            tv_date_start.setError("");
+            tv_date_start.requestFocus();
+            error = true;
+        }
+
+        if(tv_date_end.getText().toString().trim().isEmpty()){
+            tv_date_end.setError("");
+            tv_date_end.requestFocus();
+            error = true;
+        }
+
         int adults, children;
         if(tv_adults.getText().toString().isEmpty())
             adults = 0;
@@ -336,31 +358,45 @@ public class HotelViewer extends Fragment {
         else
             children = Integer.parseInt(tv_children.getText().toString().trim());
 
+        if(adults <= 0 && children <= 0){
+            tv_adults.setError("");
+
+            tv_children.setError("");
+            error = true;
+        }
 
         /////////////////
         float price_night = Float.parseFloat(hotelPrice.getText().toString());
-
         float price = 0;
+        int n_nights = 0;
 
-
-        int n_nights = (int) (end_date.getTime() - start_date.getTime()) / (1000 * 60 * 60 * 24);
-
-        price = price_night * n_nights;
-
+        if(end_date == null || start_date == null){
+            error = true;
+        }
+        else{
+            n_nights = (int) (end_date.getTime() - start_date.getTime()) / (1000 * 60 * 60 * 24);
+            price = price_night * n_nights;
+        }
+        
         ////////////////
 
-        userID = firebaseUser.getUid();
+        if(!error){
+            userID = firebaseUser.getUid();
 
-        booking = new Booking(hotelID, userID, start_date, end_date, adults, children, price);
+            booking = new Booking(hotelID, userID, start_date, end_date, adults, children, price);
 
-        if (booking != null) {
-            return true;
+            if (booking != null) {
+                return true;
+            }
+            return false;
         }
-        return false;
+        {
+            return false;
+        }
+
     }
 
     private void registerOnFirebase() {
-
         if (verifyData()) {
             String reservationID = GenerateUniqueIds.generateId();
             FirebaseDatabase.getInstance().getReference("Booking").child(reservationID).setValue(booking).addOnCompleteListener(task1 -> {
@@ -411,30 +447,7 @@ public class HotelViewer extends Fragment {
 
     }
 
-    private void getCurrentHotelInfo(View root) {
-        //---
-        //get current hotel details
-        //---
-        databaseReference.child(hotelKey).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
-                    Hotel hotel;
-                    hotel = snapshot.getValue(Hotel.class);
-
-                    setHotelFeatures(hotel,root);
-                    populateRecyclerViewOfHotel(hotel,root);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void populateRecyclerViewOfHotel(Hotel hotel, View root) {
+    private void populateRecyclerViewOfHotel(Hotel hotel) {
         double lowerPrice,higherPrice;
 
         lowerPrice= hotel.getPrice() - (hotel.getPrice() * 0.1);
@@ -453,8 +466,6 @@ public class HotelViewer extends Fragment {
                     }
 
                 }
-                // Lookup the recyclerview in activity layout
-                RecyclerView rvHotels = root.findViewById(R.id.similarhotels_Rv);
                 // Create adapter passing in the sample user data
                 adapterSimilarHotels adapter = new adapterSimilarHotels(similarHotelKeys);
                 adapter.setOnItemClickListener(new adapterSimilarHotels.OnItemClickListener() {
@@ -463,7 +474,7 @@ public class HotelViewer extends Fragment {
                         Bundle bundle = new Bundle();
                         bundle.putString("clickDetails", keys.get(position));
                         bundle.putString("PreviousFragment",getArguments().getString("PreviousFragment"));
-                        Navigation.findNavController(root).navigate(R.id.action_traveler_hotelview_self, bundle);
+                        Navigation.findNavController(getView()).navigate(R.id.action_traveler_hotelview_self, bundle);
                     }
                 });
                 // Attach the adapter to the recyclerview to populate items
@@ -479,7 +490,7 @@ public class HotelViewer extends Fragment {
         });
     }
 
-    private void setHotelFeatures(Hotel hotel, View root) {
+    private void setHotelFeatures(Hotel hotel) {
         Map<String, Boolean> hotelFeature = hotel.getFeature().getFeatures();
         ArrayList <String> listFeatures = new ArrayList<>();
 

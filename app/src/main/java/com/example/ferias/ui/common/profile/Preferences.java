@@ -36,9 +36,7 @@ public class Preferences extends Fragment {
     private User user;
     private String path;
 
-    private RadioGroup rg_distance, rg_currency, rg_language;
-    private RadioButton rb_Km, rb_Mi;
-    private RadioButton rb_Euro, rb_Dolar, rb_Ienes;
+    private RadioGroup rg_language;
     private RadioButton rb_English, rb_Portuguese, rb_Italian;
 
     private Button bt_save_preferences;
@@ -65,16 +63,7 @@ public class Preferences extends Fragment {
         firebaseUser = firebaseAuth.getCurrentUser();
         databaseReference= FirebaseDatabase.getInstance().getReference().child(path).child(firebaseUser.getUid());
 
-        rg_distance = root.findViewById(R.id.rg_distance);
-        rg_currency = root.findViewById(R.id.rg_currency);
         rg_language = root.findViewById(R.id.rg_language);
-
-        rb_Km = root.findViewById(R.id.rb_Km);
-        rb_Mi = root.findViewById(R.id.rb_Mi);
-
-        rb_Euro = root.findViewById(R.id.rb_Euro);
-        rb_Dolar = root.findViewById(R.id.rb_Dolar);
-        rb_Ienes = root.findViewById(R.id.rb_Ienes);
 
         rb_English = root.findViewById(R.id.rb_English);
         rb_Portuguese = root.findViewById(R.id.rb_Portuguese);
@@ -113,11 +102,9 @@ public class Preferences extends Fragment {
 
     private void loadDatatoElements() {
         if (user != null) {
-            String units_distance = user.getUnitsDistance();
-            String units_currency = user.getUnitsCurrency();
             String language = user.getLanguage();
 
-            if (!units_distance.isEmpty() && !units_currency.isEmpty() && !language.isEmpty()) {
+            if (!language.isEmpty()) {
                 switch (language) {
                     case "en":
                         rb_English.toggle();
@@ -131,69 +118,15 @@ public class Preferences extends Fragment {
                         rb_Italian.toggle();
                     break;
                 }
-
-                switch (units_currency) {
-                    case "euro":
-                        rb_Euro.toggle();
-                    break;
-                    case "dolar":
-                        rb_Dolar.toggle();
-                    break;
-                    case "ienes":
-                        rb_Ienes.toggle();
-                    break;
-                }
-
-                switch (units_distance) {
-                    case "km":
-                        rb_Km.toggle();
-                    break;
-
-                    case "mi":
-                        rb_Mi.toggle();
-                    break;
-                }
             }
         }
     }
 
     private void savePreferences() {
 
-        String units_distance, units_currency, language_chosen;
+        String language_chosen;
 
-        int select_distance = rg_distance.getCheckedRadioButtonId();
-        int select_currency = rg_currency.getCheckedRadioButtonId();
         int select_language = rg_language.getCheckedRadioButtonId();
-
-        switch (select_distance) {
-            case R.id.rb_Km:
-                units_distance = "km";
-            break;
-
-            case R.id.rb_Mi:
-                units_distance = "mi";
-            break;
-
-            default:
-                units_distance = "km";
-        }
-
-        switch (select_currency) {
-            case R.id.rb_Euro:
-                units_currency = "euro";
-            break;
-
-            case R.id.rb_Dolar:
-                units_currency = "dolar";
-            break;
-
-            case R.id.rb_Ienes:
-                units_currency = "ienes";
-            break;
-
-            default:
-                units_currency = "euro";
-        }
 
         switch (select_language) {
             case R.id.rb_English:
@@ -216,9 +149,6 @@ public class Preferences extends Fragment {
             setLocale(language_chosen);
             user.setLanguage(language_chosen);
         }
-
-        user.setUnitsDistance(units_distance);
-        user.setUnitsCurrency(units_currency);
 
         databaseReference.setValue(user);
     }

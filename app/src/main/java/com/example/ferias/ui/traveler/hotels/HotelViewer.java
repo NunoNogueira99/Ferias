@@ -15,7 +15,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -29,6 +31,7 @@ import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.ferias.R;
 import com.example.ferias.data.GenerateUniqueIds;
+import com.example.ferias.data.InternalStorage;
 import com.example.ferias.data.hotel_manager.Hotel;
 import com.example.ferias.data.traveler.Booking;
 import com.example.ferias.data.traveler.Traveler;
@@ -41,6 +44,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -78,6 +82,58 @@ public class HotelViewer extends Fragment {
 
     private Date start_date, end_date;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // This callback will only be called when MyFragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+
+            @Override
+            public void handleOnBackPressed() {
+                String fragment = getArguments().getString("PreviousFragment");
+
+                if(fragment != null){
+                    if(fragment.isEmpty()){
+                        Navigation.findNavController(getView()).navigate(R.id.action_traveler_hotelview_to_traveler_home);
+                    }
+
+                    switch (fragment){
+                        case "Favorites":
+                            Navigation.findNavController(getView()).navigate(R.id.action_traveler_hotelview_to_favorites);
+                            break;
+
+                        case "Search":
+                            Navigation.findNavController(getView()).navigate(R.id.action_traveler_hotelview_to_search_hotel);
+                            break;
+
+                        case "SearchNearby":
+                            try {
+                                Traveler user = (Traveler) InternalStorage.readObject(getContext(), "User");
+                                Bundle bundle = new Bundle();
+                                float distance =  user.getSearchRadius() != 0 ?  user.getSearchRadius() : 500;
+                                bundle.putFloat("SearchRadius", distance);
+                                Navigation.findNavController(getView()).navigate(R.id.action_traveler_hotelview_to_traveler_search_nearby, bundle);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Navigation.findNavController(getView()).navigate(R.id.action_traveler_hotelview_to_traveler_home);
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                                Navigation.findNavController(getView()).navigate(R.id.action_traveler_hotelview_to_traveler_home);
+                            }
+
+                            break;
+
+                        case "SearchOnMap":
+                            Navigation.findNavController(getView()).navigate(R.id.action_traveler_hotelview_to_traveler_hotel_on_map);
+                            break;
+                    }
+                }
+
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -190,7 +246,7 @@ public class HotelViewer extends Fragment {
         });
 
 
-        backBtn.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_traveler_hotelview_to_traveler_home));
+        backBtn.setOnClickListener(v -> getActivity().onBackPressed());
         /////////////////////////////////////
 
         final String[] string_date = new String[1];
@@ -406,6 +462,7 @@ public class HotelViewer extends Fragment {
                     public void onItemClick(int position) {
                         Bundle bundle = new Bundle();
                         bundle.putString("clickDetails", keys.get(position));
+                        bundle.putString("PreviousFragment",getArguments().getString("PreviousFragment"));
                         Navigation.findNavController(root).navigate(R.id.action_traveler_hotelview_self, bundle);
                     }
                 });

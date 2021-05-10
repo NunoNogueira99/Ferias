@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout1"
+            android:id="@+id/linearLayout5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
@@ -21,123 +21,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/tv_title_units_distance"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/select_units_for_distance"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/rg_distance"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:textAlignment="center">
-
-                <RadioButton
-                    android:id="@+id/rb_Km"
-                    style="?attr/textAppearanceHeadline6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/metric"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/rb_Mi"
-                    style="?attr/textAppearanceHeadline6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/imperial"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-            </RadioGroup>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="25dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
-
-            <TextView
-                android:id="@+id/tv_title_currency"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/select_the_currency"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/rg_currency"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rb_Euro"
-                    style="?attr/textAppearanceHeadline6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/euro"
-                    android:textAppearance="?attr/textAppearanceHeadline6"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/rb_Dolar"
-                    style="?attr/textAppearanceHeadline6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/dolar"
-                    android:textAppearance="?attr/textAppearanceHeadline6"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <RadioButton
-                    android:id="@+id/rb_Ienes"
-                    style="?attr/textAppearanceHeadline6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/ienes"
-                    android:textAppearance="?attr/textAppearanceHeadline6"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </RadioGroup>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="25dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
 
             <TextView
                 android:id="@+id/tv_title_language"

@@ -20,8 +20,6 @@ public abstract class User implements Serializable {
     private String password;
     ////////////////    PREFERENCES    ////////////////
     private String language;
-    private String units_distance;
-    private String units_currency;
     private boolean isGoogle;
     //////////////// PAYMENT DETAILS ////////////////
 
@@ -40,8 +38,6 @@ public abstract class User implements Serializable {
         password = "";
         //////////////////////////////
         this.language = "en";
-        this.units_distance = "km";
-        this.units_currency = "euro";
         isGoogle = false;
     }
 
@@ -58,8 +54,6 @@ public abstract class User implements Serializable {
         this.password = password;
         //////////////////////////////
         this.language = "en";
-        this.units_distance = "km";
-        this.units_currency = "euro";
         isGoogle = false;
     }
 
@@ -77,8 +71,6 @@ public abstract class User implements Serializable {
         this.password = password;
         //////////////////////////////
         this.language = language;
-        this.units_distance = units_distance;
-        this.units_currency = units_currency;
         isGoogle = false;
     }
 
@@ -96,8 +88,6 @@ public abstract class User implements Serializable {
         password = "";
         //////////////////////////////
         this.language = "en";
-        this.units_distance = "km";
-        this.units_currency = "euro";
         this.isGoogle = isGoogle;
     }
 
@@ -135,14 +125,6 @@ public abstract class User implements Serializable {
 
     public String getLanguage() {
         return language;
-    }
-
-    public String getUnitsDistance() {
-        return units_distance;
-    }
-
-    public String getUnitsCurrency() {
-        return units_currency;
     }
 
     public boolean isGoogle() {
@@ -183,14 +165,6 @@ public abstract class User implements Serializable {
 
     public void setLanguage(String language) {
         this.language = language;
-    }
-
-    public void setUnitsDistance(String units_distance) {
-        this.units_distance = units_distance;
-    }
-
-    public void setUnitsCurrency(String units_currency) {
-        this.units_currency = units_currency;
     }
 
     public void setGoogle(boolean google) {

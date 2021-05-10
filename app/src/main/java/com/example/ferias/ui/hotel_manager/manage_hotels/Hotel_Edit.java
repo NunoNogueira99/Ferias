@@ -34,6 +34,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -137,6 +138,34 @@ public class Hotel_Edit extends Fragment {
     private ImageButton bt_hotel_edit_back;
 
     private MaterialButton bt_RegisterHotel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // This callback will only be called when MyFragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+
+            @Override
+            public void handleOnBackPressed() {
+                String fragment = getArguments().getString("PreviousFragment");
+
+                switch (fragment){
+                    case "Hotel_View":
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("Hotel", hotel);
+                        bundle.putString("Hotel Id",hotelID);
+                        Navigation.findNavController(getView()).navigate(R.id.action_hotel_edit_to_hotel_view, bundle);
+                    break;
+
+                    case "Hotel_Manage":
+                        Navigation.findNavController(getView()).navigate(R.id.action_hotel_edit_to_hotel_manage);
+                    break;
+                }
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

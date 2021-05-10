@@ -3,7 +3,9 @@ package com.example.ferias.ui.traveler.search_hotel;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -69,6 +71,22 @@ public class SearchHotel extends Fragment {
     private boolean party=false,chill=false,adventure=false, sports=false;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // This callback will only be called when MyFragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(getView()).navigate(R.id.action_searchHotel_to_traveler_home);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -82,36 +100,38 @@ public class SearchHotel extends Fragment {
     }
 
     private void setQuery(View root) {
-        String modsWanted = getArguments().getString("modsWanted");
-
         Query query;
-        if(modsWanted != null)
-        {
-            switch(modsWanted)
+        String locality = "";
+
+        if(getArguments() != null){
+            String modsWanted = getArguments().getString("modsWanted");
+            locality = getArguments().getString("inputText");
+
+            if(modsWanted != null)
             {
-                case "Party":
-                    query= databaseReference.orderByChild("moods/moods/Nightlife, clubs and parties").equalTo(true);
-                    loadData(query,root);
-                    return;
-                case "Chill":
-                    query= databaseReference.orderByChild("moods/moods/Very chill, perfect to relax").equalTo(true);
-                    loadData(query,root);
-                    return;
-                case "Adventure":
-                    query= databaseReference.orderByChild("moods/moods/Ready to be explored! Embark on an adventure").equalTo(true);
-                    loadData(query,root);
-                    return;
-                case "Sports":
-                    query= databaseReference.orderByChild("moods/moods/You can do some sport activities").equalTo(true);
-                    loadData(query,root);
-                    return;
+                switch(modsWanted)
+                {
+                    case "Party":
+                        query= databaseReference.orderByChild("moods/moods/Nightlife, clubs and parties").equalTo(true);
+                        loadData(query,root);
+                        return;
+                    case "Chill":
+                        query= databaseReference.orderByChild("moods/moods/Very chill, perfect to relax").equalTo(true);
+                        loadData(query,root);
+                        return;
+                    case "Adventure":
+                        query= databaseReference.orderByChild("moods/moods/Ready to be explored! Embark on an adventure").equalTo(true);
+                        loadData(query,root);
+                        return;
+                    case "Sports":
+                        query= databaseReference.orderByChild("moods/moods/You can do some sport activities").equalTo(true);
+                        loadData(query,root);
+                        return;
+                }
             }
         }
-        else
-        {
-            query= databaseReference.orderByChild("address/city").startAt(getArguments().getString("inputText").toUpperCase()).endAt(getArguments().getString("inputText").toLowerCase() + "\uf8ff");
-            loadData(query,root);
-        }
+        query= databaseReference.orderByChild("address/city").startAt(locality.toUpperCase()).endAt(locality.toLowerCase() + "\uf8ff");
+        loadData(query,root);
     }
 
     private void clickListener(View root) {
@@ -123,9 +143,9 @@ public class SearchHotel extends Fragment {
                 manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
 
-            Query query = databaseReference.orderByChild("address/city").startAt(mSearchField.getText().toString().toUpperCase()).endAt(mSearchField.getText().toString().toLowerCase() + "\uf8ff");
+            Query query = databaseReference.orderByChild("address/city").startAt(mSearchField.getText().toString().trim().toUpperCase()).endAt(mSearchField.getText().toString().trim().toLowerCase() + "\uf8ff");
 
-            if(mSearchField.getText().toString().isEmpty())
+            if(mSearchField.getText().toString().trim().isEmpty())
                 mResultInfo.setText("All");
             else
                 mResultInfo.setText(mSearchField.getText().toString());
@@ -183,6 +203,7 @@ public class SearchHotel extends Fragment {
                         keys.add(entry.getValue());
 
                 bundle.putString("clickDetails", keys.get(position));
+                bundle.putString("PreviousFragment","Search");
                 Navigation.findNavController(root).navigate(R.id.action_search_hotel_to_traveler_hotelview, bundle);
             }
 
@@ -316,15 +337,21 @@ public class SearchHotel extends Fragment {
 
         mResultInfo = root.findViewById(R.id.searchResultsInfoText);
 
-        if(getArguments().getString("inputText") != null){
-            String local = getArguments().getString("inputText");
-            if(local.isEmpty()){
-                mResultInfo.setText("All");
-            }
-            else{
-                mResultInfo.setText(local);
+        if(getArguments() != null){
+            if(getArguments().getString("inputText") != null){
+                String local = getArguments().getString("inputText");
+                if(local.isEmpty()){
+                    mResultInfo.setText("All");
+                }
+                else{
+                    mResultInfo.setText(local);
+                }
             }
         }
+        else{
+            mResultInfo.setText("All");
+        }
+
 
 
         filterBtn= root.findViewById(R.id.filter_btn);

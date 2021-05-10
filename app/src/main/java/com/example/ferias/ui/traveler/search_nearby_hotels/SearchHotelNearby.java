@@ -14,7 +14,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -79,6 +81,21 @@ public class SearchHotelNearby extends Fragment{
     private boolean party=false,chill=false,adventure=false, sports=false;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // This callback will only be called when MyFragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(getView()).navigate(R.id.action_traveler_search_nearby_to_traveler_home);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -408,6 +425,7 @@ public class SearchHotelNearby extends Fragment{
         mAdapter.setOnItemClickListener(position -> {
             Bundle bundle = new Bundle();
             bundle.putString("clickDetails", searchResults.get(hotelList.get(position)));
+            bundle.putString("PreviousFragment","SearchNearby");
             Navigation.findNavController(getView()).navigate(R.id.action_traveler_search_nearby_to_traveler_hotelview, bundle);
         });
 

@@ -9,7 +9,9 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,6 +50,21 @@ public class Hotel_Manage extends Fragment {
     private RecyclerView mRecyclerView;
     private HotelListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // This callback will only be called when MyFragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+
+            @Override
+            public void handleOnBackPressed() {
+                bt_hotel_manage_back.performClick();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -157,6 +174,7 @@ public class Hotel_Manage extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Hotel", mHotelList.get(position));
                 bundle.putString("Hotel Id",user.getHotels().get(position-1));
+                bundle.putString("PreviousFragment","Hotel_Manage");
                 Navigation.findNavController(root).navigate(R.id.action_hotel_manage_to_hotel_edit, bundle);
             }
 

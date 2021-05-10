@@ -1,9 +1,15 @@
 package com.example.ferias.ui.hotel_manager.home;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -90,6 +96,38 @@ public class Home extends Fragment {
     private TextView tv_NameMensage;
     private AnyChartView chart;
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // This callback will only be called when MyFragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+
+            @Override
+            public void handleOnBackPressed() {
+                Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.dialog_logout);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+                dialog.setCancelable(false);
+
+                dialog.create();
+
+                Button confirm = dialog.findViewById(R.id.bt_dialog_logout_Confirm);
+                Button deny = dialog.findViewById(R.id.bt_dialog_logout_Deny);
+
+                confirm.setOnClickListener(v -> {bt_Logout.performClick(); dialog.dismiss();});
+
+                deny.setOnClickListener(v -> dialog.dismiss());
+
+                dialog.show();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

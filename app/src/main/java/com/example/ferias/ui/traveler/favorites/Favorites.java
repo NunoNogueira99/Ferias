@@ -3,7 +3,9 @@ package com.example.ferias.ui.traveler.favorites;
 import android.app.Dialog;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -32,6 +34,21 @@ public class Favorites extends Fragment {
     private final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Hotel");
     Dialog d;
     private TextView remove, cancel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // This callback will only be called when MyFragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(getView()).navigate(R.id.action_favorites_to_traveler_home);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,12 +113,12 @@ public class Favorites extends Fragment {
                         //go-to hotel page
                         Bundle bundle = new Bundle();
                         bundle.putString("clickDetails", keys.get(position));
+                        bundle.putString("PreviousFragment","Favorites");
                         Navigation.findNavController(root).navigate(R.id.action_favorites_to_traveler_hotelview, bundle);
                     }
 
                     @Override
                     public void onItemLongClick(View view, int position) {
-                        Toast.makeText(getContext(),"Longgg CLicc",Toast.LENGTH_SHORT).show();
                         d.show();
                     }
                 }));

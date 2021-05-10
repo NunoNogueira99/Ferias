@@ -1,6 +1,9 @@
 package com.example.ferias.ui.hotel_manager.manage_hotels;
 
+import android.app.FragmentManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +12,10 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
@@ -29,6 +35,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Hotel_View extends Fragment {
 
@@ -51,6 +58,20 @@ public class Hotel_View extends Fragment {
     private ViewPager viewPager;
     private PageAdapter pageAdapter;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // This callback will only be called when MyFragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+
+            @Override
+            public void handleOnBackPressed() {
+                bt_hotel_view_back.performClick();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -137,6 +158,7 @@ public class Hotel_View extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putSerializable("Hotel", hotel);
             bundle.putString("Hotel Id", hotelId);
+            bundle.putString("PreviousFragment","Hotel_View");
             Navigation.findNavController(root).navigate(R.id.action_hotel_view_to_hotel_edit, bundle);
         });
 
@@ -154,6 +176,8 @@ public class Hotel_View extends Fragment {
             user.removeHotelbyObject(hotelId);
 
             databaseReferenceUser.setValue(user);
+
+            bt_hotel_view_back.performClick();
         });
     }
 

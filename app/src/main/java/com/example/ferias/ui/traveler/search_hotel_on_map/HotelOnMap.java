@@ -7,7 +7,9 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -82,6 +84,21 @@ public class HotelOnMap extends Fragment implements OnMapReadyCallback {
 
     private LinkedHashMap<Hotel,String> hotelResults = new LinkedHashMap<>();
     private LinkedHashMap<Hotel,String> hotelfilteredResults = new LinkedHashMap<>();
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // This callback will only be called when MyFragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(getView()).navigate(R.id.action_traveler_hotel_on_map_to_traveler_home);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -519,6 +536,7 @@ public class HotelOnMap extends Fragment implements OnMapReadyCallback {
             String[] info = marker.getSnippet().split("«");
             Bundle bundle = new Bundle();
             bundle.putString("clickDetails", info[4]);
+            bundle.putString("PreviousFragment","SearchOnMap");
             Navigation.findNavController(getView()).navigate(R.id.action_traveler_hotel_on_map_to_traveler_hotelview, bundle);
         });
 

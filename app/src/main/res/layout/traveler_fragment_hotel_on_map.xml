@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:background="@null"
-        android:text="Satellite"
+        android:text="@string/satellite"
         android:textAlignment="center"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:background="@null"
-        android:text="Terrain"
+        android:text="@string/terrain"
         android:textAlignment="center"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:background="@null"
-        android:text="Normal"
+        android:text="@string/normal"
         android:textAlignment="center"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -170,7 +170,7 @@
                 android:layout_gravity="right"
                 android:layout_marginBottom="8dp"
                 android:gravity="center|left"
-                android:text="🎉 Party mood"
+                android:text="@string/party_mood"
                 android:textAllCaps="false" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -180,7 +180,7 @@
                 android:layout_gravity="right"
                 android:layout_marginBottom="8dp"
                 android:gravity="center|left"
-                android:text="⛱️ Chill mood"
+                android:text="@string/chill_mood"
                 android:textAllCaps="false"
                 android:textColor="@color/primary_white" />
 
@@ -191,7 +191,7 @@
                 android:layout_gravity="right"
                 android:layout_marginBottom="8dp"
                 android:gravity="center|left"
-                android:text="⛰ Adventure mood"
+                android:text="@string/adventure_mood"
                 android:textAllCaps="false"
                 android:textColor="@color/primary_white" />
 
@@ -202,7 +202,7 @@
                 android:layout_gravity="right"
                 android:layout_marginBottom="8dp"
                 android:gravity="center|left"
-                android:text="⛷️ Sports mood"
+                android:text="@string/sports_mood"
                 android:textAllCaps="false"
                 android:textColor="@color/primary_white" />
 

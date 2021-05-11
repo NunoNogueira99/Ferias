@@ -338,7 +338,7 @@ public class Home extends Fragment {
 
     private void loadDatatoElements(){
         if(user != null){
-            tv_NameMensage.setText("Hi "+user.getName());
+            tv_NameMensage.setText(getString(R.string.hello_mensage)+user.getName());
 
             Glide.with(this)
             .load(user.getImage())

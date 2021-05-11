@@ -88,7 +88,7 @@ public class Statistics extends Fragment {
         chart_total_profits.setDrawHoleEnabled(true);
         chart_total_profits.setEntryLabelTextSize(12);
         chart_total_profits.setEntryLabelColor(Color.WHITE);
-        chart_total_profits.setCenterText("Earning by month");
+        chart_total_profits.setCenterText(getString(R.string.earning_by_month));
         chart_total_profits.setCenterTextSize(20);
         chart_total_profits.getDescription().setEnabled(false);
 
@@ -102,7 +102,7 @@ public class Statistics extends Fragment {
         chart_total_bookings.setDrawHoleEnabled(true);
         chart_total_bookings.setEntryLabelTextSize(12);
         chart_total_bookings.setEntryLabelColor(Color.WHITE);
-        chart_total_bookings.setCenterText("Bookings by month");
+        chart_total_bookings.setCenterText(getString(R.string.bookings_by_month));
         chart_total_bookings.setCenterTextSize(20);
         chart_total_bookings.getDescription().setEnabled(false);
 
@@ -209,16 +209,16 @@ public class Statistics extends Fragment {
                     valuesBookingsBySeasons.put(seasons.get(i),value_booking);
                 }
             }
-            chart_total_profits.setCenterText("Earning by season");
-            chart_total_bookings.setCenterText("Bookings by season");
+            chart_total_profits.setCenterText(getString(R.string.earning_by_season));
+            chart_total_bookings.setCenterText(getString(R.string.bookings_by_season));
 
             loadDatatoChart("profits",valuesProfitsBySeasons);
 
             loadDatatoChart("bookings",valuesBookingsBySeasons);
         }
         else{
-            chart_total_profits.setCenterText("Earning by month");
-            chart_total_bookings.setCenterText("Bookings by month");
+            chart_total_profits.setCenterText(getString(R.string.earning_by_month));
+            chart_total_bookings.setCenterText(getString(R.string.bookings_by_month));
 
             loadDatatoChart("profits",valuesProfitsByMonth);
 
@@ -255,7 +255,7 @@ public class Statistics extends Fragment {
             colors.add(color);
         }*/
 
-        PieDataSet dataSet = new PieDataSet(entries, "Months");
+        PieDataSet dataSet = new PieDataSet(entries, getString(R.string.months));
         dataSet.setColors(colors);
 
         PieData data = new PieData(dataSet);

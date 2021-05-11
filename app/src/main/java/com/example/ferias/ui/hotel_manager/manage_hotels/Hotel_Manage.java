@@ -32,6 +32,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -74,9 +76,7 @@ public class Hotel_Manage extends Fragment {
 
         clickListeners();
 
-        getUserDate();
-
-        getListHotel(root);
+        getUserDate(root);
 
         return root;
     }
@@ -103,19 +103,26 @@ public class Hotel_Manage extends Fragment {
         });
     }
 
-    private void getUserDate(){
-        try {
-            user = (HotelManager) InternalStorage.readObject(getContext(), "User");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+    private void getUserDate(View root){
+        databaseReferenceUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                user = snapshot.getValue(HotelManager.class);
+                if(user != null){
+                    getListHotel(root);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Log.e("Error", error.getMessage());
+            }
+        });
     }
 
     private void getListHotel(View root){
         Hotel addHotel = new Hotel();
-        addHotel.setName("Add Hotel");
+        addHotel.setName(getString(R.string.add_hotel));
         mHotelList.add(addHotel);
 
         if(!user.getHotels().isEmpty()){
@@ -193,6 +200,10 @@ public class Hotel_Manage extends Fragment {
                 user.removeHotelbyIndex(position-1);
 
                 databaseReferenceUser.setValue(user);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("PreviousFragment",bundle.getString("PreviousFragment"));
+                Navigation.findNavController(root).navigate(R.id.action_hotel_manage_self, bundle);
             }
         });
     }

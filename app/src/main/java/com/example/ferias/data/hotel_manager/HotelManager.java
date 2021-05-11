@@ -48,10 +48,10 @@ public class HotelManager extends User implements Serializable {
         this.hotels.remove(index);
     }
 
-    public void removeHotelbyObject(String hotel) {
+    public void removeHotelbyObject(String hotelID) {
         int index = 0;
         for(String id: hotels){
-            if(id == hotel){
+            if(id.equals(hotelID)){
                 hotels.remove(index);
                 break;
             }

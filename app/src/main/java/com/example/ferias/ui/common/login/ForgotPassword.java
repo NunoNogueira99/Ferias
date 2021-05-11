@@ -68,13 +68,13 @@ public class ForgotPassword extends Fragment{
         boolean error = false;
 
         if(email.isEmpty()){
-            et_EmailAddress.setError("Email Address is required");
+            et_EmailAddress.setError(getString(R.string.email_error));
             et_EmailAddress.requestFocus();
             error = true;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            et_EmailAddress.setError("Please provide valid Email Address");
+            et_EmailAddress.setError(getString(R.string.email_valid_error));
             et_EmailAddress.requestFocus();
             error = true;
         }
@@ -87,12 +87,12 @@ public class ForgotPassword extends Fragment{
 
         firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                Toast.makeText(getContext(),"Check your email to reset your password!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),getString(R.string.forgot_password_success), Toast.LENGTH_LONG).show();
 
                 Navigation.findNavController(root).navigate(R.id.action_forgotPassword_to_login);
             }
             else {
-                Toast.makeText(getContext(),"Try again! Something wrong happened", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),getString(R.string.password_strength_error_mensage), Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -3,13 +3,15 @@ package com.example.ferias.ui.common.login;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -24,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ferias.MainActivity;
 import com.example.ferias.R;
 import com.example.ferias.data.InternalStorage;
 import com.example.ferias.data.hotel_manager.HotelManager;
@@ -49,6 +52,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Login extends Fragment {
 
@@ -86,6 +90,22 @@ public class Login extends Fragment {
         initializeElements(root);
 
         clickListener(root);
+
+        if (getActivity().getIntent().hasExtra("LoginAgain") && savedInstanceState==null){
+            savedInstanceState = getActivity().getIntent().getExtras().getBundle("LoginAgain");
+
+            String user_email = savedInstanceState.getString("UserEmail");
+            String user_password = savedInstanceState.getString("UserPassoword");
+
+            if(user_email != null && user_password != null){
+                if(!user_email.isEmpty() && !user_password.isEmpty()){
+                    login(user_email,user_password);
+                    savedInstanceState.putString("UserEmail",null);
+                    savedInstanceState.putString("UserPassoword",null);
+                }
+            }
+
+        }
 
         getRemeberData();
 
@@ -185,19 +205,19 @@ public class Login extends Fragment {
         boolean error = false;
 
         if(email.isEmpty()){
-            et_EmailAddress.setError("Email Address is required");
+            et_EmailAddress.setError(getString(R.string.email_error));
             et_EmailAddress.requestFocus();
             error = true;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            et_EmailAddress.setError("Please provide valid Email Address");
+            et_EmailAddress.setError(getString(R.string.email_valid_error));
             et_EmailAddress.requestFocus();
             error = true;
         }
 
         if(password.isEmpty()){
-            et_Password.setError("Password is required");
+            et_Password.setError(getString(R.string.password_error));
             et_Password.requestFocus();
             error = true;
         }
@@ -232,12 +252,12 @@ public class Login extends Fragment {
                 }
                 else{
                     user.sendEmailVerification();
-                    Toast.makeText(getContext(),"Check your email to verify your account!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),getString(R.string.login_verify_error), Toast.LENGTH_LONG).show();
                     bt_Login.setEnabled(true);
                 }
             }
             else {
-                Toast.makeText(getContext(),"Failed to login! Please check your credentials",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),getString(R.string.login_error),Toast.LENGTH_LONG).show();
                 bt_Login.setEnabled(true);
             }
         });
@@ -248,11 +268,34 @@ public class Login extends Fragment {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
         database.child("Traveler").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 traveler = snapshot.getValue(Traveler.class);
                 if(traveler != null){
                     Toast.makeText(getContext(),"Login Successful",Toast.LENGTH_LONG).show();
+
+                    String language = traveler.getLanguage().toUpperCase();
+                    String primaryLocale = getResources().getConfiguration().getLocales().get(0).toString().toUpperCase();
+                    if (!primaryLocale.contains(language)) {
+                        switch (language) {
+                            case "EN":
+                            case "EN_US":
+                                setLocale("en", traveler.getEmail(), traveler.getPassword());
+                                break;
+
+                            case "PT":
+                            case "PT_PT":
+                                setLocale("pt", traveler.getEmail(), traveler.getPassword());
+                                break;
+
+                            case "IT":
+                            case "IT_IT":
+                                setLocale("it", traveler.getEmail(), traveler.getPassword());
+                                break;
+                        }
+                    }
+
                     Navigation.findNavController(getView()).navigate(R.id.action_login_to_traveler_home);
                 }
             }
@@ -264,11 +307,34 @@ public class Login extends Fragment {
         });
 
         database.child("Hotel Manager").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 manager = snapshot.getValue(HotelManager.class);
                 if(manager != null){
-                    Toast.makeText(getContext(),"Login Successful",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),getString(R.string.login_success),Toast.LENGTH_LONG).show();
+
+                    String language = manager.getLanguage().toUpperCase();
+                    String primaryLocale = getResources().getConfiguration().getLocales().get(0).toString().toUpperCase();
+                    if (!primaryLocale.contains(language)) {
+                        switch (language) {
+                            case "EN":
+                            case "EN_US":
+                                setLocale("en", manager.getEmail(), manager.getPassword());
+                                break;
+
+                            case "PT":
+                            case "PT_PT":
+                                setLocale("pt", manager.getEmail(), manager.getPassword());
+                                break;
+
+                            case "IT":
+                            case "IT_IT":
+                                setLocale("it", manager.getEmail(), manager.getPassword());
+                                break;
+                        }
+                    }
+
                     Navigation.findNavController(getView()).navigate(R.id.action_login_to_hotel_manager_home);
                 }
             }
@@ -348,5 +414,21 @@ public class Login extends Fragment {
                 return;
             }
         }
+    }
+
+    private void setLocale(String language, String email, String password) {
+
+        Configuration conf = new Configuration(this.getResources().getConfiguration());
+        conf.locale = new Locale(language);
+        this.getResources().updateConfiguration(conf, this.getResources().getDisplayMetrics());
+
+        Intent refresh= new Intent(getActivity(), MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("UserEmail", email);
+        bundle.putString("UserPassoword", password);
+
+        refresh.putExtra("LoginAgain",bundle);
+
+        startActivity(refresh);
     }
 }

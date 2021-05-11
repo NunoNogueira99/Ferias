@@ -82,7 +82,7 @@
                         android:id="@+id/my_bookings_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="My bookings"
+                        android:text="@string/my_bookings"
                         android:textAllCaps="false"
                         app:icon="@drawable/ic_mybookings"
                         app:iconPadding="8dp"
@@ -118,7 +118,7 @@
                     android:id="@+id/bt_editProfile_User"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Edit Profile"
+                    android:text="@string/edit_profile"
                     android:textAllCaps="false"
                     app:icon="@drawable/ic_baseline_edit_24"
                     app:iconPadding="8dp"
@@ -129,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Logout"
+                    android:text="@string/logout"
                     android:textAllCaps="false"
                     app:icon="@drawable/ic_baseline_logout_24"
                     app:iconPadding="8dp"
@@ -158,7 +158,7 @@
                     style="?attr/textAppearanceHeadline6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Plan your next trip!" />
+                    android:text="@string/plan_trip" />
 
             </LinearLayout>
 
@@ -183,7 +183,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:hint="Where you want to go?"
+                        android:hint="@string/where_you_want_to_go"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/home_search_btn"
                         app:layout_constraintStart_toStartOf="parent"
@@ -221,7 +221,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_marginBottom="16sp"
-                android:text="Nearby hotels"
+                android:text="@string/nearby_hotels"
                 android:textAppearance="@style/custom_subtitle2"
                 app:icon="@drawable/ic_marker"
                 app:iconGravity="textEnd"
@@ -237,7 +237,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_marginBottom="16sp"
-                android:text="Hotels on Map"
+                android:text="@string/hotels_on_map"
                 android:textAppearance="@style/custom_subtitle2"
                 app:icon="@drawable/ic_marker"
                 app:iconGravity="textEnd"
@@ -262,20 +262,20 @@
                     style="?attr/textAppearanceSubtitle1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Don't know where to go...?" />
+                    android:text="@string/don_t_know_where_to_go" />
 
                 <TextView
                     style="?attr/textAppearanceHeadline6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Choose based on your mood!" />
+                    android:text="@string/choose_mood" />
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/travelerParty_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="🎉 I'm on party mode"
+                    android:text="@string/i_m_on_party_mode"
                     android:textAllCaps="false" />
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -283,7 +283,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="⛱️ I hust need to chill"
+                    android:text="@string/i_hust_need_to_chill"
                     android:textAllCaps="false" />
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -291,7 +291,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="⛰️ Looking for an adventure"
+                    android:text="@string/looking_for_an_adventure"
                     android:textAllCaps="false" />
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -299,7 +299,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="⛷️ I Want to do some sport"
+                    android:text="@string/i_want_to_do_some_sport"
                     android:textAllCaps="false" />
 
 

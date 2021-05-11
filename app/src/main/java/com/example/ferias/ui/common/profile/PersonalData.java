@@ -109,7 +109,7 @@ public class PersonalData extends Fragment {
                         }
 
                         if (age < 18) {
-                            Toast.makeText(getContext(), "Invalid birth date, must be over 18 years old. Please enter a valid date", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), getString(R.string.birth_date_error), Toast.LENGTH_LONG).show();
                             et_Age.setText("");
                         } else {
                             et_Age.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1);
@@ -177,37 +177,37 @@ public class PersonalData extends Fragment {
         boolean error = false;
 
         if(name.isEmpty()){
-            et_Name.setError("Full name is required");
+            et_Name.setError(getString(R.string.name_error));
             et_Name.requestFocus();
             error = true;
         }
 
         if(surname.isEmpty()){
-            et_Surname.setError("Full name is required");
+            et_Surname.setError(getString(R.string.surname_error));
             et_Surname.requestFocus();
             error = true;
         }
 
         if(age.isEmpty()){
-            et_Age.setError("Age is required");
+            et_Age.setError(getString(R.string.age_error));
             et_Age.requestFocus();
             error = true;
         }
 
         if(!ccp_PhoneCode.isValidFullNumber()){
-            et_Phone.setError("Phone is required and valid");
+            et_Phone.setError(getString(R.string.phone_error));
             et_Phone.requestFocus();
             error = true;
         }
 
         if(email.isEmpty()){
-            et_EmailAddress.setError("Email Address is required");
+            et_EmailAddress.setError(getString(R.string.email_error));
             et_EmailAddress.requestFocus();
             error = true;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            et_EmailAddress.setError("Please provide valid Email Address");
+            et_EmailAddress.setError(getString(R.string.email_valid_error));
             et_EmailAddress.requestFocus();
             error = true;
         }
@@ -217,13 +217,13 @@ public class PersonalData extends Fragment {
         }
 
         if(city.isEmpty()){
-            et_City.setError("City is required");
+            et_City.setError(getString(R.string.city_error));
             et_City.requestFocus();
             error = true;
         }
 
         if(address.isEmpty()){
-            et_Address.setError("Address is required");
+            et_Address.setError(getString(R.string.address_error));
             et_Address.requestFocus();
             error = true;
         }
@@ -231,7 +231,7 @@ public class PersonalData extends Fragment {
         ZipCodeValidation zipCodeValidation = new ZipCodeValidation();
         if(zipcode.isEmpty() || zipCodeValidation.validation_code(ccp_Country.getSelectedCountryNameCode(),zipcode)){
             //if(zipcode.isEmpty()){
-            et_ZipCode.setError("Zip-Code is required and valid");
+            et_ZipCode.setError(getString(R.string.zipcode_error));
             et_ZipCode.requestFocus();
             error = true;
         }

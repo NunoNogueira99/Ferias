@@ -146,20 +146,26 @@ public class Preferences extends Fragment {
         }
 
         if (!user.getLanguage().equals(language_chosen)) {
-            setLocale(language_chosen);
+            setLocale(language_chosen, user.getEmail(), user.getPassword());
             user.setLanguage(language_chosen);
         }
 
         databaseReference.setValue(user);
     }
 
-    private void setLocale(String language) {
+    private void setLocale(String language, String email, String password) {
 
-        Configuration conf = new Configuration(getContext().getResources().getConfiguration());
+        Configuration conf = new Configuration(this.getResources().getConfiguration());
         conf.locale = new Locale(language);
-        getContext().getResources().updateConfiguration(conf, getContext().getResources().getDisplayMetrics());
+        this.getResources().updateConfiguration(conf, this.getResources().getDisplayMetrics());
 
-        Intent refresh = new Intent(getContext(), MainActivity.class);
+        Intent refresh= new Intent(getActivity(), MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("UserEmail", email);
+        bundle.putString("UserPassoword", password);
+
+        refresh.putExtra("LoginAgain",bundle);
+
         startActivity(refresh);
     }
 }

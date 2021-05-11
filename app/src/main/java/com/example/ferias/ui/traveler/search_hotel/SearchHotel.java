@@ -146,7 +146,7 @@ public class SearchHotel extends Fragment {
             Query query = databaseReference.orderByChild("address/city").startAt(mSearchField.getText().toString().trim().toUpperCase()).endAt(mSearchField.getText().toString().trim().toLowerCase() + "\uf8ff");
 
             if(mSearchField.getText().toString().trim().isEmpty())
-                mResultInfo.setText("All");
+                mResultInfo.setText(getString(R.string.all));
             else
                 mResultInfo.setText(mSearchField.getText().toString());
             loadData(query,root);
@@ -309,7 +309,8 @@ public class SearchHotel extends Fragment {
                 holder.setName(model.getName());
                 holder.setCity(model.getAddress().getCity());
                 holder.setPrice(Float.toString(model.getPrice()));
-                Picasso.get().load(model.getCoverPhoto()).into(holder.image);
+                holder.setRating(model.getStars());
+                holder.setImage(model.getCoverPhoto());
             }
 
             @NonNull
@@ -341,15 +342,18 @@ public class SearchHotel extends Fragment {
             if(getArguments().getString("inputText") != null){
                 String local = getArguments().getString("inputText");
                 if(local.isEmpty()){
-                    mResultInfo.setText("All");
+                    mResultInfo.setText(getString(R.string.all));
                 }
                 else{
                     mResultInfo.setText(local);
                 }
             }
+            if(getArguments().getString("modsWanted")!= null){
+                mResultInfo.setText(getString(R.string.all));
+            }
         }
         else{
-            mResultInfo.setText("All");
+            mResultInfo.setText(getString(R.string.all));
         }
 
 

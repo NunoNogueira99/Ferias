@@ -62,7 +62,7 @@ import java.util.TimeZone;
 
 public class HotelViewer extends Fragment {
     private ImageButton favBtn, backBtn;
-    private TextView hotelName, hotelPrice, hotelInfo, numOfRatings;
+    private TextView hotelName, hotelPrice, hotelInfo, numOfRatings, hotelPhone;
     private RatingBar rating;
     private String hotelKey;
     private DatabaseReference databaseReference, databaseReferenceHotel, databaseReferenceTraveler;
@@ -163,6 +163,7 @@ public class HotelViewer extends Fragment {
 
         hotelName = root.findViewById(R.id.traveler_hotelview_hotelName);
         hotelPrice = root.findViewById(R.id.traveler_hotelview_hotelPrice);
+        hotelPhone = root.findViewById(R.id.traveler_hotelview_hotelPhone);
         hotelInfo = root.findViewById(R.id.traveler_hotelview_hotelinfo);
         favBtn = root.findViewById(R.id.add_to_favorites_hotelfound);
         rating = root.findViewById(R.id.ratingBar);
@@ -202,6 +203,7 @@ public class HotelViewer extends Fragment {
                     rating.setRating(hotel.getStars());
                     hotelName.setText(hotel.getName());
                     hotelPrice.setText(String.valueOf(hotel.getPrice()));
+                    hotelPhone.setText(hotel.getPhone());
                     hotelInfo.setText(hotel.getDescription());
                     numOfRatings.setText(String.valueOf(hotel.getRate()));
 
@@ -401,7 +403,7 @@ public class HotelViewer extends Fragment {
             String reservationID = GenerateUniqueIds.generateId();
             FirebaseDatabase.getInstance().getReference("Booking").child(reservationID).setValue(booking).addOnCompleteListener(task1 -> {
                 if (task1.isSuccessful()) {
-                    Toast.makeText(getContext(), "Booking has ben registered successfully!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), getString(R.string.booking_successfully), Toast.LENGTH_LONG).show();
 
                     databaseReferenceTraveler = FirebaseDatabase.getInstance().getReference().child("Traveler").child(firebaseUser.getUid());
 
@@ -440,7 +442,7 @@ public class HotelViewer extends Fragment {
                     final NavController navController = Navigation.findNavController(getView());
                     navController.navigate(R.id.action_traveler_hotelview_to_traveler_home);
                 } else {
-                    Toast.makeText(getContext(), "Failed to register! Try again!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), getString(R.string.booking_error), Toast.LENGTH_LONG).show();
                 }
             });
         }

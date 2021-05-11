@@ -90,7 +90,7 @@
                     style="?attr/textAppearanceHeadline4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Hotels find nearby"
+                    android:text="@string/hotels_find_nearby"
                     android:textAlignment="center" />
 
                 <TextView
@@ -99,7 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="No hotels found"
+                    android:text="@string/no_hotels_found"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -116,7 +116,7 @@
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_marginRight="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
         android:id="@+id/filter_btn"
         android:layout_width="wrap_content"
@@ -151,7 +151,7 @@
                 android:layout_gravity="right"
                 android:layout_marginBottom="8dp"
                 android:gravity="center|left"
-                android:text="🎉 Party mood"
+                android:text="@string/party_mood"
                 android:textAllCaps="false" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -161,7 +161,7 @@
                 android:layout_gravity="right"
                 android:layout_marginBottom="8dp"
                 android:gravity="center|left"
-                android:text="⛱️ Chill mood"
+                android:text="@string/chill_mood"
                 android:textAllCaps="false"
                 android:textColor="@color/primary_white" />
 
@@ -172,7 +172,7 @@
                 android:layout_gravity="right"
                 android:layout_marginBottom="8dp"
                 android:gravity="center|left"
-                android:text="⛰ Adventure mood"
+                android:text="@string/adventure_mood"
                 android:textAllCaps="false"
                 android:textColor="@color/primary_white" />
 
@@ -183,7 +183,7 @@
                 android:layout_gravity="right"
                 android:layout_marginBottom="8dp"
                 android:gravity="center|left"
-                android:text="⛷️ Sports mood"
+                android:text="@string/sports_mood"
                 android:textAllCaps="false"
                 android:textColor="@color/primary_white" />
 
@@ -202,7 +202,7 @@
                     android:background="@drawable/shape_search_1_active"
                     android:drawableRight="@drawable/ic_euro"
                     android:ems="10"
-                    android:hint="Min Price"
+                    android:hint="@string/min_price"
                     android:inputType="number"
                     android:padding="16dp"
                     android:textAppearance="@style/custom_subtitle2"
@@ -217,7 +217,7 @@
                     android:background="@drawable/shape_search_1_active"
                     android:drawableEnd="@drawable/ic_euro"
                     android:ems="10"
-                    android:hint="Max price"
+                    android:hint="@string/max_price"
                     android:inputType="number"
                     android:padding="16dp"
                     android:textAppearance="@style/custom_subtitle2"

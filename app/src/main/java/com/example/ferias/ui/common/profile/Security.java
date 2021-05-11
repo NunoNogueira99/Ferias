@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.text.Editable;
@@ -133,28 +132,25 @@ public class Security extends Fragment {
             PasswordStrength passwordStrength = PasswordStrength.calculate(password);
             if(password.isEmpty() || passwordStrength.getStrength() <= 1){
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-                dialog.setTitle("Password Strength Error");
-                String mensage = "Your password needs to:" +
-                                    "\n\tInclude both lower and upper case characters" +
-                                    "\n\tInclude at least one number and symbol" +
-                                    "\n\tBe at least 8 characters long";
+                dialog.setTitle(getString(R.string.password_strength_error_title));
+                String mensage = getString(R.string.password_strength_error_mensage);
 
                 dialog.setMessage(mensage);
-                dialog.setNegativeButton("Confirm", (dialogInterface, which) -> dialogInterface.dismiss());
+                dialog.setNegativeButton(getString(R.string.password_strength_error_confirm), (dialogInterface, which) -> dialogInterface.dismiss());
                 AlertDialog alertDialog = dialog.create();
                 alertDialog.show();
             }
             else{
                 if(! user.getPassword().equals(et_Old_Password.getText().toString())){
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-                    dialog.setTitle("Password Error");
-                    String mensage = "Old password is incorrect, please enter your current password";
+                    dialog.setTitle(getString(R.string.password_strength_error_title));
+                    String mensage = getString(R.string.old_password_error);
 
                     dialog.setMessage(mensage);
-                    dialog.setNegativeButton("Confirm", (dialogInterface, which) -> dialogInterface.dismiss());
+                    dialog.setNegativeButton(getString(R.string.password_strength_error_confirm), (dialogInterface, which) -> dialogInterface.dismiss());
                     AlertDialog alertDialog = dialog.create();
                     alertDialog.show();
-                    et_Old_Password.setError("Password is incorrect");
+                    et_Old_Password.setError(getString(R.string.password_incorrect));
                 }
                 else {
                     user.setPassword(password);
@@ -173,30 +169,33 @@ public class Security extends Fragment {
 
             firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
-                    Toast.makeText(getContext(),"Check your email to reset your password!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),getString(R.string.forgot_password_success), Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(getContext(),"Try again! Something wrong happened", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),getString(R.string.forgot_password_error), Toast.LENGTH_LONG).show();
                 }
             });
         });
 
         bt_delete_account.setOnClickListener(v -> {
             AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-            dialog.setTitle("Are you sure?");
-            dialog.setMessage("Deleting this account will result in completely removing your account and you won't be able to access the app");
-            dialog.setPositiveButton("Delete", (dialog1, which) -> {
+            dialog.setTitle(getString(R.string.delete_account_dialog_title));
+            dialog.setMessage(getString(R.string.delete_account_dialog_mensage));
+            dialog.setPositiveButton(getString(R.string.delete_account_dialog_delete), (dialog1, which) -> {
                 FirebaseDatabase.getInstance().getReference().child(path).child(firebaseUser.getUid()).removeValue();
 
                 firebaseUser.delete().addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
-                        Toast.makeText(getContext(),"Account Deleted", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(),getString(R.string.delete_account_dialog_success), Toast.LENGTH_LONG).show();
 
                         Navigation.findNavController(root).navigate(R.id.action_security_to_login);
                     }
+                    else {
+                        Toast.makeText(getContext(),getString(R.string.delete_account_dialog_error), Toast.LENGTH_LONG).show();
+                    }
                 });
             });
-            dialog.setNegativeButton("Cancel", (dialogInterface, which) -> dialogInterface.dismiss());
+            dialog.setNegativeButton(getString(R.string.cancel), (dialogInterface, which) -> dialogInterface.dismiss());
             AlertDialog alertDialog = dialog.create();
             alertDialog.show();
         });

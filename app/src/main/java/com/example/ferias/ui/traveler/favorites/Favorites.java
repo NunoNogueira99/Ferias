@@ -105,10 +105,6 @@ public class Favorites extends Fragment {
                         bundle.putString("PreviousFragment","Favorites");
                         Navigation.findNavController(root).navigate(R.id.action_favorites_to_traveler_hotelview, bundle);
                     }
-
-                    @Override
-                    public void onItemLongClick(View view, int position) {
-                    }
                 }));
                 // Create adapter passing in the sample user data
                 MyViewHolderClassFavs adapter = new MyViewHolderClassFavs(list);

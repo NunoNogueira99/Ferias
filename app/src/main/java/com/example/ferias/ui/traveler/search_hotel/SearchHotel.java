@@ -206,10 +206,6 @@ public class SearchHotel extends Fragment {
                 bundle.putString("PreviousFragment","Search");
                 Navigation.findNavController(root).navigate(R.id.action_search_hotel_to_traveler_hotelview, bundle);
             }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-            }
         }));
 
         maxPriceBtn.setOnEditorActionListener(new TextView.OnEditorActionListener() {

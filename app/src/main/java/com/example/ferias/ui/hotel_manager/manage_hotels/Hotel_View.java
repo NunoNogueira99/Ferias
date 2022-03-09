@@ -33,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
@@ -110,8 +111,8 @@ public class Hotel_View extends Fragment {
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("hotelKey", hotelId);
-        pageAdapter.addFragment(new BookingsViewer(bundle), "Last bookings");
-        pageAdapter.addFragment(new Statistics(bundle),"Statistics");
+        pageAdapter.addFragment(new BookingsViewer(bundle), getString(R.string.last_bookings));
+        pageAdapter.addFragment(new Statistics(bundle),getString(R.string.statistics));
         viewPager.setAdapter(pageAdapter);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -134,11 +135,7 @@ public class Hotel_View extends Fragment {
 
                 rb_hotel_view_stars.setRating(hotel.getStars());
 
-                Glide.with(this)
-                .load(hotel.getCoverPhoto())
-                .placeholder(R.drawable.admin_backgrounf_pic)
-                .fitCenter()
-                .into(iv_hotel_view_photo);
+                Picasso.get().load(hotel.getCoverPhoto()).into(iv_hotel_view_photo);
 
             } else {
                 Navigation.findNavController(root).navigate(R.id.action_hotel_view_to_hotel_manage);

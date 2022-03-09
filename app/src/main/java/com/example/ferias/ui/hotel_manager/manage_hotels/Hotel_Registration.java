@@ -773,7 +773,6 @@ public class Hotel_Registration extends Fragment {
                 user.addHotel(hotelID);
                 databaseReferenceManager.setValue(user);
 
-                Navigation.findNavController(getView()).navigate(R.id.action_hotel_registration_to_hotel_manage);
             } else {
                 Toast.makeText(getContext(), "Failed to register! Try again!", Toast.LENGTH_LONG).show();
             }
@@ -830,6 +829,11 @@ public class Hotel_Registration extends Fragment {
                                     hotel.setOtherPhotos(listothersphotos);
                                     databaseReferenceHotel.setValue(hotel);
                                     progressDialog.dismiss();
+
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("Hotel", hotel);
+                                    bundle.putString("Hotel Id",hotelID);
+                                    Navigation.findNavController(getView()).navigate(R.id.action_hotel_registration_to_hotel_view, bundle);
                                 }
 
                             }).addOnFailureListener(e -> {

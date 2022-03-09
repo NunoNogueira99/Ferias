@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Ferias</string>
-    <string name="map_key">AIzaSyAbPOAA0YXkVobpb1KJW80j0qPk0KXgXnk</string>
+    <string name="map_key" translatable="false">AIzaSyAbPOAA0YXkVobpb1KJW80j0qPk0KXgXnk</string>
 
-    <string name="login">Login</string>
+    <string name="login" translatable="false">Login</string>
     <string name="register_with_email">Register with Email</string>
-    <string name="reset_password">Reset password</string>
+    <string name="reset_password">Reset Password</string>
     <string name="register">Register now</string>
     <string name="send_password">Send Password</string>
     <string name="see_results">See results</string>
@@ -21,10 +21,10 @@
     <string name="forgot_password_title">Forgot your password?</string>
     <string name="forgot_password_mensage">No problem! We will send you a link to reset your password. Please enter your email address</string>
 
-    <string name="first">first…</string>
+    <string name="first">First…</string>
     <string name="and_next">and next…</string>
 
-    <string name="remember">Remember me</string>
+    <string name="remember">Remember</string>
     <string name="choose_account_type">Choose account type</string>
     <string name="create_your_account">Create your account</string>
 
@@ -38,8 +38,8 @@
     <string name="city">City</string>
     <string name="address">Address</string>
     <string name="zip_code">Zip Code</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="password" translatable="false">Password</string>
     <string name="old_password">Old Password</string>
 
     <string name="weak">Weak</string>
@@ -47,16 +47,7 @@
     <string name="strong">Strong</string>
     <string name="very_strong">Very Strong</string>
 
-    <string name="select_units_for_distance">Select Units for Distance</string>
-    <string name="select_the_currency">Select The Currency</string>
     <string name="select_the_language">Select The Language</string>
-
-    <string name="metric">Metric</string>
-    <string name="imperial">Imperial</string>
-
-    <string name="euro">Euro</string>
-    <string name="dolar">Dolar</string>
-    <string name="ienes">Ienes</string>
 
     <string name="english">English</string>
     <string name="portuguese">Portuguese</string>
@@ -80,7 +71,7 @@
     <string name="revenue_generated">Revenue generated:</string>
     <string name="hotel_price">Hotel Price</string>
     <string name="rating">Rating</string>
-    <string name="hotel_description_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="hotel_description_example" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
     <string name="photos">Photos</string>
     <string name="book_for">Book for</string>
 
@@ -90,8 +81,8 @@
     <string name="how_many_people">How many people?</string>
     <string name="adults">Adults</string>
     <string name="children">Children</string>
-    <string name="yrs_or_older">12 yrs or older</string>
-    <string name="from_0_to_12_yrs_old">from 0 to 12 yrs old</string>
+    <string name="yrs_or_older">12 years or older</string>
+    <string name="from_0_to_12_yrs_old">from 0 to 12 years old</string>
 
     <string name="hotels_found_at">Hotels found at</string>
     <string name="place_typed">Place Typed</string>
@@ -99,7 +90,7 @@
 
     <string name="hello_mensage">Hi,</string>
 
-    <string name="don_t_know_where_to_go">Don\'t know where to go…?</string>
+    <string name="don_t_know_where_to_go">Don t know where to go…?</string>
     <string name="choose_mood">Choose based on your mood!</string>
 
     <string name="total_profits">Total Profits</string>
@@ -116,7 +107,7 @@
     <string name="price_per_night">Price per night</string>
     <string name="select_features_of_hotel">Select features of hotel</string>
     <string name="description">Description</string>
-    <string name="add_other_photos">Add other photos to show</string>
+    <string name="add_other_photos">Add other photos</string>
     <string name="how_is_the_area_around">How is the area around?</string>
     <string name="choose_more_than_one">(You can choose more than one)</string>
 
@@ -157,12 +148,11 @@
         <item>ic_mood_city</item>
     </string-array>
 
-    <string name="type_chart">Type chart</string>
+    <string name="type_chart">Chart Type</string>
     <string name="months">Months</string>
     <string name="seasons">Seasons</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="select_type_of_chart">Select type of chart</string>
+    <string name="select_type_of_chart">Type of chart</string>
 
     <string-array name="months">
         <item>January</item>
@@ -192,5 +182,88 @@
         <item>Summer</item>
         <item>Autumn</item>
     </string-array>
+    <string name="registration_mensage">An email has been sent to activate your account!</string>
+    <string name="registration_error">Failed to register! Try again!</string>
+    <string name="registration_sucess_mensage">User has been registered successfully!</string>
+    <string name="password_strength_error_title">Password Error</string>
+    <string name="password_strength_error_mensage">Your password needs to: \n\t Include both lower and upper case characters \n\t Include at least one number and symbol \n\t Be at least 8 characters long</string>
+    <string name="password_strength_error_confirm">Confirm</string>
+    <string name="name_error">Name is required</string>
+    <string name="surname_error">Surname is required</string>
+    <string name="phone_error">Phone is required or is not valid</string>
+    <string name="email_error">Email address is required</string>
+    <string name="email_valid_error">Please provide a valid email address</string>
+    <string name="forgot_password_success">Check your email to reset your password!</string>
+    <string name="forgot_password_error">Try again! Something wrong happened</string>
+    <string name="password_error">Password is required</string>
+    <string name="login_error">Failed to login! Please check your credentials</string>
+    <string name="login_verify_error">Check your email to verify your account!</string>
+    <string name="login_success">Login Successful</string>
+    <string name="birth_date_error">Invalid birth date, must be over 18 years old. Please enter a valid date</string>
+    <string name="age_error">Age is required</string>
+    <string name="city_error">City is required</string>
+    <string name="address_error">Address is required</string>
+    <string name="zipcode_error">Zip-Code is required and valid</string>
+    <string name="old_password_error">Old password is incorrect, please enter your current password</string>
+    <string name="password_incorrect">Password is wrong</string>
+    <string name="delete_account_dialog_title">Are you sure?</string>
+    <string name="delete_account_dialog_mensage">Deleting this account will result in completely removing your account and you won\'t be able to access the app</string>
+    <string name="delete_account_dialog_delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_account_dialog_success">Account Deleted Successfully</string>
+    <string name="delete_account_dialog_error">Unable to delete account</string>
+    <string name="uploading">Uploading</string>
+    <string name="uploading_success">Upload successfully</string>
+    <string name="uploading_error">No file selected</string>
+    <string name="personal_data">Personal Data</string>
+    <string name="preferences">Preferences</string>
+    <string name="security">Security</string>
+    <string name="earning_by_season">Earning by season</string>
+    <string name="bookings_by_season">Bookings by season</string>
+    <string name="earning_by_month">Earning by month</string>
+    <string name="bookings_by_month">Bookings by month</string>
+    <string name="booking_successfully">Booking has been registered successfully!</string>
+    <string name="booking_error">Failed to register booking! Try again!</string>
+    <string name="all">All</string>
+    <string name="hotels_find_nearby">Hotels find nearby</string>
+    <string name="no_hotels_found">No hotels found</string>
+    <string name="features">Features</string>
+    <string name="book_now">Book now</string>
+    <string name="date">Date:</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="people">People:</string>
+    <string name="similar_hotels">Similar hotels</string>
+    <string name="satellite">Satellite</string>
+    <string name="terrain">Terrain</string>
+    <string name="normal">Normal</string>
+    <string name="hotels_on_map">Hotels on Map</string>
+    <string name="nearby_hotels">Nearby hotels</string>
+    <string name="your_saved_hotels">Your saved hotels</string>
+    <string name="favorites">Favorites</string>
+    <string name="total">Total</string>
+    <string name="resevation_details">Reservation details</string>
+    <string name="bookings">Bookings</string>
+    <string name="total_bookings">Total Bookings</string>
+    <string name="select_address_on_map">Select Address on Map</string>
+    <string name="earnings_by_hotel">Earnings by Hotel</string>
+    <string name="start">Start</string>
+    <string name="chose_files">Choose Files</string>
+    <string name="reset">Reset</string>
+    <string name="save_photos">Save Photos</string>
+    <string name="featuretype">Features Type</string>
+    <string name="last_bookings">Last bookings</string>
+    <string name="statistics">Statistics</string>
+    <string name="add_hotel">Add Hotel</string>
+    <string name="i_want_to_do_some_sport">⛷ I Want to do some sport</string>
+    <string name="looking_for_an_adventure">⛰️ Looking for an adventure</string>
+    <string name="i_hust_need_to_chill">⛱️ I just need to chill</string>
+    <string name="i_m_on_party_mode">🎉 I\'m on party mode</string>
+    <string name="party_mood">🎉 Party mood</string>
+    <string name="chill_mood">⛱️ Chill mood</string>
+    <string name="adventure_mood">⛰ Adventure mood</string>
+    <string name="sports_mood">⛷️ Sports mood</string>
+    <string name="min_price" translatable="false">Min Price</string>
+    <string name="max_price" translatable="false">Max price</string>
 
 </resources>

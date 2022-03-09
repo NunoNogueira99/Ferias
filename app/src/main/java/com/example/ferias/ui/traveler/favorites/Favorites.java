@@ -56,17 +56,6 @@ public class Favorites extends Fragment {
 
         View root = inflater.inflate(R.layout.traveler_fragment_favorites_hotels, container, false);
 
-        d = new Dialog(getContext());
-        d.setContentView(R.layout.dialog_remove_from_favorites);
-        d.setCancelable(true);
-        d.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        d.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        remove = d.findViewById(R.id.remove_req);
-        cancel = d.findViewById(R.id.cancel_req);
-
-
-        clickListener(root);
         getFavsList(root);
 
         return root;
@@ -116,11 +105,6 @@ public class Favorites extends Fragment {
                         bundle.putString("PreviousFragment","Favorites");
                         Navigation.findNavController(root).navigate(R.id.action_favorites_to_traveler_hotelview, bundle);
                     }
-
-                    @Override
-                    public void onItemLongClick(View view, int position) {
-                        d.show();
-                    }
                 }));
                 // Create adapter passing in the sample user data
                 MyViewHolderClassFavs adapter = new MyViewHolderClassFavs(list);
@@ -135,23 +119,5 @@ public class Favorites extends Fragment {
 
             }
         });
-    }
-
-    private void clickListener(View root) {
-
-        remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(),"Remove",Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                d.dismiss();
-            }
-        });
-
     }
 }

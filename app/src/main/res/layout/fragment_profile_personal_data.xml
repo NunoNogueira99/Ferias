@@ -269,7 +269,7 @@
                         android:layout_marginTop="15dp"
                         android:layout_marginBottom="15dp"
                         android:background="@drawable/rounded_rectangle_for_buttons"
-                        android:text="Save"
+                        android:text="@string/apply_changes"
                         android:textAlignment="center"
                         android:textAppearance="?attr/textAppearanceHeadline6"
                         android:textSize="16sp"

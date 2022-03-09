@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
-
-        void onItemLongClick(View view, int position);
     }
 
     private OnItemClickListener mListener;
@@ -24,15 +22,6 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
                 return true;
-            }
-
-            @Override
-            public void onLongPress(MotionEvent e) {
-                View childView = recyclerView.findChildViewUnder(e.getX(), e.getY());
-
-                if (childView != null && mListener != null) {
-                    mListener.onItemLongClick(childView, recyclerView.getChildAdapterPosition(childView));
-                }
             }
         });
     }

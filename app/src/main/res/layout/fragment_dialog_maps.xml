@@ -59,7 +59,6 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:background="@drawable/circle_background_active"
-        android:contentDescription="close"
         android:padding="15dp"
         app:srcCompat="@drawable/ic_close" />
 

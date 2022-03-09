@@ -194,7 +194,7 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
                     android:background="@drawable/rounded_rectangle_for_buttons"
-                    android:text="Delete Account"
+                    android:text="@string/delete_account"
                     android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textSize="16sp"

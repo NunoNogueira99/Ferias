@@ -17,7 +17,7 @@
         android:drawablePadding="8dp"
         android:gravity="center"
         android:lineSpacingExtra="24dp"
-        android:text="FeatureType"
+        android:text="@string/featuretype"
         style="?attr/textAppearanceBody1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

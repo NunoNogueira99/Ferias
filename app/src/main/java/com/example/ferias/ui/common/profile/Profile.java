@@ -124,9 +124,9 @@ public class Profile extends Fragment {
 
         pageAdapter = new PageAdapter (getParentFragmentManager());
 
-        pageAdapter.addFragment(new PersonalData(),"Personal Data");
-        pageAdapter.addFragment(new Preferences(), "Preferences");
-        pageAdapter.addFragment(new Security(), "Security");
+        pageAdapter.addFragment(new PersonalData(),getString(R.string.personal_data));
+        pageAdapter.addFragment(new Preferences(), getString(R.string.preferences));
+        pageAdapter.addFragment(new Security(), getString(R.string.security));
 
         viewPager.setAdapter(pageAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -187,7 +187,7 @@ public class Profile extends Fragment {
 
             // Code for showing progressDialog while uploading
             ProgressDialog progressDialog = new ProgressDialog(getContext());
-            progressDialog.setTitle("Uploading...");
+            progressDialog.setTitle(getString(R.string.uploading));
             progressDialog.show();
 
             // Defining the child of storageReference
@@ -198,7 +198,7 @@ public class Profile extends Fragment {
             .addOnSuccessListener(taskSnapshot -> {
                 fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
                     // Success, Image uploaded
-                    Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), getString(R.string.uploading_success), Toast.LENGTH_LONG).show();
                     user.setImage(uri.toString());
                     databaseReference.setValue(user);
 
@@ -216,10 +216,10 @@ public class Profile extends Fragment {
             })
             .addOnProgressListener(taskSnapshot -> {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                progressDialog.setMessage("Uploaded " + (int)progress + "%");
+                progressDialog.setMessage(getString(R.string.uploading) + (int)progress + "%");
             });
         } else {
-            Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.uploading_error), Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -173,49 +173,46 @@ public class Registration extends Fragment {
         boolean error = false;
 
         if(name.isEmpty()){
-            et_Name.setError("Name is required");
+            et_Name.setError(getString(R.string.name_error));
             et_Name.requestFocus();
             error = true;
         }
 
         if(surname.isEmpty()){
-            et_Surname.setError("Surname is required");
+            et_Surname.setError(getString(R.string.surname_error));
             et_Surname.requestFocus();
             error = true;
         }
 
         if(!ccp_PhoneCode.isValidFullNumber()){
-            et_Phone.setError("Phone is required or is not valid");
+            et_Phone.setError(getString(R.string.surname_error));
             et_Phone.requestFocus();
             error = true;
         }
 
         if(!googleRegistration){
             if(email.isEmpty()){
-                et_EmailAddress.setError("Email address is required");
+                et_EmailAddress.setError(getString(R.string.email_error));
                 et_EmailAddress.requestFocus();
                 error = true;
             }
 
             if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                et_EmailAddress.setError("Please provide a valid email address");
+                et_EmailAddress.setError(getString(R.string.email_valid_error));
                 et_EmailAddress.requestFocus();
                 error = true;
             }
 
             PasswordStrength passwordStrength = PasswordStrength.calculate(password);
             if(password.isEmpty() || passwordStrength.getStrength() <= 1){
-                et_Password.setError("Password strength error");
+                et_Password.setError(getString(R.string.password_strength_error_title));
                 et_Password.requestFocus();
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-                dialog.setTitle("Password strength error");
-                String mensage = "Your password needs to:" +
-                        "\n\tInclude both lower and upper case characters" +
-                        "\n\tInclude at least one number and symbol" +
-                        "\n\tBe at least 8 characters long";
+                dialog.setTitle(getString(R.string.password_strength_error_title));
+                String mensage = getString(R.string.password_strength_error_mensage);
 
                 dialog.setMessage(mensage);
-                dialog.setNegativeButton("Confirm", (dialogInterface, which) -> dialogInterface.dismiss());
+                dialog.setNegativeButton(getString(R.string.password_strength_error_confirm), (dialogInterface, which) -> dialogInterface.dismiss());
                 AlertDialog alertDialog = dialog.create();
                 alertDialog.show();
                 error = true;
@@ -241,12 +238,12 @@ public class Registration extends Fragment {
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
                             firebaseUser = firebaseAuth.getCurrentUser();
-                            Toast.makeText(getContext(),"An email has been sent to activate your account!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),getString(R.string.registration_mensage), Toast.LENGTH_LONG).show();
                             firebaseUser.sendEmailVerification();
                             registerInFirebase(name,surname,phone,email,password,firebaseUser.getUid());
                         }
                         else {
-                            Toast.makeText(getContext(),"Failed to register! Try again!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),getString(R.string.registration_error), Toast.LENGTH_LONG).show();
                             progressBar_Register.setVisibility(View.GONE);
                             return;
                         }
@@ -277,7 +274,7 @@ public class Registration extends Fragment {
         .child(userID)
         .setValue(newuser).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                Toast.makeText(getContext(),"User has ben registered successfully!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),getResources().getString(R.string.registration_sucess_mensage), Toast.LENGTH_LONG).show();
                 progressBar_Register.setVisibility(View.GONE);
 
                 FirebaseAuth.getInstance().signOut();
@@ -285,7 +282,7 @@ public class Registration extends Fragment {
                 Navigation.findNavController(getView()).navigate(R.id.action_registration_to_login);
             }
             else {
-                Toast.makeText(getContext(),"Failed to register! Try again!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),getResources().getString(R.string.registration_error), Toast.LENGTH_LONG).show();
                 progressBar_Register.setVisibility(View.GONE);
             }
         });

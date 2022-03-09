@@ -13,7 +13,7 @@ class AddressTest {
     @Test
     void getCountry() {
         //shoud fail
-        assertEquals("Coimbra", address.getCountry());
+        //assertEquals("Coimbra", address.getCountry());
 
         //shoud pass
         assertEquals("Portugal", address.getCountry());
